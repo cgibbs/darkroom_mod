@@ -1,0 +1,1 @@
+This is a modification of the source code of A Dark Room for my own silly purposes. Pay no attention to it.
