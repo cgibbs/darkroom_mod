@@ -164,6 +164,8 @@ var StateManager = {
 		} catch (e) {
 			whichState = undefined;
 		}
+
+		console.log(stateName + ' ' + whichState);
 		
 		//prevents repeated if undefined, null, false or {}, then x = 0 situations
 		if((!whichState || whichState == {}) && requestZero) return 0;
@@ -330,48 +332,48 @@ var StateManager = {
 		return {};
 	},
 	
-	collectIncome: function() {
-		var changed = false;
-		if(typeof $SM.get('income') != 'undefined' && Engine.activeModule != Space) {
-			for(var source in $SM.get('income')) {
-				var income = $SM.get('income["'+source+'"]');
-				if(typeof income.timeLeft != 'number')
-				{
-					income.timeLeft = 0;
-				}
-				income.timeLeft--;
+	// collectIncome: function() {
+	// 	var changed = false;
+	// 	if(typeof $SM.get('income') != 'undefined' && Engine.activeModule != Space) {
+	// 		for(var source in $SM.get('income')) {
+	// 			var income = $SM.get('income["'+source+'"]');
+	// 			if(typeof income.timeLeft != 'number')
+	// 			{
+	// 				income.timeLeft = 0;
+	// 			}
+	// 			income.timeLeft--;
 				
-				if(income.timeLeft <= 0) {
-					Engine.log('collection income from ' + source);
-					if(source == 'thieves')	$SM.addStolen(income.stores);
+	// 			if(income.timeLeft <= 0) {
+	// 				Engine.log('collection income from ' + source);
+	// 				if(source == 'thieves')	$SM.addStolen(income.stores);
 
-					var cost = income.stores;
-					var ok = true;
-					if (source != 'thieves') {
-					    for (var k in cost) {
-					        var have = $SM.get('stores["' + k + '"]', true);
-					        if (have + cost[k] < 0) {
-					            ok = false;
-					            break;
-					        }
-					    }
-					}
+	// 				var cost = income.stores;
+	// 				var ok = true;
+	// 				if (source != 'thieves') {
+	// 				    for (var k in cost) {
+	// 				        var have = $SM.get('stores["' + k + '"]', true);
+	// 				        if (have + cost[k] < 0) {
+	// 				            ok = false;
+	// 				            break;
+	// 				        }
+	// 				    }
+	// 				}
 
-					if(ok){
-						$SM.addM('stores', income.stores, true);
-					}
-					changed = true;
-					if(typeof income.delay == 'number') {
-						income.timeLeft = income.delay;
-					}
-				}
-			}
-		}
-		if(changed){
-			$SM.fireUpdate('income', true);
-		}
-		Engine._incomeTimeout = setTimeout($SM.collectIncome, 1000);
-	},
+	// 				if(ok){
+	// 					$SM.addM('stores', income.stores, true);
+	// 				}
+	// 				changed = true;
+	// 				if(typeof income.delay == 'number') {
+	// 					income.timeLeft = income.delay;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	if(changed){
+	// 		$SM.fireUpdate('income', true);
+	// 	}
+	// 	Engine._incomeTimeout = setTimeout($SM.collectIncome, 1000);
+	// },
 	
 	//Thieves
 	addStolen: function(stores) {

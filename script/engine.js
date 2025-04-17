@@ -72,8 +72,8 @@
 		
 		options: {
 			state: null,
-			debug: false,
-			log: false,
+			debug: true,
+			log: true,
 			dropbox: false,
 			doubleTime: false
 		},

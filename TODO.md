@@ -1,0 +1,1 @@
+Use Notifications for mundane worldbuilding stuff. What's going on in the world that isn't mission-critical, but sets the tone? Birds chirping, the sun glistening through the trees, etc. Can occasionally have things happen here that unlock important stuff, but use that as a tool sparingly.

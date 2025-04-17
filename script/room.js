@@ -457,6 +457,7 @@ var Room = {
 	
 	name: _("Room"),
 	init: function(options) {
+		console.log("init Room");
 		this.options = $.extend(
 			this.options,
 			options
@@ -468,16 +469,6 @@ var Room = {
 			this._STOKE_COOLDOWN = 0;
 			this._NEED_WOOD_DELAY = 5000;
 		}
-		
-		if(typeof $SM.get('features.location.room') == 'undefined') {
-			$SM.set('features.location.room', true);
-			$SM.set('game.builder.level', -1);
-		}
-		
-		// If this is the first time playing, the fire is dead and it's freezing. 
-		// Otherwise grab past save state temp and fire level.
-		$SM.set('game.temperature', $SM.get('game.temperature.value')===undefined?this.TempEnum.Freezing:$SM.get('game.temperature'));
-		$SM.set('game.fire', $SM.get('game.fire.value')===undefined?this.FireEnum.Dead:$SM.get('game.fire'));
 		
 		// Create the room tab
 		this.tab = Header.addLocation(_("A Dark Room"), "room", Room);
@@ -517,30 +508,6 @@ var Room = {
 		
 		Room.updateButton();
 		Room.updateStoresView();
-		Room.updateIncomeView();
-		Room.updateBuildButtons();
-		
-		Room._fireTimer = Engine.setTimeout(Room.coolFire, Room._FIRE_COOL_DELAY);
-		Room._tempTimer = Engine.setTimeout(Room.adjustTemp, Room._ROOM_WARM_DELAY);
-		
-		/*
-		 * Builder states:
-		 * 0 - Approaching
-		 * 1 - Collapsed
-		 * 2 - Shivering
-		 * 3 - Sleeping
-		 * 4 - Helping
-		 */
-		if($SM.get('game.builder.level') >= 0 && $SM.get('game.builder.level') < 3) {
-			Room._builderTimer = Engine.setTimeout(Room.updateBuilderState, Room._BUILDER_STATE_DELAY);
-		}
-		if($SM.get('game.builder.level') == 1 && $SM.get('stores.wood', true) < 0) {
-			Engine.setTimeout(Room.unlockForest, Room._NEED_WOOD_DELAY);
-		}
-		Engine.setTimeout($SM.collectIncome, 1000);
-
-		Notifications.notify(Room, _("the room is {0}", Room.TempEnum.fromInt($SM.get('game.temperature.value')).text));
-		Notifications.notify(Room, _("the fire is {0}", Room.FireEnum.fromInt($SM.get('game.fire.value')).text));
 	},
 	
 	options: {}, // Nothing for now
@@ -606,7 +573,6 @@ var Room = {
 	},
 	
 	updateButton: function() {
-		console.log("updating buttons");
 		var light = $('#lightButton.button');
 		var stoke = $('#stokeButton.button');
 		if($SM.get('game.fire.value') == Room.FireEnum.Dead.value && stoke.css('display') != 'none') {
@@ -632,8 +598,6 @@ var Room = {
 		}
 
 		var lizButton = $('#lizButton.button');
-		console.log(lizButton);
-		console.log($SM.get('village.lizActive'));
 		if($SM.get('village.lizActive')) lizButton.show();
 	},
 	
@@ -1011,110 +975,13 @@ var Room = {
 	},
 	
 	updateBuildButtons: function() {
-		var buildSection = $('#buildBtns');
-		var needsAppend = false;
-		if(buildSection.length === 0) {
-			buildSection = $('<div>').attr('id', 'buildBtns').css('opacity', 0);
-			needsAppend = true;
-		}
-		
-		var craftSection = $('#craftBtns');
-		var cNeedsAppend = false;
-		if(craftSection.length === 0 && $SM.get('game.buildings["workshop"]', true) > 0) {
-			craftSection = $('<div>').attr('id', 'craftBtns').css('opacity', 0);
-			cNeedsAppend = true;
-		}
-		
-		var buySection = $('#buyBtns');
-		var bNeedsAppend = false;
-		if(buySection.length === 0 && $SM.get('game.buildings["trading post"]', true) > 0) {
-			buySection = $('<div>').attr('id', 'buyBtns').css('opacity', 0);
-			bNeedsAppend = true;
-		}
-		
-		for(var k in Room.Craftables) {
-			craftable = Room.Craftables[k];
-			var max = $SM.num(k, craftable) + 1 > craftable.maximum;
-			if(craftable.button == null) {
-				if(Room.craftUnlocked(k)) {
-					var loc = Room.needsWorkshop(craftable.type) ? craftSection : buildSection;
-					craftable.button = new Button.Button({
-						id: 'build_' + k,
-						cost: craftable.cost(),
-						text: _(k),
-						click: Room.build,
-						width: '80px',
-						ttPos: loc.children().length > 10 ? 'top right' : 'bottom right'
-					}).css('opacity', 0).attr('buildThing', k).appendTo(loc).animate({opacity: 1}, 300, 'linear');
-				}
-			} else {
-				// refresh the tooltip
-				var costTooltip = $('.tooltip', craftable.button);
-				costTooltip.empty();
-				var cost = craftable.cost();
-				for(var k in cost) {
-					$("<div>").addClass('row_key').text(_(k)).appendTo(costTooltip);
-					$("<div>").addClass('row_val').text(cost[k]).appendTo(costTooltip);
-				}
-				if(max && !craftable.button.hasClass('disabled')) {
-					Notifications.notify(Room, craftable.maxMsg);
-				}
-			}
-			if(max) {
-				Button.setDisabled(craftable.button, true);
-			} else {
-				Button.setDisabled(craftable.button, false);
-			}
-		}
-		
-		for(var k in Room.TradeGoods) {
-			good = Room.TradeGoods[k];
-			var max = $SM.num(k, good) + 1 > good.maximum;
-			if(good.button == null) {
-				if(Room.buyUnlocked(k)) {
-					good.button = new Button.Button({
-						id: 'build_' + k,
-						cost: good.cost(),
-						text: _(k),
-						click: Room.buy,
-						width: '80px'
-					}).css('opacity', 0).attr('buildThing', k).appendTo(buySection).animate({opacity:1}, 300, 'linear');
-				}
-			} else {
-				// refresh the tooltip
-				var costTooltip = $('.tooltip', good.button);
-				costTooltip.empty();
-				var cost = good.cost();
-				for(var k in cost) {
-					$("<div>").addClass('row_key').text(_(k)).appendTo(costTooltip);
-					$("<div>").addClass('row_val').text(cost[k]).appendTo(costTooltip);
-				}
-				if(max && !good.button.hasClass('disabled')) {
-					Notifications.notify(Room, good.maxMsg);
-				}
-			}
-			if(max) {
-				Button.setDisabled(good.button, true);
-			} else {
-				Button.setDisabled(good.button, false);
-			}
-		}
-		
-		if(needsAppend && buildSection.children().length > 0) {
-			buildSection.appendTo('div#roomPanel').animate({opacity: 1}, 300, 'linear');
-		}
-		if(cNeedsAppend && craftSection.children().length > 0) {
-			craftSection.appendTo('div#roomPanel').animate({opacity: 1}, 300, 'linear');
-		}
-		if(bNeedsAppend && buildSection.children().length > 0) {
-			buySection.appendTo('div#roomPanel').animate({opacity: 1}, 300, 'linear');
-		}
+
 	},
 	
 	handleStateUpdates: function(e){
 		if(e.category == 'stores'){
 			Room.updateStoresView();
-			Room.updateBuildButtons();
+			// Room.updateBuildButtons();
 		} else if(e.category == 'income'){
 			Room.updateStoresView();
 			Room.updateIncomeView();
@@ -1127,8 +994,10 @@ var Room = {
 		Events.startEvent({
 			title: _('Meet the Mayor'),
 			scenes: {
-				// TODO: some logic here to make the Mayor not greet you fresh every time you talk to him would be cool.
 				start: {
+					seenFlag: () => $SM.get('village.mayor.haveMet'),
+					nextScene: 'main',
+					onLoad: () => $SM.set('village.mayor.haveMet', 1),
 					text: [
 						_('The mayor smiles at you and says:'),
 						_('"Welcome to Chadtopia, I\'m the mayor of these here parts. What can I do you for?"')
@@ -1201,8 +1070,9 @@ var Room = {
 	},
 
 	setLizActive: function() {
-		console.log("setting Liz");
 		$SM.set('village.lizActive', true);
+		$SM.set('village.liz.canFindBook', false);
+		$SM.set('village.liz.hasBook', 1);
 		Room.updateButton();
 	},
 
@@ -1211,6 +1081,9 @@ var Room = {
 			title: _('Liz\s house, at the edge of town'),
 			scenes: {
 				start: {
+					seenFlag: () => $SM.get('village.liz.haveMet'),
+					nextScene: 'main',
+					onLoad: () => $SM.set('village.liz.haveMet', 1),
 					text: [
 						_('You enter the building and are immediately plunged into a labyrinth of shelves haphazardly filled with books of all kinds. After a bit of searching, you find a side room where a woman with mousy hair and glasses is sitting at a writing desk. She\'s reading a large book that appears to include diagrams of some sort of plant. She looks up as you enter the room.'),
 						_('"Who the hell are you?"')
@@ -1246,20 +1119,20 @@ var Room = {
 				'main': {
 					text: [_('Liz seems determined not to pay attention to you.')],
 					buttons: {
+						'askAboutTown': {
+							text: _('Ask about Chadtopia'),
+							nextScene: {1: 'chadtopiaRamble'},
+							available: () => !$SM.get('village.liz.canFindBook')
+						},
 						'quest': {
 							text: _('Ask for a quest'),
 							nextScene: {1: 'questRequest'}
 						},
-						// this only checks when the event starts, I need it to check every time we enter this scene,
-						// otherwise you have to close the event and click it again to get this option
-						// ...($SM.get('village.liz.canFindBook')) && 
-						// {
-							'findBook': {
-								text: _('Try to find the book'),
-								nextScene: {1: 'findBook'},
-								available: () => $SM.get('village.liz.canFindBook')
-							},
-						// },
+						'findBook': {
+							text: _('Try to find the book'),
+							nextScene: {1: 'findBook'},
+							available: () => ($SM.get('village.liz.canFindBook') > 0) && ($SM.get('village.liz.hasBook'))
+						},
 						'leave': {
 							text: _('Leave'),
 							nextScene: 'end'
@@ -1275,7 +1148,10 @@ var Room = {
 						'sick': {
 							text: _('Oh, sick'),
 							nextScene: 'end',
-							onChoose: () => $SM.set('stores.Weird Book', 1)
+							onChoose: () => {
+								$SM.set('stores.Weird Book', 1);
+								$SM.set('village.liz.hasBook', 0);
+							}
 						}
 					}
 				},

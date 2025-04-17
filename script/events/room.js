@@ -32,16 +32,16 @@ Events.Room = [
 						reward: { 'bait': 1 },
 						notification: _('traps are more effective with bait.')
 					},
-					'buyCompass': {
-						available: function() {
-							return $SM.get('stores.compass', true) < 1;
-						},
-						text: _('buy compass'),
-						cost: { fur: 300, scales: 15, teeth: 5 },
-						reward: { 'compass': 1 },
-						notification: _('the old compass is dented and dusty, but it looks to work.'),
-						onChoose: Path.openPath
-					}, 
+					// 'buyCompass': {
+					// 	available: function() {
+					// 		return $SM.get('stores.compass', true) < 1;
+					// 	},
+					// 	text: _('buy compass'),
+					// 	cost: { fur: 300, scales: 15, teeth: 5 },
+					// 	reward: { 'compass': 1 },
+					// 	notification: _('the old compass is dented and dusty, but it looks to work.'),
+					// 	onChoose: Path.openPath
+					// }, 
 					'goodbye': {
 						text: _('say goodbye'),
 						nextScene: 'end'

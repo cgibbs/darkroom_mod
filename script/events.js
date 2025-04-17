@@ -27,7 +27,7 @@ var Events = {
 		
 		Events.eventStack = [];
 		
-		Events.scheduleNextEvent();
+		// Events.scheduleNextEvent();
 		
 		//subscribe to stateUpdates
 		$.Dispatch('stateUpdate').subscribe(Events.handleStateUpdates);
@@ -42,6 +42,14 @@ var Events = {
 		Events.activeScene = name;
 		var scene = Events.activeEvent().scenes[name];
 		
+		// handles one-time scenes, such as introductions
+		// maybe I can make a more explicit "introduction" logical flow to make this
+		// a little more elegant
+		if (scene.seenFlag && scene.seenFlag()) {
+			Events.loadScene(scene.nextScene)
+			return;
+		}
+
 		// Scene reward
 		if(scene.reward) {
 			$SM.addM('stores', scene.reward);
@@ -810,6 +818,9 @@ var Events = {
 			$('<div>').addClass('eventTitle').text(Events.activeEvent().title).appendTo(Events.eventPanel());
 			$('<div>').attr('id', 'description').appendTo(Events.eventPanel());
 			$('<div>').attr('id', 'buttons').appendTo(Events.eventPanel());
+			// NOTE: here's where to extend the logic for the 'start' scene; make it so that
+			//   if the start scene has a "one-time" conditional flag, we check the flag and drop 
+			//   through to the specified scene when that flag is set.
 			Events.loadScene('start');
 			$('div#wrapper').append(Events.eventPanel());
 			Events.eventPanel().animate({opacity: 1}, Events._PANEL_FADE, 'linear');
