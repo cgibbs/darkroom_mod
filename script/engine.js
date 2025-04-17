@@ -192,15 +192,15 @@
 				.appendTo(menu);
 			
 			// Register keypress handlers
-			$('body').off('keydown').keydown(Engine.keyDown);
-			$('body').off('keyup').keyup(Engine.keyUp);
+			// $('body').off('keydown').keydown(Engine.keyDown);
+			// $('body').off('keyup').keyup(Engine.keyUp);
 
 			// Register swipe handlers
-			swipeElement = $('#outerSlider');
-			swipeElement.on('swipeleft', Engine.swipeLeft);
-			swipeElement.on('swiperight', Engine.swipeRight);
-			swipeElement.on('swipeup', Engine.swipeUp);
-			swipeElement.on('swipedown', Engine.swipeDown);
+			// swipeElement = $('#outerSlider');
+			// swipeElement.on('swipeleft', Engine.swipeLeft);
+			// swipeElement.on('swiperight', Engine.swipeRight);
+			// swipeElement.on('swipeup', Engine.swipeUp);
+			// swipeElement.on('swipedown', Engine.swipeDown);
 		
 			// subscribe to stateUpdates
 			$.Dispatch('stateUpdate').subscribe(Engine.handleStateUpdates);
@@ -209,6 +209,7 @@
 			Notifications.init();
 			Events.init();
 			Room.init();
+			Character.init();
 			
 			if(typeof $SM.get('stores.wood') != 'undefined') {
 				Outside.init();

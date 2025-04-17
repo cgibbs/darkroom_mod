@@ -471,7 +471,7 @@ var Room = {
 		}
 		
 		// Create the room tab
-		this.tab = Header.addLocation(_("A Dark Room"), "room", Room);
+		this.tab = Header.addLocation(_("A Chill Village"), "room", Room);
 		
 		// Create the Room panel
 		this.panel = $('<div>')
@@ -565,7 +565,7 @@ var Room = {
 	},
 	
 	setTitle: function() {
-		var title = $SM.get('game.fire.value') < 2 ? _("A Dark Room") : _("A Firelit Room");
+		var title = _("The Village");
 		if(Engine.activeModule == this) {
 			document.title = title;
 		}
@@ -1131,6 +1131,9 @@ var Room = {
 						'findBook': {
 							text: _('Try to find the book'),
 							nextScene: {1: 'findBook'},
+							// TODO: a "visible" flag would be good here, for situations where an option
+							//   isn't yet known to the player
+							visible: () => $SM.get('village.liz.canFindBook'),
 							available: () => ($SM.get('village.liz.canFindBook') > 0) && ($SM.get('village.liz.hasBook'))
 						},
 						'leave': {

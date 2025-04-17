@@ -44,7 +44,8 @@ var Events = {
 		
 		// handles one-time scenes, such as introductions
 		// maybe I can make a more explicit "introduction" logical flow to make this
-		// a little more elegant
+		// a little more elegant, given that there will always be an "introduction" scene
+		// that's only meant to be run a single time.
 		if (scene.seenFlag && scene.seenFlag()) {
 			Events.loadScene(scene.nextScene)
 			return;
@@ -648,6 +649,9 @@ var Events = {
 				}).appendTo(btns);
 			if(typeof info.available == 'function' && !info.available()) {
 				Button.setDisabled(b, true);
+			}
+			if(typeof info.visible == 'function' && !info.visible()) {
+				b.hide();
 			}
 			if(typeof info.cooldown == 'number') {
 				Button.cooldown(b);
