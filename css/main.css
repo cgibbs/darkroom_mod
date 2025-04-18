@@ -433,7 +433,7 @@ body.noMask .eventPanel {
 }
 
 .eventPanel:before {
-	background-color:white;
+	/* background-color:white; */
 	opacity: 0.6;
 	content: " ";
 	height: 700px;
@@ -489,7 +489,7 @@ body.noMask .eventTitle {
 	background-color: white;
 	bottom: 32%;
 	content: " ";
-	height: 5px;
+	height: 10px;
 	left: 0;
 	position: absolute;
 	width: 100%;

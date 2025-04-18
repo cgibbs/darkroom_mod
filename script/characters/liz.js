@@ -8,7 +8,7 @@ var Liz = {
 
 	talkToLiz: function() {
 		Events.startEvent({
-			title: _('Liz\s house, at the edge of town'),
+			title: _('Liz\'s house, at the edge of town'),
 			scenes: {
 				start: {
 					seenFlag: () => $SM.get('village.liz.haveMet'),

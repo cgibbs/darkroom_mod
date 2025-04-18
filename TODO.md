@@ -9,3 +9,5 @@ DONE, NOT TESTED If the weather callback is still in-flight after location has c
 It would be cool to create stat changes based on weather. Like, speed decreasing in the snow, perception decreasing in clouds (and worse in rain), etc. Do a basic example of this with the perception example. This will necessitate a method to derive Character stats anew with each character stat change, so create a handleStateChange method in Character and make it work based on a second set of values. For example, character.stats.tempChanges. This state variable will need to know what provided the stat change so that it can be removed or altered when that thing changes.
 
 Add a way to interact with inventory objects. We need to be able to read that book, or at the very least figure out that it's too hard to read.
+
+The ::before element on the Stores area not being animateable via JQuery makes the background color changes look kinda janky. Maybe figure out a better way to do that title effect so that it can be animated smoothly.

@@ -30,9 +30,9 @@ var Weather = {
 
     startSunny: function() {
         Notifications.notify(null, "The sun begins to shine.");
-        // TODO: CSS change to animate background color and add an animation somewhere for sun
         Weather._lastWeather = 'sunny';
         $('body').animate({backgroundColor: '#FFFFFF'}, 'slow');
+        $('div#stores::before').animate({backgroundColor: '#FFFFFF'}, 'slow');
         Weather.makeRainStop();
     },
 
@@ -42,8 +42,8 @@ var Weather = {
         } else if (Weather._lastWeather == 'rainy') {
             Notifications.notify(null, "The rain breaks, but the clouds remain.")
         }
-        // TODO: CSS change to animate background color and add an animation somewhere for clouds 
         $('body').animate({backgroundColor: '#8B8786'}, 'slow');
+        $('div#stores::before').animate({backgroundColor: '#8B8786'}, 'slow');
         Weather._lastWeather = 'cloudy';
         Weather.makeRainStop();
     },
@@ -55,8 +55,8 @@ var Weather = {
             Notifications.notify(null, "The clouds that were previously content to hang overhead let loose a moderate downpour.")
         }
         
-        // TODO: CSS change to animate background color and add an animation somewhere for rain
         $('body').animate({backgroundColor: '#6D6968'}, 'slow');
+        $('div#stores::before').animate({backgroundColor: '#6D6968'}, 'slow');
         Weather._lastWeather = 'rainy';
         Weather.makeItRain();
     },
