@@ -484,7 +484,7 @@ var Room = {
 		new Button.Button({
 			id: 'talkButton',
 			text: _('Talk to the Mayor'),
-			click: Room.talkToMayor,
+			click: Mayor.talkToMayor,
 			width: '80px',
 			cost: {}
 		}).appendTo('div#roomPanel');
@@ -492,7 +492,7 @@ var Room = {
 		new Button.Button({
 			id: 'lizButton',
 			text: _('Talk to Liz'),
-			click: Room.talkToLiz,
+			click: Liz.talkToLiz,
 			width: '80px',
 			cost: {}
 		}).appendTo('div#roomPanel');
@@ -511,6 +511,12 @@ var Room = {
 	},
 	
 	options: {}, // Nothing for now
+
+	availableWeather: {
+		'sunny': 0.4,
+		'cloudy': 0.3,
+		'rainy': 0.3
+	},
 	
 	onArrival: function(transition_diff) {
 		Room.setTitle();
@@ -530,6 +536,8 @@ var Room = {
 		}
 
 		Engine.moveStoresView(null, transition_diff);
+
+		Weather.initiateWeather(Room.availableWeather, 'room');
 	},
 	
 	TempEnum: {
@@ -988,191 +996,5 @@ var Room = {
 		} else if(e.stateName.indexOf('game.buildings') === 0){
 			Room.updateBuildButtons();
 		}
-	},
-
-	talkToMayor: function() {
-		Events.startEvent({
-			title: _('Meet the Mayor'),
-			scenes: {
-				start: {
-					seenFlag: () => $SM.get('village.mayor.haveMet'),
-					nextScene: 'main',
-					onLoad: () => $SM.set('village.mayor.haveMet', 1),
-					text: [
-						_('The mayor smiles at you and says:'),
-						_('"Welcome to Chadtopia, I\'m the mayor of these here parts. What can I do you for?"')
-					],
-					buttons: {
-						'askAboutTown': {
-							text: _('Ask about Chadtopia'),
-							nextScene: {1: 'chadtopiaRamble'}
-						},
-						'quest': {
-							text: _('Ask for a quest'),
-							nextScene: {1: 'quest'}
-						},
-						'cancel': {
-							text: _('cancel'),
-							nextScene: 'end'
-						}
-					}
-				},
-				'chadtopiaRamble': {
-					text: [
-						_('The mayor pushes the brim of his hat up.'),
-						_('"Well, we\'ve always been here, long as I can remember. I took over after the last mayor died, but he would have been the only person with any historical knowledge of this village."'),
-						_('He pauses for a moment and tousles some of the wispy hairs that have poked out from under the raised hat.'),
-						_('"Actually, you might ask Liz, she has a bunch of her mother\'s books from way back when. She lives at the edge of town."')
-					],
-					buttons: {
-						'okay': {
-							text: _('Okay, then.'),
-							nextScene: {1: 'main'},
-							onChoose: Room.setLizActive
-						}
-					}
-				},
-				'main': {
-					text: [
-						_('The mayor says:'),
-						_('"Anyway, what ELSE can I do you for?"'),
-						_('He chuckles at his clever use of language.')
-					],
-					buttons: {
-						'askAboutTown': {
-							text: _('Ask about Chadtopia'),
-							nextScene: {1: 'chadtopiaRamble'}
-						},
-						'quest': {
-							text: _('Ask for a quest'),
-							nextScene: {1: 'quest'}
-						},
-						'cancel': {
-							text: _('cancel'),
-							nextScene: 'end'
-						}
-					}
-				},
-				'quest': {
-					text: [
-						_('The mayor looks confused'),
-						_('"Well, shucks, it looks like Chance didn\'t write me one of these yet! Better try again later."')
-					],
-					buttons: {
-						'wack': {
-							text: _('Wack'),
-							nextScene: {1: 'main'}
-						}
-					}
-				}
-			}
-		});
-	},
-
-	setLizActive: function() {
-		$SM.set('village.lizActive', true);
-		$SM.set('village.liz.canFindBook', false);
-		$SM.set('village.liz.hasBook', 1);
-		Room.updateButton();
-	},
-
-	talkToLiz: function() {
-		Events.startEvent({
-			title: _('Liz\s house, at the edge of town'),
-			scenes: {
-				start: {
-					seenFlag: () => $SM.get('village.liz.haveMet'),
-					nextScene: 'main',
-					onLoad: () => $SM.set('village.liz.haveMet', 1),
-					text: [
-						_('You enter the building and are immediately plunged into a labyrinth of shelves haphazardly filled with books of all kinds. After a bit of searching, you find a side room where a woman with mousy hair and glasses is sitting at a writing desk. She\'s reading a large book that appears to include diagrams of some sort of plant. She looks up as you enter the room.'),
-						_('"Who the hell are you?"')
-					],
-					buttons: {
-						'askAboutTown': {
-							text: _('Ask about Chadtopia'),
-							nextScene: {1: 'chadtopiaRamble'}
-						},
-						'quest': {
-							text: _('Ask for a quest'),
-							nextScene: {1: 'questRequest'}
-						},
-						'leave': {
-							text: _('Leave'),
-							nextScene: 'end'
-						}
-					}
-				},
-				'chadtopiaRamble': {
-					text: [
-						_('Liz looks at you for a moment before returning her gaze to the book in front of her.'),
-						_('"There\'s a book in here somewhere about the founding of Chadtopia. If you can find it, you\'re free to borrow it."')],
-					buttons: {
-						'okay': {
-							text: _('Okay, then.'),
-							nextScene: {1: 'main'},
-							onChoose: () => $SM.set('village.liz.canFindBook', true)
-						}
-					}
-				},
-
-				'main': {
-					text: [_('Liz seems determined not to pay attention to you.')],
-					buttons: {
-						'askAboutTown': {
-							text: _('Ask about Chadtopia'),
-							nextScene: {1: 'chadtopiaRamble'},
-							available: () => !$SM.get('village.liz.canFindBook')
-						},
-						'quest': {
-							text: _('Ask for a quest'),
-							nextScene: {1: 'questRequest'}
-						},
-						'findBook': {
-							text: _('Try to find the book'),
-							nextScene: {1: 'findBook'},
-							// TODO: a "visible" flag would be good here, for situations where an option
-							//   isn't yet known to the player
-							visible: () => $SM.get('village.liz.canFindBook'),
-							available: () => ($SM.get('village.liz.canFindBook') > 0) && ($SM.get('village.liz.hasBook'))
-						},
-						'leave': {
-							text: _('Leave'),
-							nextScene: 'end'
-						}
-					}
-				},
-				'findBook': {
-					text: [
-						_('Leaving Liz to her business, you wander around amidst the books, wondering how you\'ll ever manage to find what you\'re looking for in all this unorganized mess.'),
-						_('Fortunately, the creator of this game doesn\'t feel like it\'d be very interesting to make this into a puzzle, so you spot the book on a nearby shelf and grab it.')
-					],
-					buttons: {
-						'sick': {
-							text: _('Oh, sick'),
-							nextScene: 'end',
-							onChoose: () => {
-								$SM.set('stores.Weird Book', 1);
-								$SM.set('village.liz.hasBook', 0);
-							}
-						}
-					}
-				},
-				'questRequest': {
-					text: [
-						_('Liz lets out an annoyed sigh.'),
-						_('"Oh brave adventurer, I seem to have lost my patience. When last I saw it, it was somewhere outside of this building. Wouldst thou recover that which has been stolen from me?"')
-					],
-					buttons: {
-						'okay': {
-							text: _('Okay, jeez, I get it'),
-							nextScene: {1: 'main'}
-						}
-					}
-				}
-			}
-		});
-	},
-
-
+	}
 };

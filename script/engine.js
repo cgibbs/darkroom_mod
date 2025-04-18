@@ -190,17 +190,6 @@
 				.text(_('github.'))
 				.click(function() { window.open('https://github.com/Continuities/adarkroom'); })
 				.appendTo(menu);
-			
-			// Register keypress handlers
-			// $('body').off('keydown').keydown(Engine.keyDown);
-			// $('body').off('keyup').keyup(Engine.keyUp);
-
-			// Register swipe handlers
-			// swipeElement = $('#outerSlider');
-			// swipeElement.on('swipeleft', Engine.swipeLeft);
-			// swipeElement.on('swiperight', Engine.swipeRight);
-			// swipeElement.on('swipeup', Engine.swipeUp);
-			// swipeElement.on('swipedown', Engine.swipeDown);
 		
 			// subscribe to stateUpdates
 			$.Dispatch('stateUpdate').subscribe(Engine.handleStateUpdates);
@@ -210,6 +199,7 @@
 			Events.init();
 			Room.init();
 			Character.init();
+			Weather.init();
 			
 			if(typeof $SM.get('stores.wood') != 'undefined') {
 				Outside.init();

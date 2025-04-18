@@ -40,7 +40,7 @@ div.clear {
 
 div#wrapper {
 	margin: auto;
-	width: 700px;
+	width: 850px;
 	padding: 20px 0 0 220px;
 	position: relative;
 }
@@ -185,8 +185,8 @@ div.row_val {
 
 div#notifications {
 	position: absolute;
-	top: 20px;
-	left: 100px;
+	top: 400px;
+	left: 0px;
 	height: 700px;
 	width: 200px;
 	overflow: hidden;
@@ -196,7 +196,7 @@ div#notifications div.notification {
 	margin-bottom: 10px;
 }
 
-div#notifyGradient {
+/* div#notifyGradient {
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -212,7 +212,7 @@ div#notifyGradient {
 	filter: alpha(
 		Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=500
 	);
-}
+} */
 
 /* Character */
 
@@ -220,7 +220,7 @@ div#character {
 	position: absolute;
 	top: 20px;
 	left: 0px;
-	height: 700px;
+	height: 400px;
 	width: 200px;
 	overflow: hidden;
 	#title {
@@ -424,7 +424,7 @@ div.tooltip:hover {
 	padding: 20px;
 	position: absolute;
 	top: 90px;
-	width: 335px;
+	width: 550px;
 	z-index: 20;
 }
 

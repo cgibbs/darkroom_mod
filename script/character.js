@@ -6,7 +6,7 @@ var Character = {
 			options
 		);
 		
-		// Create the notifications box
+		// Create the character box
 		elem = $('<div>').attr({
 			id: 'character',
 			className: 'character'

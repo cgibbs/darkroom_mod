@@ -88,6 +88,8 @@ var StateManager = {
 			eval('('+fullPath+') = 0');
 			Engine.log('WARNING: state:' + stateName + ' can not be a negative value. Set to 0 instead.');
 		}
+
+		console.log(stateName + ' ' + value);
 		
 		if(!noEvent) {
 			Engine.saveGame();
@@ -164,8 +166,6 @@ var StateManager = {
 		} catch (e) {
 			whichState = undefined;
 		}
-
-		console.log(stateName + ' ' + whichState);
 		
 		//prevents repeated if undefined, null, false or {}, then x = 0 situations
 		if((!whichState || whichState == {}) && requestZero) return 0;
