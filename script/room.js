@@ -694,6 +694,10 @@ var Room = {
 		Notifications.notify(Room, _("the wood is running out"));
 		Engine.event('progress', 'outside');
 	},
+
+	unlockTheWoods: function() {
+
+	},
 	
 	updateBuilderState: function() {
 		var lBuilder = $SM.get('game.builder.level');
