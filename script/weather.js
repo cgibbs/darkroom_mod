@@ -85,6 +85,6 @@ var Weather = {
         if (chosenWeather != $SM.get('weather')) $SM.set('weather', chosenWeather);
         Engine.setTimeout(() => {
             this.initiateWeather(availableWeather, 'room');
-        }, 10 * 1000);
+        }, 60 * 1000);
     }
 }
