@@ -64,7 +64,6 @@ var Weather = {
     _location: '',
 
     initiateWeather: function(availableWeather, location) {
-        console.log("initiating weather for " + location);
         if (Weather._location == '') Weather._location = location;
         // if in new location, end without triggering a new weather initiation, 
         // leaving the new location's initiateWeather callback to do its thing
@@ -87,8 +86,8 @@ var Weather = {
 
         if (chosenWeather != $SM.get('weather')) $SM.set('weather', chosenWeather);
         Engine.setTimeout(() => {
-            this.initiateWeather(availableWeather, 'room');
-        }, 60 * 1000);
+            this.initiateWeather(availableWeather, location);
+        }, 3 * 60 * 1000);
     },
 
     makeItRain: function() {

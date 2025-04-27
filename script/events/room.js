@@ -409,7 +409,7 @@ Events.Room = [
 						text: _('buy map'),
 						cost: { 'fur': 200, 'scales': 10 },
 						notification: _('the map uncovers a bit of the world'),
-						onChoose: World.applyMap
+						// onChoose: World.applyMap
 					},
 					'learn': {
 						text: _('learn scouting'),

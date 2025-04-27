@@ -99,8 +99,10 @@
 			Engine.disableSelection();
 			
 			if(this.options.state != null) {
+				console.log("not attempting load");
 				window.State = this.options.state;
 			} else {
+				console.log("attempting load");
 				Engine.loadGame();
 			}
 			
@@ -200,15 +202,13 @@
 			Room.init();
 			Character.init();
 			Weather.init();
+			if($SM.get('road.open')) {
+				console.log("initiating road");
+				Road.init();
+			}
 			
 			if(typeof $SM.get('stores.wood') != 'undefined') {
 				Outside.init();
-			}
-			if($SM.get('stores.compass', true) > 0) {
-				Path.init();
-			}
-			if($SM.get('features.location.spaceShip')) {
-				Ship.init();
 			}
 			
 			Engine.saveLanguage();
@@ -226,6 +226,7 @@
 		
 		saveGame: function() {
 			if(typeof Storage != 'undefined' && localStorage) {
+				console.log("saving");
 				if(Engine._saveTimer != null) {
 					clearTimeout(Engine._saveTimer);
 				}
@@ -242,10 +243,10 @@
 				var savedState = JSON.parse(localStorage.gameState);
 				if(savedState) {
 					State = savedState;
-					$SM.updateOldState();
 					Engine.log("loaded save!");
 				}
 			} catch(e) {
+				console.log(e);
 				State = {};
 				$SM.set('version', Engine.VERSION);
 				Engine.event('progress', 'new game');
@@ -506,15 +507,21 @@
 
 				module.onArrival(diff);
 
-				if(Engine.activeModule == Room || Engine.activeModule == Path) {
+				if(Engine.activeModule == Room
+					//  || Engine.activeModule == Path
+					) {
 					// Don't fade out the weapons if we're switching to a module
 					// where we're going to keep showing them anyway.
-					if (module != Room && module != Path) {
+					if (module != Room 
+						// && module != Path
+					) {
 						$('div#weapons').animate({opacity: 0}, 300);
 					}
 				}
 
-				if(module == Room || module == Path) {
+				if(module == Room
+					//  || module == Path
+					) {
 					$('div#weapons').animate({opacity: 1}, 300);
 				}
 
@@ -573,70 +580,70 @@
 			//return (num > 0 ? "+" : "") + num + " per " + delay + "s";
 		},
 	
-		keyDown: function(e) {
-			e = e || window.event;
-			if(!Engine.keyPressed && !Engine.keyLock) {
-				Engine.pressed = true;
-				if(Engine.activeModule.keyDown) {
-					Engine.activeModule.keyDown(e);
-				}
-			}
-			return jQuery.inArray(e.keycode, [37,38,39,40]) < 0;
-		},
+		// keyDown: function(e) {
+		// 	e = e || window.event;
+		// 	if(!Engine.keyPressed && !Engine.keyLock) {
+		// 		Engine.pressed = true;
+		// 		if(Engine.activeModule.keyDown) {
+		// 			Engine.activeModule.keyDown(e);
+		// 		}
+		// 	}
+		// 	return jQuery.inArray(e.keycode, [37,38,39,40]) < 0;
+		// },
 	
-		keyUp: function(e) {
-			Engine.pressed = false;
-			if(Engine.activeModule.keyUp) {
-				Engine.activeModule.keyUp(e);
-			}
-			else
-			{
-				switch(e.which) {
-					case 38: // Up
-					case 87:
-						if(Engine.activeModule == Outside || Engine.activeModule == Path) {
-							Engine.activeModule.scrollSidebar('up');
-						}
-						Engine.log('up');
-						break;
-					case 40: // Down
-					case 83:
-						if (Engine.activeModule == Outside || Engine.activeModule == Path) {
-							Engine.activeModule.scrollSidebar('down');
-						}
-						Engine.log('down');
-						break;
-					case 37: // Left
-					case 65:
-						if(Engine.activeModule == Ship && Path.tab)
-							Engine.travelTo(Path);
-						else if(Engine.activeModule == Path && Outside.tab){
-							Engine.activeModule.scrollSidebar('left', true);
-							Engine.travelTo(Outside);
-						}else if(Engine.activeModule == Outside && Room.tab){
-							Engine.activeModule.scrollSidebar('left', true);
-							Engine.travelTo(Room);
-						}
-						Engine.log('left');
-						break;
-					case 39: // Right
-					case 68:
-						if(Engine.activeModule == Room && Outside.tab)
-							Engine.travelTo(Outside);
-						else if(Engine.activeModule == Outside && Path.tab){
-							Engine.activeModule.scrollSidebar('right', true);
-							Engine.travelTo(Path);
-						}else if(Engine.activeModule == Path && Ship.tab){
-							Engine.activeModule.scrollSidebar('right', true);
-							Engine.travelTo(Ship);
-						}
-						Engine.log('right');
-						break;
-				}
-			}
+		// keyUp: function(e) {
+		// 	Engine.pressed = false;
+		// 	if(Engine.activeModule.keyUp) {
+		// 		Engine.activeModule.keyUp(e);
+		// 	}
+		// 	else
+		// 	{
+		// 		switch(e.which) {
+		// 			case 38: // Up
+		// 			case 87:
+		// 				if(Engine.activeModule == Outside || Engine.activeModule == Path) {
+		// 					Engine.activeModule.scrollSidebar('up');
+		// 				}
+		// 				Engine.log('up');
+		// 				break;
+		// 			case 40: // Down
+		// 			case 83:
+		// 				if (Engine.activeModule == Outside || Engine.activeModule == Path) {
+		// 					Engine.activeModule.scrollSidebar('down');
+		// 				}
+		// 				Engine.log('down');
+		// 				break;
+		// 			case 37: // Left
+		// 			case 65:
+		// 				if(Engine.activeModule == Ship && Path.tab)
+		// 					Engine.travelTo(Path);
+		// 				else if(Engine.activeModule == Path && Outside.tab){
+		// 					Engine.activeModule.scrollSidebar('left', true);
+		// 					Engine.travelTo(Outside);
+		// 				}else if(Engine.activeModule == Outside && Room.tab){
+		// 					Engine.activeModule.scrollSidebar('left', true);
+		// 					Engine.travelTo(Room);
+		// 				}
+		// 				Engine.log('left');
+		// 				break;
+		// 			case 39: // Right
+		// 			case 68:
+		// 				if(Engine.activeModule == Room && Outside.tab)
+		// 					Engine.travelTo(Outside);
+		// 				else if(Engine.activeModule == Outside && Path.tab){
+		// 					Engine.activeModule.scrollSidebar('right', true);
+		// 					Engine.travelTo(Path);
+		// 				}else if(Engine.activeModule == Path && Ship.tab){
+		// 					Engine.activeModule.scrollSidebar('right', true);
+		// 					Engine.travelTo(Ship);
+		// 				}
+		// 				Engine.log('right');
+		// 				break;
+		// 		}
+		// 	}
 	
-			return false;
-		},
+		// 	return false;
+		// },
 
 		swipeLeft: function(e) {
 			if(Engine.activeModule.swipeLeft) {

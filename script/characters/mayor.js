@@ -18,7 +18,8 @@ var Mayor = {
 						},
 						'quest': {
 							text: _('Ask for a quest'),
-							nextScene: {1: 'quest'}
+							nextScene: {1: 'quest'},
+							onChoose: Mayor.startSuppliesQuest
 						},
 						'cancel': {
 							text: _('cancel'),
@@ -64,17 +65,24 @@ var Mayor = {
 				},
 				'quest': {
 					text: [
-						_('The mayor looks confused'),
-						_('"Well, shucks, it looks like Chance didn\'t write me one of these yet! Better try again later."')
+						_('The mayor thinks for a moment.'),
+						_('"You know, it\'s been a while since our last shipment of supplies arrived from the outpost. Mind looking into that for us?"'),
+						_('"You can ask about it at the outpost, or just wander around on the road and see if you find any clues. Either way, it\'s time to hit the road, adventurer!"')
 					],
 					buttons: {
-						'wack': {
-							text: _('Wack'),
-							nextScene: {1: 'main'}
+						'alrighty': {
+							text: _('Alrighty'),
+							nextScene: {1: 'main'},
 						}
 					}
 				}
 			}
 		});
+	},
+	startSuppliesQuest: function () {
+		// 1 = started, 2 = next step, etc. until completed
+		$SM.set('quest.supplies', 1);
+		// TODO: init Outpost and Road to Outpost
+		Road.init();
 	}
 }

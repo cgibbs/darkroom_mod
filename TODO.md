@@ -11,3 +11,5 @@ It would be cool to create stat changes based on weather. Like, speed decreasing
 Add a way to interact with inventory objects. We need to be able to read that book, or at the very least figure out that it's too hard to read.
 
 The ::before element on the Stores area not being animateable via JQuery makes the background color changes look kinda janky. Maybe figure out a better way to do that title effect so that it can be animated smoothly.
+
+Create scripts for Outpost and Road to Outpost, and init them in the Mayor's quest acceptance thing.

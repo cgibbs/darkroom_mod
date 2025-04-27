@@ -457,7 +457,6 @@ var Room = {
 	
 	name: _("Room"),
 	init: function(options) {
-		console.log("init Room");
 		this.options = $.extend(
 			this.options,
 			options
