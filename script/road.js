@@ -39,6 +39,8 @@ var Road = {
     onArrival: function(transition_diff) {
         Road.setTitle();
 
+		Engine.moveStoresView(null, transition_diff);
+
         Weather.initiateWeather(Road.availableWeather, 'road');
     },
 
@@ -53,4 +55,8 @@ var Road = {
     updateButton: function() {
 		// conditionals for updating buttons
 	},
+
+	wanderEvent: function() {
+		Events.triggerLocationEvent('RoadWander');
+	}
 }

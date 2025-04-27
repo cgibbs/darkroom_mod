@@ -99,10 +99,8 @@
 			Engine.disableSelection();
 			
 			if(this.options.state != null) {
-				console.log("not attempting load");
 				window.State = this.options.state;
 			} else {
-				console.log("attempting load");
 				Engine.loadGame();
 			}
 			
@@ -203,7 +201,6 @@
 			Character.init();
 			Weather.init();
 			if($SM.get('road.open')) {
-				console.log("initiating road");
 				Road.init();
 			}
 			
@@ -226,7 +223,6 @@
 		
 		saveGame: function() {
 			if(typeof Storage != 'undefined' && localStorage) {
-				console.log("saving");
 				if(Engine._saveTimer != null) {
 					clearTimeout(Engine._saveTimer);
 				}

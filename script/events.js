@@ -22,7 +22,7 @@ var Events = {
 		Events.EventPool = [].concat(
 			Events.Global,
 			Events.Room,
-			Events.Outside
+			Events.Road
 		);
 		
 		Events.eventStack = [];
@@ -784,6 +784,29 @@ var Events = {
 		}
 
 		Events.scheduleNextEvent();
+	},
+
+	// not scheduled, this is for stuff like location-based random events on a button click
+	triggerLocationEvent: function(location) {
+		if (Events[location]) {
+			if(Events.activeEvent() == null) {
+				var possibleEvents = [];
+				for(var i in Events[location]) {
+					var event = Events[location][i];
+					if(event.isAvailable()) {
+						possibleEvents.push(event);
+					}
+				}
+	
+				if(possibleEvents.length === 0) {
+					Events.scheduleNextEvent(0.5);
+					return;
+				} else {
+					var r = Math.floor(Math.random()*(possibleEvents.length));
+					Events.startEvent(possibleEvents[r]);
+				}
+			}
+		}
 	},
 
 	triggerFight: function() {
