@@ -1,7 +1,10 @@
 // generic perk parameters, for reference
 var perk = {
     name: 'perk name',
-    text: [_('a perk of some description')],
+    text: _('a tooltip description of the perk'),
+    fullText: [
+        _('This is a more in-depth description of the perk.'),
+        _('It gives you the possibility of using multiple lines.')],
     isActive: function(extraParams) { },
     statBonuses: {
         'Speed': 0,
@@ -21,7 +24,7 @@ var perk = {
 // also used for non-stat stuff by Events in Road to Outpost, Vampire Den, and Goth IHOP
 var rainyNight = {
     name: "Love a Rainy Night",
-    text: [_("You feel at home in the rain and the dark")],
+    text: _("You feel at home in the rain and the dark"),
     isActive: function(extraParams) {
         return ($SM.get('weather.rainy') && $SM.get('timeOfDay.night'));
     },
@@ -40,7 +43,8 @@ var rainyNight = {
 // no stats, used as flag for lucky events and for entering 
 var markedByDestiny = {
     name: "Marked by Destiny",
-    text: [
+    text: _("Destiny did this to you"),
+    fullText: [
         _("You have been marked as something special by the universe."),
         _("It seems to be a temporary mark, though, so you'd better hurry up and do something cool.")
     ],

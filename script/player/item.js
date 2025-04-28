@@ -1,10 +1,10 @@
 // generic item parameters, for reference
 var item = {
     name: 'item name',
-    text: [_('an item of some description')],
-    // how many of these the player has; default this to 1 when writing items unless the
-    // event involves the player getting multiple, e.g. 'someone hands you three scraps of paper'
-    count: 1,
+    text: _('a tooltip description of the item'),
+    fullText: [
+        _('This is a more in-depth description of the item.'),
+        _('It gives you the possibility of using multiple lines.')],
     // for gear only! having a slot marks an item as gear, so don't put it on non-equippables!
     slot: 'head',
     // for gear only! anything that happens outside of normal equipping stuff, 
@@ -15,7 +15,7 @@ var item = {
     effects: [
         {
             name: 'effect name',
-            text: [_('an effect of some description')],
+            text: _('an effect of some description'),
             // for hidden effects that are revealed with new player knowledge,
             // e.g. Sting glows when orcs are near; the first time that effect pops,
             // $SM.set('playerKnowledge.stingEffect'), or maybe something structured

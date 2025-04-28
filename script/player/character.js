@@ -93,8 +93,18 @@ var Character = {
 		$('<div>').addClass('eventTitle').text('Inventory').appendTo(inventoryDisplay);
 		
 		for(var item in Character.inventory) {
-			console.log(item);
-			$('<div>').text(Character.inventory[item].name).appendTo(inventoryDisplay);
+			var inventoryElem = $('<div>').text(ItemList[item].name)
+			.hover(function() {
+				var tooltip = $("<div id='tooltip' class='tooltip'>" + ItemList[item].text + "</div>");
+    			tooltip.appendTo(inventoryElem);
+			}, function() {
+				$("#tooltip").fadeOut().remove();
+			})
+			.on("click", function() {
+				Character.useInventoryItem(item);
+				Character.closeInventory()
+			})
+			.appendTo(inventoryDisplay);
 			// add the stuff to make these clickable and hoverable and stuff
 		}
 
@@ -110,14 +120,15 @@ var Character = {
 	},
 
 	closeInventory: function() {
+		Character.inventoryDisplay.empty();
 		Character.inventoryDisplay.remove();
 	},
 
-	addToInventory: function(item) {
-		if (Character.inventory[item.name]) {
-			Character.inventory[item.name].count += item.count;
+	addToInventory: function(item, amount=1) {
+		if (Character.inventory[item]) {
+			Character.inventory[item] += amount;
 		} else {
-			Character.inventory[item.name] = item;
+			Character.inventory[item] = amount;
 		}
 
 		// TODO: write to $SM
@@ -125,12 +136,10 @@ var Character = {
 	},
 
 
-	removeFromInventory: function(item) {
-		if (Character.inventory[item.name].count > 0) {
-			Character.inventory[item.name].count -= item.count;
-		}
-		else {
-			delete Character.inventory[item.name];
+	removeFromInventory: function(item, amount=1) {
+		if (Character.inventory[item]) Character.inventory[item] -= amount;
+		if (Character.inventory[item] < 1) {
+			delete Character.inventory[item];
 		}
 
 		// TODO: write to $SM
@@ -138,15 +147,15 @@ var Character = {
 	},
 
 	useInventoryItem: function(item) {
-		if (Character.inventory[item.name] && Character.inventory[item.name].count > 0) {
+		if (Character.inventory[item] && Character.inventory[item] > 0) {
 			// use the effect in the inventory; just in case a name matches but the effect
 			// does not, assume the inventory item is the source of truth
-			Character.inventory[item.name].onUse();
+			ItemList[item].onUse();
 			// please don't make this unreadable nonsense in a future refactor, just
 			// let it be this way
-			if (typeof(item.destroyOnUse) == "function" && item.destroyOnUse()) {
+			if (typeof(ItemList[item].destroyOnUse) == "function" && ItemList[item].destroyOnUse()) {
 				Character.removeFromInventory(item);
-			} else if (typeof(item.destroyOnUse) == "boolean" && item.destroyOnUse) {
+			} else if (ItemList[item].destroyOnUse) {
 				Character.removeFromInventory(item);
 			}
 		}
@@ -156,11 +165,11 @@ var Character = {
 	},
 
 	equipItem: function(item) {
-		if (item.slot && typeof(Character.equippedItems[item.slot]) !== "undefined") {
-			Character.addToInventory(Character.equippedItems[item.slot]);
-			Character.equippedItems[item.slot] = item;
-			if (item.onEquip) {
-				item.onEquip();
+		if (ItemList[item].slot && typeof(Character.equippedItems[ItemList[item].slot]) !== "undefined") {
+			Character.addToInventory(Character.equippedItems[ItemList[item].slot]);
+			Character.equippedItems[ItemList[item].slot] = item;
+			if (ItemList[item].onEquip) {
+				ItemList[item].onEquip();
 			}
 			Character.checkEquipmentEffects();
 		}
@@ -189,8 +198,8 @@ var Character = {
 	// applied for anything that's relevant to the effect but not handled by $SM
 	applyEquipmentEffects: function(extraParams) {
 		for (const item in Character.equippedItems) {
-			if (item.effects) {
-				for (const effect in item.effects) {
+			if (ItemList[item].effects) {
+				for (const effect in ItemList[item].effects) {
 					// NOTE: currently this is good for applying perks and Notifying;
 					// are there other situations where we'd want to apply effects,
 					// or can we cover basically every case via those things?
@@ -204,12 +213,12 @@ var Character = {
 	getDerivedStats: function() {
 		const derivedStats = structuredClone(Character.rawStats);
 		for (const item in Character.equippedItems) {
-			if (item.statBonuses) {
-				for (const stat in Object.keys(item.statBonuses)) {
-					if (typeof (item.statBonuses[stat] == "function")) {
-						derivedStats[stat] += item.statBonuses[stat]();
+			if (ItemList[item].statBonuses) {
+				for (const stat in Object.keys(ItemList[item].statBonuses)) {
+					if (typeof (ItemList[item].statBonuses[stat] == "function")) {
+						derivedStats[stat] += ItemList[item].statBonuses[stat]();
 					} else {
-						derivedStats[stat] += item.statBonuses[stat];
+						derivedStats[stat] += ItemList[item].statBonuses[stat];
 					}
 				}
 			}

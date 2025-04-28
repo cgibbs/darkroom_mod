@@ -32,8 +32,13 @@ DONE Make Inventory system
 DONE Make Equipment system
 DONE Make Perk system
 
-Create Inventory screen that shows all items in player inventory
-Create Clickable items in Inventory and hook up Character.useInventoryItem(item) to the clickable items
+DONE Create Inventory screen that shows all items in player inventory
+DONE Create Clickable items in Inventory and hook up Character.useInventoryItem(item) to the clickable items
 Paginate Inventory items
+Create some test equipment
+Show Equipment separately in Inventory screen
+Equipping Equipment can probably skip the Event framework, just make the onEquip() for an item say how you put it on as a Notification.
 
 Move the Notifications stuff to not be under the character panel; maybe over where the stores stuff used to display?
+
+DONE, AND IT WAS ANNOYING Saving and Loading doesn't keep functions on items, so if you refresh the page the onUse() function disappears from items. That's... annoying. I guess we'll need to define items globally and use the name as a reference in the Character file, so that no functions get destroyed accidentally by Local Storage.
