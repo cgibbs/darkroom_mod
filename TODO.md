@@ -12,7 +12,9 @@ Add a way to interact with inventory objects. We need to be able to read that bo
 
 The ::before element on the Stores area not being animateable via JQuery makes the background color changes look kinda janky. Maybe figure out a better way to do that title effect so that it can be animated smoothly.
 
-Create scripts for Outpost and Road to Outpost, and init them in the Mayor's quest acceptance thing.
+DONE Create script for Outpost, and init it in the Mayor's quest acceptance thing.
+
+Create script for 
 
 Eventually there will be too many tabs to manage cleanly. I think tabs should be grouped under like, Locales of some description. We'd need to do a load step sorta like how the Engine checks for init conditions for the locations, but do it based on a Locale, so like, the village, the outpost, etc. are all in "The Northern Shore", but if you want to go further, you'll need to do something to change Locales, and then that'll load a whole new set of tabs and stuff. We could also bring weather out to the Locale level, instead of the Location level, and then only initiate new weather for Locations that need it for specific purposes.
 
@@ -23,3 +25,9 @@ It might be cool to make an item start out with a generic name, and get a new na
 Anchor stores area to character area so it doesn't slide away.
 
 Wandering on roads should eventually unlock the way forward, and wandering in other places should occasionally unlock new stuff. There should be an event flag to keep that from happening on the first several adventures there, either via a "times adventured here" counter or something more clever than that.
+
+Can do weather-specific events in the isAvailable function, that would be cool.
+
+Overloading the stores area as an inventory is going to become painful really fast. Might as well make a proper inventory screen that the player can click open and page through items in. Probably good to add a search filter to narrow down objects, too, but I'm not sure how easy that is to do in raw JS/HTML/CSS. We can also just make Inventory a part of the Character script, since it's the character's inventory. We'll need to change some $SM checks to use like, Character.hasItem('whatever'), but it's better to do this now.
+
+IMPORTANT: Anything that needs to persist on the character or in the inventory that isn't handled via $SM access will need to be put in the $SM at some point, preferably on any change to the character or its inventory. Write functions for changing stats, adding items, equipping gear, etc. and make sure those things all write to $SM at the end. When loading from $SM, make sure that it's the only source of truth and the load is fresh, so as not to introduce the possibility of duplicates.
