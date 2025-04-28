@@ -116,9 +116,7 @@ var Character = {
 			.css("margin-bottom", "20px")
 			.appendTo(inventoryDisplay);
 		
-		console.log('making inventory');
 		for(var item in Character.inventory) {
-			console.log(item);
 			// make the inventory count look a bit nicer
 			var inventoryElem = $('<div>')
 			.attr('id', 'item')
@@ -166,12 +164,9 @@ var Character = {
 	},
 
 	useInventoryItem: function(item) {
-		console.log('using item');
-		console.log(item);
 		if (Character.inventory[item] && Character.inventory[item] > 0) {
 			// use the effect in the inventory; just in case a name matches but the effect
 			// does not, assume the inventory item is the source of truth
-			console.log(ItemList[item]);
 			ItemList[item].onUse();
 			// please don't make this unreadable nonsense in a future refactor, just
 			// let it be this way

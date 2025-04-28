@@ -55,7 +55,7 @@ var ItemList = {
         text: _('It\'s weirdly eerie'),
         onUse: function() {
             if (!$SM.get('knowledge.Stranger.smoothStone')) {
-                Notifications.notify('You have no idea what to do with this thing.');
+                Notifications.notify(null, 'You have no idea what to do with this thing.');
                 return;
             }
             Events.startEvent({
