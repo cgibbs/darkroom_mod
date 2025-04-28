@@ -71,23 +71,46 @@ var Character = {
         for(var stat in $SM.get('character.rawstats')) {
             $('<div>').text(stat + ': ' + $SM.get('character.rawstats.' + stat)).appendTo('div#character');
         }
+
+		$('<div>').attr('id', 'buttons').css("margin-top", "20px").appendTo('div#character');
+		var b = new Button.Button({
+			id: "inventory",
+			text: "Inventory",
+			click: Character.openInventory
+		}).appendTo($('#buttons', 'div#character'));
 	},
 	
 	options: {}, // Nothing for now
 	
 	elem: null,
 
+	inventoryDisplay: null,
+
 	openInventory: function() {
-		var inventoryDisplay = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
+		// creating a handle for later access, such as closing inventory
+		Character.inventoryDisplay = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
+		var inventoryDisplay = Character.inventoryDisplay;
 		$('<div>').addClass('eventTitle').text('Inventory').appendTo(inventoryDisplay);
-		$('<div>').attr('id', 'description').appendTo(inventoryDisplay);
-		$('<div>').attr('id', 'buttons').appendTo(inventoryDisplay);
+		
 		for(var item in Character.inventory) {
-			$('<div>').text(item.text).appendTo(inventoryDisplay);
+			console.log(item);
+			$('<div>').text(Character.inventory[item].name).appendTo(inventoryDisplay);
 			// add the stuff to make these clickable and hoverable and stuff
 		}
+
+		// TODO: make this CSS an actual class somewhere, I'm sure I'll need it again
+		$('<div>').attr('id', 'buttons').css("margin-top", "20px").appendTo(inventoryDisplay);
+		var b = new Button.Button({
+			id: "closeInventory",
+			text: "Close",
+			click: Character.closeInventory
+		}).appendTo($('#buttons', inventoryDisplay));
 		$('div#wrapper').append(inventoryDisplay);
 		inventoryDisplay.animate({opacity: 1}, Events._PANEL_FADE, 'linear');
+	},
+
+	closeInventory: function() {
+		Character.inventoryDisplay.remove();
 	},
 
 	addToInventory: function(item) {
