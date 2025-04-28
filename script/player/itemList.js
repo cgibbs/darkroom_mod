@@ -26,7 +26,6 @@ var ItemList = {
                 }
             })
         },
-        count: 1,
         destroyOnUse: true
     },
 
@@ -49,7 +48,121 @@ var ItemList = {
                 }
             })
         },
-        count: 1,
         destroyOnUse: false
     },
+    "Stranger.smoothStone": {
+        name: 'A smooth black stone',
+        text: _('It\'s weirdly eerie'),
+        onUse: function() {
+            if (!$SM.get('knowledge.Stranger.smoothStone')) {
+                Notifications.notify('You have no idea what to do with this thing.');
+                return;
+            }
+            Events.startEvent({
+                title: _("A smooth black stone"),
+                scenes: {
+                    start: {
+                        text: [_("I'm genuinely not sure how you got to this event, but please let me know via GitHub issue, you little stinker.")],
+                        buttons: {
+                            'okay': {
+                                text: _('I swear to do this, as a responsible citizen of Earth'),
+                                nextScene: 'end'
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    },
+    "Stranger.wrappedKnife": {
+        name: 'A knife wrapped in cloth',
+        text: _('Man, I hope it\'s not all like, bloody on the blade and stuff.'),
+        onUse: function() {
+            Events.startEvent({
+                title: _("A knife wrapped in cloth"),
+                scenes: {
+                    start: {
+                        text: [_("You unwrap the knife carefully. It seems to be highly ornamented, and you could probably do some crimes with it.")],
+                        buttons: {
+                            'okay': {
+                                text: _('Hell yeah, Adolf Loos style'),
+                                onChoose: Character.addToInventory("Stranger.silverKnife"),
+                                nextScene: 'end'
+                            }
+                        }
+                    }
+                }
+            })
+        },
+        destroyOnUse: true
+    },
+    "Stranger.silverKnife": {
+        name: 'A silver knife',
+        text: _('Highly ornamented'),
+        onUse: function() {
+            Events.startEvent({
+                title: _("A silver knife"),
+                scenes: {
+                    start: {
+                        text: [
+                            _("One day you'll be able to equip this, but right now that functionality isn't present."),
+                            _("Please politely leave the premises without acknowledging this missing feature.")
+                        ],
+                        buttons: {
+                            'okay': {
+                                text: _('You got it, chief'),
+                                nextScene: 'end'
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    },
+    "Stranger.clothBundle": {
+        name: 'A bundle of cloth',
+        text: _('What lies within?'),
+        onUse: function() {
+            Events.startEvent({
+                title: _("A bundle of cloth"),
+                scenes: {
+                    start: {
+                        text: [
+                            _("One day you'll be able to use this item, but right now that functionality isn't present."),
+                            _("Please politely leave the premises without acknowledging this missing feature.")
+                        ],
+                        buttons: {
+                            'okay': {
+                                text: _('You got it, chief'),
+                                nextScene: 'end'
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    },
+    "Stranger.coin": {
+        name: 'A strange coin',
+        text: _('Both sides depict the same image'),
+        onUse: function() {
+            Events.startEvent({
+                title: _("A strange coin"),
+                scenes: {
+                    start: {
+                        text: [
+                            _("One day you'll be able to use this item, but right now that functionality isn't present."),
+                            _("Please politely leave the premises without acknowledging this missing feature.")
+                        ],
+                        buttons: {
+                            'okay': {
+                                text: _('You got it, chief'),
+                                nextScene: 'end'
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    }
 }

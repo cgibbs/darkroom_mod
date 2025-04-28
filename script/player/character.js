@@ -88,8 +88,20 @@ var Character = {
 
 	openInventory: function() {
 		// creating a handle for later access, such as closing inventory
-		Character.inventoryDisplay = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
+		Character.inventoryDisplay = $('<div>').attr('id', 'inventory').addClass('eventPanel').css('opacity', '0');
 		var inventoryDisplay = Character.inventoryDisplay;
+		Character.inventoryDisplay
+		// set up click and hover handlers for inventory items
+		.on("click", "#item", function() {
+			Character.useInventoryItem($(this).data("name"));
+			Character.closeInventory();
+		}).on("mouseenter", "#item", function() {
+			var tooltip = $("<div id='tooltip' class='tooltip'>" + ItemList[$(this).data("name")].text + "</div>")
+			.attr('data-name', item);
+			tooltip.appendTo($(this));
+		}).on("mouseleave", "#item", function() {
+			$("#tooltip", "#" + $(this).data("name")).fadeOut().remove();
+		});
 		$('<div>').addClass('eventTitle').text('Inventory').appendTo(inventoryDisplay);
 		var inventoryDesc = $('<div>').text("Click things in the list to use them.")
 			.hover(function() {
@@ -104,20 +116,15 @@ var Character = {
 			.css("margin-bottom", "20px")
 			.appendTo(inventoryDisplay);
 		
+		console.log('making inventory');
 		for(var item in Character.inventory) {
-			var inventoryElem = $('<div>').text(ItemList[item].name)
-			.hover(function() {
-				var tooltip = $("<div id='tooltip' class='tooltip'>" + ItemList[item].text + "</div>");
-    			tooltip.appendTo(inventoryElem);
-			}, function() {
-				$("#tooltip").fadeOut().remove();
-			})
-			.on("click", function() {
-				Character.useInventoryItem(item);
-				Character.closeInventory()
-			})
+			console.log(item);
+			// make the inventory count look a bit nicer
+			var inventoryElem = $('<div>')
+			.attr('id', 'item')
+			.attr('data-name', item)
+			.text(ItemList[item].name  + '  (x' + Character.inventory[item].toString() + ')')
 			.appendTo(inventoryDisplay);
-			// add the stuff to make these clickable and hoverable and stuff
 		}
 
 		// TODO: make this CSS an actual class somewhere, I'm sure I'll need it again
@@ -159,9 +166,12 @@ var Character = {
 	},
 
 	useInventoryItem: function(item) {
+		console.log('using item');
+		console.log(item);
 		if (Character.inventory[item] && Character.inventory[item] > 0) {
 			// use the effect in the inventory; just in case a name matches but the effect
 			// does not, assume the inventory item is the source of truth
+			console.log(ItemList[item]);
 			ItemList[item].onUse();
 			// please don't make this unreadable nonsense in a future refactor, just
 			// let it be this way

@@ -70,14 +70,15 @@ Events.RoadWander = [
                     _('He quickly places an object in your hand, then leaves wordlessly.')
                 ],
                 onLoad: function() {
+                    // maybe some logic to make repeats less likely?
                     possibleItems = [
-                        'A smooth black stone',
-                        'A knife wrapped in cloth',
-                        'A bundle of cloth',
-                        'A strange coin'
+                        'Stranger.smoothStone',
+                        'Stranger.wrappedKnife',
+                        'Stranger.clothBundle',
+                        'Stranger.coin'
                     ];
                     const item = possibleItems[Math.floor(Math.random() * possibleItems.length)];
-                    $SM.add('stores.' + item, 1);
+                    Character.addToInventory(item);
                 },
                 buttons: {
                     'okay': {
