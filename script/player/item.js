@@ -36,12 +36,15 @@ var item = {
 		'Ingenuity': 0,
 		'Toughness': 0
     },
-    // can be on gear items, but mainly for non-gear items; what happens when this item is used
+    // can be on gear items, but mainly for non-gear items; what happens when this item is used;
+    // 
     onUse: function() { },
     // items being "used up" when used is common enough to not have it be a part of onUse 
     // for every single consumable item; check that in the Inventory function for using items 
     // and decrement the count there.
     // making this a function for stuff that has conditional destruction, such as an item with 
     // limited number of uses or an item that has a percentage chance to break
-    destroyOnUse: function() { }
+    destroyOnUse: function() { },
+    // can the player discard the item? should default to false if not present
+    destroyable: false
 }

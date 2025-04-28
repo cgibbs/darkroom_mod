@@ -845,9 +845,6 @@ var Events = {
 			$('<div>').addClass('eventTitle').text(Events.activeEvent().title).appendTo(Events.eventPanel());
 			$('<div>').attr('id', 'description').appendTo(Events.eventPanel());
 			$('<div>').attr('id', 'buttons').appendTo(Events.eventPanel());
-			// NOTE: here's where to extend the logic for the 'start' scene; make it so that
-			//   if the start scene has a "one-time" conditional flag, we check the flag and drop 
-			//   through to the specified scene when that flag is set.
 			Events.loadScene('start');
 			$('div#wrapper').append(Events.eventPanel());
 			Events.eventPanel().animate({opacity: 1}, Events._PANEL_FADE, 'linear');

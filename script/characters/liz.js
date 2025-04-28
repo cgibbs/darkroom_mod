@@ -6,6 +6,57 @@ var Liz = {
 		Room.updateButton();
 	},
 
+	weirdBook: {
+		name: 'Weird Book',
+    	text: [_('A book you found at Liz\s place. Supposedly has information about Chadtopia.')],
+		onUse: function() { 
+			Events.startEvent({
+				title:  _("A Brief History of Chadtopia"),
+				scenes: {
+					start: {
+						text: [
+							_('This book is pretty boring, but you manage to learn a bit more in spite of your poor attention span.'),
+							_('For example, you learn that "Chadtopia" doesn\'t have a capital \'T\'. That\'s pretty cool, huh?'),
+							_('... What were you doing again?')
+						],
+						buttons: {
+							'okay': {
+								text: _('Something cooler than reading, probably'),
+								onChoose: Character.addToInventory(Liz.boringBook),
+								nextScene: 'end'
+							}
+						}
+					}
+				}
+			})
+		},
+		count: 1,
+		destroyOnUse: true
+	},
+
+	boringBook: {
+		name: 'A Brief History of Chadtopia',
+		text: [_('Man, this book is boring.')],
+		onUse: function() {
+			Events.startEvent({
+				title: _("A Brief Summary of a Brief History of Chadtopia"),
+				scenes: {
+					start: {
+						text: [_('It\'s still just as boring as when you last tried to read it.')],
+						buttons: {
+							'okay': {
+								text: _('Dang.'),
+								nextScene: 'end'
+							}
+						}
+					}
+				}
+			})
+		},
+		count: 1,
+		destroyOnUse: false
+	},
+
 	talkToLiz: function() {
 		Events.startEvent({
 			title: _('Liz\'s house, at the edge of town'),
@@ -82,7 +133,8 @@ var Liz = {
 							text: _('Oh, sick'),
 							nextScene: 'end',
 							onChoose: () => {
-								$SM.set('stores.Weird Book', 1);
+								// $SM.set('stores.Weird Book', 1);
+								Character.addToInventory(Liz.weirdBook);
 								$SM.set('village.liz.hasBook', 0);
 							}
 						}

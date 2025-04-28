@@ -43,13 +43,33 @@ var Character = {
 		// doing so will introduce opportunities to mess up stats PERMANENTLY
         if (!$SM.get('character.rawstats')) {
             $SM.set('character.rawstats', Character.rawStats);
-        }
+        } else {
+			Character.rawStats = $SM.get('character.rawStats');
+		}
+
+		if (!$SM.get('character.perks')) {
+            $SM.set('character.perks', Character.perks);
+        } else {
+			Character.perks = $SM.get('character.perks');
+		}
+
+		if (!$SM.get('character.inventory')) {
+            $SM.set('character.inventory', Character.inventory);
+        } else {
+			Character.inventory = $SM.get('character.inventory');
+		}
+
+		if (!$SM.get('character.equippedItems')) {
+            $SM.set('character.equippedItems', Character.equippedItems);
+        } else {
+			Character.equippedItems = $SM.get('character.equippedItems');
+		}
 
         $('<div>').text('Character').attr('id', 'title').appendTo('div#character');
 
 		// TODO: replace this with derived stats
         for(var stat in $SM.get('character.rawstats')) {
-            $('<div>').text(stat + ': ' + $SM.get('character.stats.' + stat)).appendTo('div#character');
+            $('<div>').text(stat + ': ' + $SM.get('character.rawstats.' + stat)).appendTo('div#character');
         }
 	},
 	
@@ -57,39 +77,41 @@ var Character = {
 	
 	elem: null,
 
-	addToInventory: function(item) {
-		//0 if undefined, null (but not {}) should allow adding to new objects
-		//could also add in a true = 1 thing, to have something go from existing (true)
-		//to be a count, but that might be unwanted behavior (add with loose eval probably will happen anyways)
-		var old = Character.inventory[item.name].count;
-		
-		//check for NaN (old != old) and non number values
-		if(old != old){
-			Character.inventory[item.name] = item;
+	openInventory: function() {
+		var inventoryDisplay = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
+		$('<div>').addClass('eventTitle').text('Inventory').appendTo(inventoryDisplay);
+		$('<div>').attr('id', 'description').appendTo(inventoryDisplay);
+		$('<div>').attr('id', 'buttons').appendTo(inventoryDisplay);
+		for(var item in Character.inventory) {
+			$('<div>').text(item.text).appendTo(inventoryDisplay);
+			// add the stuff to make these clickable and hoverable and stuff
 		}
-		else {
+		$('div#wrapper').append(inventoryDisplay);
+		inventoryDisplay.animate({opacity: 1}, Events._PANEL_FADE, 'linear');
+	},
+
+	addToInventory: function(item) {
+		if (Character.inventory[item.name]) {
 			Character.inventory[item.name].count += item.count;
+		} else {
+			Character.inventory[item.name] = item;
 		}
 
 		// TODO: write to $SM
+		$SM.set('inventory', Character.inventory);
 	},
 
 
 	removeFromInventory: function(item) {
-		var old = Character.inventory[item.name].count;
-
-		if (old != old) {
-			return;
-		} else {
-			if (Character.inventory[item.name].count > 0) {
-				Character.inventory[item.name].count -= item.count;
-			}
-			else {
-				delete Character.inventory[item.name];
-			}
+		if (Character.inventory[item.name].count > 0) {
+			Character.inventory[item.name].count -= item.count;
+		}
+		else {
+			delete Character.inventory[item.name];
 		}
 
 		// TODO: write to $SM
+		$SM.set('inventory', Character.inventory);
 	},
 
 	useInventoryItem: function(item) {
@@ -107,6 +129,7 @@ var Character = {
 		}
 
 		// TODO: write to $SM
+		$SM.set('inventory', Character.inventory);
 	},
 
 	equipItem: function(item) {
@@ -120,6 +143,8 @@ var Character = {
 		}
 
 		// TODO: write to $SM
+		$SM.set('equippedItems', Character.equippedItems);
+		$SM.set('inventory', Character.inventory);
 	},
 
 	grantPerk: function(perk) {
@@ -132,6 +157,7 @@ var Character = {
 		}
 
 		// TODO: write to $SM
+		$SM.set('perks', Character.perks)
 	},
 
 	// apply equipment effects, which should all check against $SM state variables;
