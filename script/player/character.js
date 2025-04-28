@@ -91,6 +91,18 @@ var Character = {
 		Character.inventoryDisplay = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
 		var inventoryDisplay = Character.inventoryDisplay;
 		$('<div>').addClass('eventTitle').text('Inventory').appendTo(inventoryDisplay);
+		var inventoryDesc = $('<div>').text("Click things in the list to use them.")
+			.hover(function() {
+				var tooltip = $("<div id='tooltip' class='tooltip'>" + "Not this, though." + "</div>");
+    			tooltip.appendTo(inventoryDesc);
+			}, function() {
+				$("#tooltip").fadeOut().remove();
+			})
+			.on("click", function() {
+				Notifications.notify(null, _("I bet you think you're pretty funny, huh? Clicking the thing I said wasn't clickable?"));
+			})
+			.css("margin-bottom", "20px")
+			.appendTo(inventoryDisplay);
 		
 		for(var item in Character.inventory) {
 			var inventoryElem = $('<div>').text(ItemList[item].name)

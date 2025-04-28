@@ -29,8 +29,6 @@
 	<script src="lib/base64.js"></script>
 	<script src="lib/translate.js"></script>
 	
-	<script src="lang/langs.js"></script>
-	
 	<script>
 		// try to read "lang" param's from url
 		var lang = decodeURIComponent((new RegExp('[?|&]lang=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
@@ -60,7 +58,6 @@
 	<script src="script/room.js"></script>
 	<script src="script/road.js"></script>
 	<!-- Event modules -->
-	<script src="script/events/global.js"></script>
 	<script src="script/events/room.js"></script>
 	<script src="script/events/roadWander.js"></script>
 	<script src="script/engine.js"></script>
@@ -76,8 +73,6 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css" />
 	<link rel="stylesheet" type="text/css" href="css/room.css" />
 	<link rel="stylesheet" type="text/css" href="css/weather.css" />
-	
-	<script src="script/localization.js"></script>
 	
 </head>
 <body>
