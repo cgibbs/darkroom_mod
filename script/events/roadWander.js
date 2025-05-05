@@ -2,29 +2,7 @@
  * Events that can occur when the Road module is active
  **/
 Events.RoadWander = [
-    // {
-    //     title: _('The Nomad'),
-	// 	isAvailable: function() {
-	// 		return Engine.activeModule == Room && $SM.get('stores.fur', true) > 0;
-	// 	},
-	// 	scenes: {
-	// 		'start': {
-	// 			text: [
-	// 				_('a nomad shuffles into view, laden with makeshift bags bound with rough twine.'),
-	// 				_("won't say from where he came, but it's clear that he's not staying.")
-	// 			],
-	// 			notification: _('a nomad arrives, looking to trade'),
-	// 			blink: true,
-	// 			buttons: {
-	// 				'buyScales': {
-	// 					text: _('buy scales'),
-	// 					cost: { 'fur': 100 },
-	// 					reward: { 'scales': 1 }
-	// 				}
-    //             }
-    //         }
-    //     }
-    // }
+    // Stranger bearing gifts
     {
         title: _('A Stranger Beckons'),
         isAvailable: function() {
@@ -100,6 +78,39 @@ Events.RoadWander = [
                 }
             }
         }
-    }
+    },
+    // Unlock Outpost
+    {
+        title: _('A Way Forward Makes Itself Known'),
+        isAvailable: function() {
+            return (
+                (Engine.activeModule == Road)
+                && ($SM.get('Road.counter') > 6) // can't happen TOO early
+                && ($SM.get('superlikely.outpostUnlock') < 1) // can't happen twice
+            );
+        },
+        isSuperLikely: function() {
+            return ($SM.get('superlikely.outpostUnlock') < 1) && ($SM.get('Road.counter') > 10);
+        },
+        scenes: {
+            'start': {
+                text: [
+                    _('Smoke curls upwards from behind a hill. You climb higher to investigate.'),
+                    _('From your elevated position, you can see down into the outpost that the mayor spoke of before.'),
+                    _('The Outpost is now open to you.')
+                ],
+                buttons: {
+                    'okay': {
+                        text: _('A little dramatic, but cool'),
+                        nextScene: 'end',
+                        onChoose: function() {
+                            Outpost.init();
+                            $SM.set('superlikely.outpostUnlock', 1);
+                        }
+                    }
+                }
+            }
+        }
+    },
 ];
 

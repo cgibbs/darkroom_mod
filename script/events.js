@@ -794,12 +794,18 @@ var Events = {
 				for(var i in Events[location]) {
 					var event = Events[location][i];
 					if(event.isAvailable()) {
+						if(typeof(event.isSuperLikely) == 'function' && event.isSuperLikely()) {
+							// SuperLikely event, do this and skip the random choice
+							Engine.log('superLikely detected');
+							Events.startEvent(event);
+							return;
+						}
 						possibleEvents.push(event);
 					}
 				}
 	
 				if(possibleEvents.length === 0) {
-					Events.scheduleNextEvent(0.5);
+					// Events.scheduleNextEvent(0.5);
 					return;
 				} else {
 					var r = Math.floor(Math.random()*(possibleEvents.length));

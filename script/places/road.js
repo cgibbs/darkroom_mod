@@ -58,5 +58,6 @@ var Road = {
 
 	wanderEvent: function() {
 		Events.triggerLocationEvent('RoadWander');
+		$SM.add('Road.counter', 1);
 	}
 }

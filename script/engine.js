@@ -203,6 +203,9 @@
 			if($SM.get('road.open')) {
 				Road.init();
 			}
+			if($SM.get('outpost.open')) {
+				Outpost.init();
+			}
 			
 			if(typeof $SM.get('stores.wood') != 'undefined') {
 				Outside.init();

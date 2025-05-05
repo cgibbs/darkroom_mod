@@ -19,10 +19,10 @@ var Mayor = {
 						'quest': {
 							text: _('Ask for a quest'),
 							nextScene: {1: 'quest'},
-							onChoose: Mayor.startSuppliesQuest
+							onChoose: Mayor.startSuppliesQuest()
 						},
-						'cancel': {
-							text: _('cancel'),
+						'leave': {
+							text: _('Leave'),
 							nextScene: 'end'
 						}
 					}
@@ -57,8 +57,8 @@ var Mayor = {
 							text: _('Ask for a quest'),
 							nextScene: {1: 'quest'}
 						},
-						'cancel': {
-							text: _('cancel'),
+						'leave': {
+							text: _('Leave'),
 							nextScene: 'end'
 						}
 					}
