@@ -1,11 +1,16 @@
-var Weather = {
-    init: function(options) {
+import { Notifications } from './notifications';
+import { $SM } from './state_manager';
+import { Engine } from './engine';
+
+export const Weather = {
+    init: function(options?) {
         this.options = $.extend(
 			this.options,
 			options
 		);
 
         //subscribe to stateUpdates
+        // @ts-ignore
 		$.Dispatch('stateUpdate').subscribe(Weather.handleStateUpdates);
     },
 

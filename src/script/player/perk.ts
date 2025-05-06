@@ -1,4 +1,6 @@
 // generic perk parameters, for reference
+import { _ } from "../../lib/translate";
+import { $SM } from "../state_manager";
 var perk = {
     name: 'perk name',
     text: _('a tooltip description of the perk'),

@@ -1,5 +1,13 @@
-var Road = {
-    init: function(options) {
+import { Header } from "../header";
+import { Engine } from "../engine";
+import { Button } from "../Button";
+import { $SM } from "../state_manager";
+import { _ } from "../../lib/translate";
+import { Weather } from "../weather";
+import { Events } from "../events";
+
+export const Road = {
+    init: function(options?) {
         this.options = $.extend(
 			this.options,
 			options
@@ -16,7 +24,8 @@ var Road = {
 
         Engine.updateSlider();
 
-        new Button.Button({
+        //new 
+		Button.Button({
 			id: 'wanderButton',
 			text: _('Wander Around'),
 			click: Road.wanderEvent,

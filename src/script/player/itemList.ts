@@ -1,7 +1,13 @@
 // all items go here, so that nothing silly happens in the event that they get put in Local Storage
 // as part of the state management code; please save item names to the inventory, and then refer to 
 // the item list via the item name
-var ItemList = {
+import { Events } from "../events";
+import { Character } from "./character";
+import { _ } from "../../lib/translate";
+import { $SM } from "../state_manager";
+import { Notifications } from "../notifications";
+
+export const ItemList = {
     "Liz.weirdBook": {
         name: 'Weird Book',
         text: _('A book you found at Liz\'s place. Supposedly has information about Chadtopia.'),

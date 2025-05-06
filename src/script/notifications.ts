@@ -1,16 +1,18 @@
 /**
  * Module that registers the notification box and handles messages
  */
-var Notifications = {
-	
-	init: function(options) {
+import { Engine } from "./engine";
+
+export const Notifications = {
+		
+	init: function(options?) {
 		this.options = $.extend(
 			this.options,
 			options
 		);
 		
 		// Create the notifications box
-		elem = $('<div>').attr({
+		const elem = $('<div>').attr({
 			id: 'notifications',
 			className: 'notifications'
 		});
@@ -27,7 +29,7 @@ var Notifications = {
 	notifyQueue: {},
 	
 	// Allow notification to the player
-	notify: function(module, text, noQueue) {
+	notify: function(module, text, noQueue?) {
 		if(typeof text == 'undefined') return;
 		// I don't need you punctuating for me, function.
 		// if(text.slice(-1) != ".") text += ".";
@@ -49,6 +51,7 @@ var Notifications = {
 		// To fix some memory usage issues, we clear notifications that have been hidden.
 		
 		// We use position().top here, because we know that the parent will be the same, so the position will be the same.
+		// @ts-ignore
 		var bottom = $('#notifyGradient').position().top + $('#notifyGradient').outerHeight(true);
 		
 		$('.notification').each(function() {
@@ -76,4 +79,4 @@ var Notifications = {
 			}
 		}
 	}
-};
+}

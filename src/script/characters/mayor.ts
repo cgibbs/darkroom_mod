@@ -1,4 +1,10 @@
-var Mayor = {
+import { Events } from "../events";
+import { $SM } from "../state_manager";
+import { _ } from "../../lib/translate";
+import { Liz } from "./liz";
+import { Road } from "../places/road";
+
+export const Mayor = {
     talkToMayor: function() {
 		Events.startEvent({
 			title: _('Meet the Mayor'),

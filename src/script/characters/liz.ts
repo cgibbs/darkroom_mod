@@ -1,4 +1,10 @@
-var Liz = {
+import { Events } from "../events";
+import { $SM } from "../state_manager";
+import { _ } from "../../lib/translate";
+import { Room } from "../places/room";
+import { Character } from "../player/character";
+
+export const Liz = {
     setLizActive: function() {
 		$SM.set('village.lizActive', true);
 		$SM.set('village.liz.canFindBook', false);
@@ -64,7 +70,7 @@ var Liz = {
 							// TODO: a "visible" flag would be good here, for situations where an option
 							//   isn't yet known to the player
 							visible: () => $SM.get('village.liz.canFindBook'),
-							available: () => ($SM.get('village.liz.canFindBook') > 0) && ($SM.get('village.liz.hasBook'))
+							available: () => ($SM.get('village.liz.canFindBook') as number > 0) && ($SM.get('village.liz.hasBook'))
 						},
 						'leave': {
 							text: _('Leave'),

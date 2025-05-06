@@ -1,7 +1,14 @@
 /**
  * Events that can occur when the Road module is active
  **/
-Events.RoadWander = [
+import { Engine } from "../engine";
+import { $SM } from "../state_manager";
+import { _ } from "../../lib/translate";
+import { Character } from "../player/character";
+import { Outpost } from "../places/outpost";
+import { Road } from "../places/road";
+
+export const EventsRoadWander = [
     // Stranger bearing gifts
     {
         title: _('A Stranger Beckons'),
@@ -49,7 +56,7 @@ Events.RoadWander = [
                 ],
                 onLoad: function() {
                     // maybe some logic to make repeats less likely?
-                    possibleItems = [
+                    const possibleItems = [
                         'Stranger.smoothStone',
                         'Stranger.wrappedKnife',
                         'Stranger.clothBundle',
@@ -85,12 +92,12 @@ Events.RoadWander = [
         isAvailable: function() {
             return (
                 (Engine.activeModule == Road)
-                && ($SM.get('Road.counter') > 6) // can't happen TOO early
-                && ($SM.get('superlikely.outpostUnlock') < 1) // can't happen twice
+                && ($SM.get('Road.counter') as number > 6) // can't happen TOO early
+                && ($SM.get('superlikely.outpostUnlock') as number < 1) // can't happen twice
             );
         },
         isSuperLikely: function() {
-            return ($SM.get('superlikely.outpostUnlock') < 1) && ($SM.get('Road.counter') > 10);
+            return ($SM.get('superlikely.outpostUnlock') as number < 1) && ($SM.get('Road.counter') as number > 10);
         },
         scenes: {
             'start': {

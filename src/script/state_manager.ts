@@ -14,13 +14,16 @@
  * Original file created by: Michael Galusha
  */
 
+import { Engine } from "./engine";
+import { Notifications } from "./notifications";
+
 var StateManager = {
 		
 	MAX_STORE: 99999999999999,
 	
 	options: {},
 	
-	init: function(options) {
+	init: function(options?) {
 		this.options = $.extend(
 				this.options,
 				options
@@ -44,6 +47,7 @@ var StateManager = {
 		}
 		
 		//subscribe to stateUpdates
+		// @ts-ignore
 		$.Dispatch('stateUpdate').subscribe($SM.handleStateUpdates);
 	},
 	
@@ -57,7 +61,9 @@ var StateManager = {
 				i--;
 			}
 		}
-		var obj = State;
+		// @ts-ignore
+		// var obj = State;
+		var obj = {};
 		var w = null;
 		for(var i=0, len=words.length-1;i<len;i++){
 			w = words[i];
@@ -70,7 +76,7 @@ var StateManager = {
 	
 	//set single state
 	//if noEvent is true, the update event won't trigger, useful for setting multiple states first
-	set: function(stateName, value, noEvent) {
+	set: function(stateName, value, noEvent?) {
 		var fullPath = $SM.buildPath(stateName);
 		
 		//make sure the value isn't over the engine maximum
@@ -84,6 +90,7 @@ var StateManager = {
 		}
 		
 		//stores values can not be negative
+		// @ts-ignore
 		if(stateName.indexOf('stores') === 0 && $SM.get(stateName, true) < 0) {
 			eval('('+fullPath+') = 0');
 			Engine.log('WARNING: state:' + stateName + ' can not be a negative value. Set to 0 instead.');
@@ -98,7 +105,7 @@ var StateManager = {
 	},
 	
 	//sets a list of states
-	setM: function(parentName, list, noEvent) {
+	setM: function(parentName, list, noEvent?) {
 		$SM.buildPath(parentName);
 		
 		//make sure the state exists to avoid errors,
@@ -115,7 +122,7 @@ var StateManager = {
 	},
 	
 	//shortcut for altering number values, return 1 if state wasn't a number
-	add: function(stateName, value, noEvent) {
+	add: function(stateName, value, noEvent?) {
 		var err = 0;
 		//0 if undefined, null (but not {}) should allow adding to new objects
 		//could also add in a true = 1 thing, to have something go from existing (true)
@@ -138,7 +145,7 @@ var StateManager = {
 	},
 	
 	//alters multiple number values, return number of fails
-	addM: function(parentName, list, noEvent) {
+	addM: function(parentName, list, noEvent?) {
 		var err = 0;
 		
 		//make sure the parent exists to avoid errors
@@ -156,8 +163,8 @@ var StateManager = {
 	},
 	
 	//return state, undefined or 0
-	get: function(stateName, requestZero) {
-		var whichState = null;
+	get: function(stateName, requestZero?): string | undefined | Number | null {
+		var whichState: undefined | null | Number | string = null;
 		var fullPath = $SM.buildPath(stateName);
 		
 		//catch errors if parent of state doesn't exist
@@ -168,18 +175,20 @@ var StateManager = {
 		}
 		
 		//prevents repeated if undefined, null, false or {}, then x = 0 situations
-		if((!whichState || whichState == {}) && requestZero) return 0;
+		if((!whichState
+			//  || whichState == {}
+			) && requestZero) return 0;
 		else return whichState;
 	},
 	
 	//mainly for local copy use, add(M) can fail so we can't shortcut them
 	//since set does not fail, we know state exists and can simply return the object
-	setget: function(stateName, value, noEvent){
+	setget: function(stateName, value, noEvent?){
 		$SM.set(stateName, value, noEvent);
 		return eval('('+$SM.buildPath(stateName)+')');
 	},
 	
-	remove: function(stateName, noEvent) {
+	remove: function(stateName, noEvent?) {
 		var whichState = $SM.buildPath(stateName);
 		try{
 			eval('(delete '+whichState+')');
@@ -200,9 +209,10 @@ var StateManager = {
 		return 'State' + dot + input;
 	},
 	
-	fireUpdate: function(stateName, save){
+	fireUpdate: function(stateName, save?){
 		var category = $SM.getCategory(stateName);
 		if(stateName == undefined) stateName = category = 'all'; //best if this doesn't happen as it will trigger more stuff
+		// @ts-ignore
 		$.Dispatch('stateUpdate').publish({'category': category, 'stateName':stateName});
 		if(save) Engine.saveGame();
 	},
@@ -240,7 +250,7 @@ var StateManager = {
 	setIncome: function(source, options) {
 		var existing = $SM.get('income["'+source+'"]');
 		if(typeof existing != 'undefined') {
-			options.timeLeft = existing.timeLeft;
+			options.timeLeft = (existing as any)?.timeLeft;
 		}
 		$SM.set('income["'+source+'"]', options);
 	},
@@ -272,4 +282,4 @@ var StateManager = {
 };
 
 //alias
-var $SM = StateManager;
+export const $SM = StateManager;
