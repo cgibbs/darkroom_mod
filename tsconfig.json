@@ -1,0 +1,14 @@
+{
+    "include": ["src/**/*.ts"],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ],
+    "compilerOptions": {
+    //   "noImplicitAny": true,
+        "skipLibCheck": true,
+        "target": "es5",
+        "types": [ "jquery" ],
+        "forceConsistentCasingInFileNames": false
+    }
+}

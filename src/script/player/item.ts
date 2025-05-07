@@ -1,4 +1,5 @@
 // generic item parameters, for reference
+import { _ } from "../../lib/translate";
 var item = {
     name: 'item name',
     text: _('a tooltip description of the item'),

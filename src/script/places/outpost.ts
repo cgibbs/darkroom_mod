@@ -1,5 +1,13 @@
-var Outpost = {
-    init: function(options) {
+import { Engine } from '../engine';
+import { $SM } from '../state_manager';
+import { Weather } from '../weather';
+import { Button } from '../Button';
+import { Captain } from '../characters/captain';
+import { Header } from '../header';
+import { _ } from '../../lib/translate';
+
+export const Outpost = {
+    init: function(options?) {
         this.options = $.extend(
 			this.options,
 			options
@@ -16,7 +24,8 @@ var Outpost = {
 
         Engine.updateSlider();
 
-        new Button.Button({
+        // new 
+		Button.Button({
 			id: 'captainButton',
 			text: _('Speak with The Captain'),
 			click: Captain.talkToCaptain,

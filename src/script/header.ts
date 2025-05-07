@@ -1,7 +1,9 @@
 /**
  * Module that takes care of header buttons
  */
-var Header = {
+import { Engine } from "./engine";
+
+export const Header = {
 	
 	init: function(options) {
 		this.options = $.extend(

@@ -1,4 +1,10 @@
-var Mayor = {
+import { Events } from "../events";
+import { $SM } from "../state_manager";
+import { _ } from "../../lib/translate";
+import { Liz } from "./liz";
+import { Road } from "../places/road";
+
+export const Mayor = {
     talkToMayor: function() {
 		Events.startEvent({
 			title: _('Meet the Mayor'),
@@ -18,8 +24,7 @@ var Mayor = {
 						},
 						'quest': {
 							text: _('Ask for a quest'),
-							nextScene: {1: 'quest'},
-							onChoose: Mayor.startSuppliesQuest()
+							nextScene: {1: 'quest'}
 						},
 						'leave': {
 							text: _('Leave'),
@@ -73,6 +78,7 @@ var Mayor = {
 						'alrighty': {
 							text: _('Alrighty'),
 							nextScene: {1: 'main'},
+							onChoose: Mayor.startSuppliesQuest
 						}
 					}
 				}
@@ -80,9 +86,11 @@ var Mayor = {
 		});
 	},
 	startSuppliesQuest: function () {
-		// 1 = started, 2 = next step, etc. until completed
-		$SM.set('quest.supplies', 1);
-		// TODO: init Outpost and Road to Outpost
-		Road.init();
+		if (!$SM.get('quest.supplies')) {
+			// 1 = started, 2 = next step, etc. until completed
+			$SM.set('quest.supplies', 1);
+			Road.init();
+		}
+		
 	}
 }

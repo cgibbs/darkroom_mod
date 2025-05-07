@@ -1,4 +1,11 @@
-var Character = {
+import { $SM } from "../state_manager";
+import { Button } from "../Button";
+import { ItemList } from "./itemList";
+import { Events } from "../events";
+import { Notifications } from "../notifications";
+import { _ } from "../../lib/translate";
+
+export const Character = {
 	inventory: {}, // dictionary using item name as key
 	equippedItems: {
 		// stealing the KoL style for now, we'll see if I need something
@@ -24,14 +31,14 @@ var Character = {
 	// perks given by items, character choices, divine provenance, etc.
 	perks: { },
 	
-	init: function(options) {
+	init: function(options?) {
 		this.options = $.extend(
 			this.options,
 			options
 		);
 		
 		// create the character box
-		elem = $('<div>').attr({
+		const elem = $('<div>').attr({
 			id: 'character',
 			className: 'character'
 		});
@@ -44,36 +51,38 @@ var Character = {
         if (!$SM.get('character.rawstats')) {
             $SM.set('character.rawstats', Character.rawStats);
         } else {
-			Character.rawStats = $SM.get('character.rawStats');
+			Character.rawStats = $SM.get('character.rawStats') as any;
 		}
 
 		if (!$SM.get('character.perks')) {
             $SM.set('character.perks', Character.perks);
         } else {
-			Character.perks = $SM.get('character.perks');
+			Character.perks = $SM.get('character.perks') as any;
 		}
 
 		if (!$SM.get('character.inventory')) {
             $SM.set('character.inventory', Character.inventory);
         } else {
-			Character.inventory = $SM.get('character.inventory');
+			Character.inventory = $SM.get('character.inventory') as any;
 		}
 
 		if (!$SM.get('character.equippedItems')) {
             $SM.set('character.equippedItems', Character.equippedItems);
         } else {
-			Character.equippedItems = $SM.get('character.equippedItems');
+			Character.equippedItems = $SM.get('character.equippedItems') as any;
 		}
 
         $('<div>').text('Character').attr('id', 'title').appendTo('div#character');
 
 		// TODO: replace this with derived stats
-        for(var stat in $SM.get('character.rawstats')) {
+        for(var stat in $SM.get('character.rawstats') as any) {
             $('<div>').text(stat + ': ' + $SM.get('character.rawstats.' + stat)).appendTo('div#character');
         }
 
 		$('<div>').attr('id', 'buttons').css("margin-top", "20px").appendTo('div#character');
-		var b = new Button.Button({
+		var b = 
+		//new 
+		Button.Button({
 			id: "inventory",
 			text: "Inventory",
 			click: Character.openInventory
@@ -84,7 +93,7 @@ var Character = {
 	
 	elem: null,
 
-	inventoryDisplay: null,
+	inventoryDisplay: null as any,
 
 	openInventory: function() {
 		// creating a handle for later access, such as closing inventory
@@ -127,7 +136,9 @@ var Character = {
 
 		// TODO: make this CSS an actual class somewhere, I'm sure I'll need it again
 		$('<div>').attr('id', 'buttons').css("margin-top", "20px").appendTo(inventoryDisplay);
-		var b = new Button.Button({
+		var b = 
+		//new 
+		Button.Button({
 			id: "closeInventory",
 			text: "Close",
 			click: Character.closeInventory
@@ -188,7 +199,7 @@ var Character = {
 			if (ItemList[item].onEquip) {
 				ItemList[item].onEquip();
 			}
-			Character.checkEquipmentEffects();
+			Character.applyEquipmentEffects();
 		}
 
 		// TODO: write to $SM
@@ -213,13 +224,14 @@ var Character = {
 	// this should be called on basically every player action where a piece of gear
 	// would do something or change an outcome; give extraParams to the effect being 
 	// applied for anything that's relevant to the effect but not handled by $SM
-	applyEquipmentEffects: function(extraParams) {
+	applyEquipmentEffects: function(extraParams?) {
 		for (const item in Character.equippedItems) {
 			if (ItemList[item].effects) {
 				for (const effect in ItemList[item].effects) {
 					// NOTE: currently this is good for applying perks and Notifying;
 					// are there other situations where we'd want to apply effects,
 					// or can we cover basically every case via those things?
+					// @ts-ignore
 					if (effect.isActive && effect.isActive(extraParams)) effect.apply(extraParams);
 				}
 			}
@@ -242,11 +254,16 @@ var Character = {
 		}
 
 		for (const perk in Character.perks) {
+			// @ts-ignore
 			if (perk.statBonuses) {
+				// @ts-ignore
 				for (const stat in Object.keys(perk.statBonuses)) {
+					// @ts-ignore
 					if (typeof (perk.statBonuses[stat] == "function")) {
+						// @ts-ignore
 						derivedStats[stat] += perk.statBonuses[stat]();
 					} else {
+						// @ts-ignore
 						derivedStats[stat] += perk.statBonuses[stat];
 					}
 				}

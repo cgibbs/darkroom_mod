@@ -1,4 +1,8 @@
-var Captain = {
+import { Events } from "../events"
+import { $SM } from "../state_manager"
+import { _ } from "../../lib/translate"
+
+export const Captain = {
 	talkToCaptain: function() {
 		Events.startEvent({
 			title: _('The Captain\'s Tent'),

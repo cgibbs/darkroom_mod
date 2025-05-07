@@ -1,0 +1,33 @@
+{
+  "name": "darkroom_mod",
+  "version": "1.0.0",
+  "description": "just a thing",
+  "main": "./dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgibbs/darkroom_mod.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cgibbs/darkroom_mod/issues"
+  },
+  "homepage": "https://github.com/cgibbs/darkroom_mod#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.5.32",
+    "browserify": "^17.0.1",
+    "fancy-log": "^2.0.0",
+    "gulp": "^4.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "tsify": "^5.0.4",
+    "typescript": "^5.8.3",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^4.0.0"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1"
+  }
+}

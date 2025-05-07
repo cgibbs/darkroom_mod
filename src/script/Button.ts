@@ -1,4 +1,7 @@
-var Button = {
+import { Engine } from "./engine";
+import { _ } from "../lib/translate";
+
+export const Button = {
 	Button: function(options) {
 		if(typeof options.cooldown == 'number') {
 			this.data_cooldown = options.cooldown;
