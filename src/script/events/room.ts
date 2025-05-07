@@ -5,8 +5,9 @@ import { Engine } from "../engine";
 import { $SM } from "../state_manager";
 import { Room } from '../places/room';
 import { _ } from "../../lib/translate";
+import { ADREvent } from "../events";
 
-export const EventsRoom = [
+export const EventsRoom: Array<ADREvent> = [
 	{ /* The Nomad  --  Merchant */
 		title: _('The Nomad'),
 		isAvailable: function() {

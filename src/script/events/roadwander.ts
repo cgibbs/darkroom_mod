@@ -7,8 +7,9 @@ import { _ } from "../../lib/translate";
 import { Character } from "../player/character";
 import { Outpost } from "../places/outpost";
 import { Road } from "../places/road";
+import { ADREvent } from "../events";
 
-export const EventsRoadWander = [
+export const EventsRoadWander: Array<ADREvent> = [
     // Stranger bearing gifts
     {
         title: _('A Stranger Beckons'),

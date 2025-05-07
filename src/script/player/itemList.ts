@@ -6,8 +6,9 @@ import { Character } from "./character";
 import { _ } from "../../lib/translate";
 import { $SM } from "../state_manager";
 import { Notifications } from "../notifications";
+import { Item } from "./item";
 
-export const ItemList = {
+export const ItemList: {[id: string]: Item} = {
     "Liz.weirdBook": {
         name: 'Weird Book',
         text: _('A book you found at Liz\'s place. Supposedly has information about Chadtopia.'),
@@ -32,7 +33,8 @@ export const ItemList = {
                 }
             })
         },
-        destroyOnUse: true
+        destroyOnUse: true,
+        destroyable: false
     },
 
     "Liz.boringBook": {
@@ -54,7 +56,8 @@ export const ItemList = {
                 }
             })
         },
-        destroyOnUse: false
+        destroyOnUse: false,
+        destroyable: false
     },
     "Stranger.smoothStone": {
         name: 'A smooth black stone',
@@ -78,7 +81,9 @@ export const ItemList = {
                     }
                 }
             })
-        }
+        },
+        destroyOnUse: false,
+        destroyable: false
     },
     "Stranger.wrappedKnife": {
         name: 'A knife wrapped in cloth',
@@ -100,7 +105,8 @@ export const ItemList = {
                 }
             })
         },
-        destroyOnUse: true
+        destroyOnUse: true,
+        destroyable: false
     },
     "Stranger.silverKnife": {
         name: 'A silver knife',
@@ -123,7 +129,9 @@ export const ItemList = {
                     }
                 }
             })
-        }
+        },
+        destroyOnUse: false,
+        destroyable: false
     },
     "Stranger.clothBundle": {
         name: 'A bundle of cloth',
@@ -146,7 +154,9 @@ export const ItemList = {
                     }
                 }
             })
-        }
+        },
+        destroyOnUse: false,
+        destroyable: false
     },
     "Stranger.coin": {
         name: 'A strange coin',
@@ -169,6 +179,8 @@ export const ItemList = {
                     }
                 }
             })
-        }
+        },
+        destroyOnUse: false,
+        destroyable: false
     }
 }

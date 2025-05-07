@@ -9,13 +9,32 @@ import { $SM } from "./state_manager";
 import { Notifications } from "./notifications";
 import { Button } from "./Button";
 
-interface ADREvent {
+export interface ADREvent {
 	title: string,
 	isAvailable?: Function,
+	isSuperLikely?: Function,
 	scenes: {
 		// type this out better using Index Signatures
 	},
 	eventPanel?: any
+}
+
+export interface Scene {
+	seenFlag: Function,
+	nextScene: string,
+	onLoad: Function,
+	text: Array<string>,
+	buttons: {
+		[id: string]: EventButton
+	}
+}
+
+export interface EventButton {
+	text: string,
+	nextScene: {
+		[id: number]: string
+	},
+	onChoose: Function
 }
 
 export const Events = {
@@ -288,7 +307,7 @@ export const Events = {
 		return Events.activeEvent()?.eventPanel;
 	},
 
-	startEvent: function(event, options?) {
+	startEvent: function(event: ADREvent, options?) {
 		if(event) {
 			Engine.event('game event', 'event');
 			Events.eventStack.unshift(event);

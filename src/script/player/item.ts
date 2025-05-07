@@ -1,5 +1,28 @@
-// generic item parameters, for reference
 import { _ } from "../../lib/translate";
+
+export interface Item {
+    name: string,
+    text: string,
+    fullText?: Array<string>,
+    slot?: string,
+    onEquip?: Function, 
+    onUnequip?: Function,
+    effects?: Array<Effect>,
+    statBonuses?: Object,
+    onUse: Function,
+    destroyOnUse: Function | Boolean,
+    destroyable: Boolean
+}
+
+export interface Effect {
+    name: string,
+    text: string,
+    isVisible: Function,
+    isActive: Function,
+    apply: Function
+}
+
+// generic item parameters, for reference
 var item = {
     name: 'item name',
     text: _('a tooltip description of the item'),
@@ -11,6 +34,7 @@ var item = {
     // for gear only! anything that happens outside of normal equipping stuff, 
     // e.g. curses, state changes, etc.
     onEquip: function() { }, 
+    onUnequip: function() { },
     // for gear only! things that happen because the wearer is wearing them; this is checked for all
     // equipped items at various points via Character.checkEquipmentEffects()
     effects: [
