@@ -56,15 +56,18 @@ export const Mayor = {
 					buttons: {
 						'askAboutTown': {
 							text: _('Ask about Chadtopia'),
-							nextScene: {1: 'chadtopiaRamble'}
+							nextScene: {1: 'chadtopiaRamble'},
+							image: "assets/cards/little_wolf.png"
 						},
 						'quest': {
 							text: _('Ask for a quest'),
-							nextScene: {1: 'quest'}
+							nextScene: {1: 'quest'},
+							image: "assets/cards/joker.png"
 						},
 						'leave': {
 							text: _('Leave'),
-							nextScene: 'end'
+							nextScene: 'end',
+							image: "assets/cards/raven.png"
 						}
 					}
 				},

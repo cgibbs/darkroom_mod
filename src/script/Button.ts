@@ -24,7 +24,9 @@ export const Button = {
 			.data("handler",  typeof options.click == 'function' ? options.click : function() { Engine.log("click"); })
 			.data("remaining", 0)
 			.data("cooldown", typeof options.cooldown == 'number' ? options.cooldown : 0);
-		
+		if (typeof(options.image) !== "undefined") {
+			el.attr("style", "background-image: url(\"" + options.image + "\"); background-repeat: no-repeat; background-size: cover; height: 170px; color: white;text-shadow: 0px 0px 2px black")
+		}
 		el.append($("<div>").addClass('cooldown'));
 		
 		if(options.cost) {

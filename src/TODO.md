@@ -49,4 +49,4 @@ DONE Implement super-likely events. Some quest areas and places where you random
 
 Fix weather animation stuff, it broke during the Typescriptification process.
 
-Deployment is broken by the new file structure, and gulp doesn't run correctly on Github's Workflow thing. 
+DONE, JUST USE `npm run deploy` INSTEAD Deployment is broken by the new file structure, and gulp doesn't run correctly on Github's Workflow thing. 

@@ -156,7 +156,8 @@ export const Events = {
 					text: info.text,
 					cost: info.cost,
 					click: Events.buttonClick,
-					cooldown: info.cooldown
+					cooldown: info.cooldown,
+					image: info.image
 				}).appendTo(btns);
 			if(typeof info.available == 'function' && !info.available()) {
 				Button.setDisabled(b, true);
@@ -173,10 +174,12 @@ export const Events = {
 	},
 	
 	updateButtons: function() {
+		console.log("updating buttons");
 		var btns = Events.activeEvent()?.scenes[Events.activeScene].buttons;
 		for(var bId in btns) {
 			var b = btns[bId];
 			var btnEl = $('#'+bId, Events.eventPanel());
+			console.log(btnEl);
 			if(typeof b.available == 'function' && !b.available()) {
 				Button.setDisabled(btnEl, true);
 			}
