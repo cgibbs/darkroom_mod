@@ -50,3 +50,5 @@ DONE Implement super-likely events. Some quest areas and places where you random
 Fix weather animation stuff, it broke during the Typescriptification process.
 
 DONE, JUST USE `npm run deploy` INSTEAD Deployment is broken by the new file structure, and gulp doesn't run correctly on Github's Workflow thing. 
+
+Need to make the button images stuff much less janky. Make button size and image size work together more cleanly (currently button height is hardcoded to 170px if there's an image provided to the button). Make text more readable.
