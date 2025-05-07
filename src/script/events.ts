@@ -33,6 +33,8 @@ export const Events = {
 	eventStack: <any>[],
 	_eventTimeout: 0,
 
+	Locations: {},
+
 	init: function(options?) {
 		this.options = $.extend(
 			this.options,
@@ -44,10 +46,11 @@ export const Events = {
 			EventsRoom as any,
 			EventsRoadWander as any
 		);
+
+		this.Locations["Room"] = EventsRoom;
+		this.Locations["RoadWander"] = EventsRoadWander;
 		
 		Events.eventStack = [];
-		
-		// Events.scheduleNextEvent();
 		
 		//subscribe to stateUpdates
 		// @ts-ignore
@@ -247,11 +250,11 @@ export const Events = {
 
 	// not scheduled, this is for stuff like location-based random events on a button click
 	triggerLocationEvent: function(location) {
-		if (Events[location]) {
+		if (this.Locations[location]) {
 			if(Events.activeEvent() == null) {
 				var possibleEvents: Array<any> = [];
-				for(var i in Events[location]) {
-					var event = Events[location][i];
+				for(var i in this.Locations[location]) {
+					var event = this.Locations[location][i];
 					if(event.isAvailable()) {
 						if(typeof(event.isSuperLikely) == 'function' && event.isSuperLikely()) {
 							// SuperLikely event, do this and skip the random choice

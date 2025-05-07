@@ -244,7 +244,7 @@ export const Engine = window.Engine = {
 				Engine.log("loaded save!");
 			}
 		} catch(e) {
-			console.log(e);
+			Engine.log(e);
 			window.State = {};
 			$SM.set('version', Engine.VERSION);
 			Engine.event('progress', 'new game');

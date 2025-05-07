@@ -93,7 +93,8 @@ export const EventsRoadWander = [
             return (
                 (Engine.activeModule == Road)
                 && ($SM.get('Road.counter') as number > 6) // can't happen TOO early
-                && ($SM.get('superlikely.outpostUnlock') as number < 1) // can't happen twice
+                && (typeof($SM.get('superlikely.outpostUnlock')) == "undefined"
+                    || $SM.get('superlikely.outpostUnlock') as number < 1) // can't happen twice
             );
         },
         isSuperLikely: function() {

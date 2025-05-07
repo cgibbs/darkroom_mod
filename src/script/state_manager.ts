@@ -102,7 +102,7 @@ var StateManager = {
 			Engine.log('WARNING: state:' + stateName + ' can not be a negative value. Set to 0 instead.');
 		}
 
-		console.log(stateName + ' ' + value);
+		Engine.log(stateName + ' ' + value);
 		
 		if(!noEvent) {
 			Engine.saveGame();
