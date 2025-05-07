@@ -38,6 +38,20 @@ function bundle() {
     .pipe(gulp.dest("dist"))
 }
 
+gulp.task('browserify', function() {
+    return browserify({
+        basedir: ".",
+        debug: true,
+        entries: ["src/script/engine.ts"],
+        cache: {},
+        packageCache: {},
+      })
+        .plugin(tsify)
+        .bundle()
+        .pipe(source("bundle.js"))
+        .pipe(gulp.dest("dist"));
+});
+
 gulp.task('default', gulp.series(
     // 'copy-scripts',
     'copy-index',
