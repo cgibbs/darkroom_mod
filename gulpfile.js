@@ -38,7 +38,7 @@ function bundle() {
     .pipe(gulp.dest("dist"))
 }
 
-gulp.task('browserify', function() {
+gulp.task('browserify', gulp.series(gulp.parallel("copy-index", "copy-css", "copy-libs", "copy-favicon"), function() {
     return browserify({
         basedir: ".",
         debug: true,
@@ -50,14 +50,14 @@ gulp.task('browserify', function() {
         .bundle()
         .pipe(source("bundle.js"))
         .pipe(gulp.dest("dist"));
-});
+}));
 
 gulp.task('default', gulp.series(
     // 'copy-scripts',
     'copy-index',
-    // 'copy-favicon',
-    // 'copy-css',
-    // 'copy-libs',
+    'copy-favicon',
+    'copy-css',
+    'copy-libs',
     bundle
 ));
 watchedBrowserify.on("update", bundle);
