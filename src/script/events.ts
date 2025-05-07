@@ -163,28 +163,7 @@ export const Events = {
 	
 	buttonClick: function(btn) {
 		var info = Events.activeEvent()?.scenes[Events.activeScene].buttons[btn.attr('id')];
-		// Cost
-		// var costMod = {};
-		// if(info.cost) {
-		// 	for(var store in info.cost) {
-		// 		var num = Engine.activeModule == World ? Path.outfit[store] : $SM.get('stores["'+store+'"]', true);
-		// 		if(typeof num != 'number') num = 0;
-		// 		if(num < info.cost[store]) {
-		// 			// Too expensive
-		// 			return;
-		// 		}
-		// 		costMod[store] = -info.cost[store];
-		// 	}
-		// 	if(Engine.activeModule == World) {
-		// 		for(var k in costMod) {
-		// 			Path.outfit[k] += costMod[k];
-		// 		}
-		// 		World.updateSupplies();
-		// 	} else {
-		// 		$SM.addM('stores', costMod);
-		// 	}
-		// }
-		
+
 		if(typeof info.onChoose == 'function') {
 			var textarea = Events.eventPanel().find('textarea');
 			info.onChoose(textarea.length > 0 ? textarea.val() : null);

@@ -6,8 +6,8 @@ import { Character } from "../player/character";
 
 export const Liz = {
     setLizActive: function() {
-		$SM.set('village.lizActive', true);
-		$SM.set('village.liz.canFindBook', false);
+		$SM.set('village.lizActive', 1);
+		$SM.set('village.liz.canFindBook', 0);
 		$SM.set('village.liz.hasBook', 1);
 		Room.updateButton();
 	},

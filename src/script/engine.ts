@@ -232,13 +232,12 @@ export const Engine = window.Engine = {
 				$('#saveNotify').css('opacity', 1).animate({opacity: 0}, 1000, 'linear');
 				Engine._lastNotify = Date.now();
 			}
-			localStorage.gameState = JSON.stringify(window.State);
+			localStorage.gameState = JSON.stringify(State);
 		}
 	},
 	
 	loadGame: function() {
 		try {
-			console.log(localStorage.gameState);
 			var savedState = JSON.parse(localStorage.gameState);
 			if(savedState) {
 				window.State = savedState;

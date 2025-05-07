@@ -49,6 +49,9 @@ var StateManager = {
 		//subscribe to stateUpdates
 		// @ts-ignore
 		$.Dispatch('stateUpdate').subscribe($SM.handleStateUpdates);
+
+		// @ts-ignore
+		window.$SM = this;
 	},
 	
 	//create all parents and then set state
@@ -61,9 +64,12 @@ var StateManager = {
 				i--;
 			}
 		}
+		// IMPORTANT: State refers to window.State, which I had to initialize manually
+		//    in Engine.ts; please don't forget this and mess with anything named
+		//    "State" or "window.State", this stuff is weirdly precarious after typescripting
+		//    this codebase, and I don't have the sanity points to figure out why
 		// @ts-ignore
-		// var obj = State;
-		var obj = {};
+		var obj = State;
 		var w = null;
 		for(var i=0, len=words.length-1;i<len;i++){
 			w = words[i];

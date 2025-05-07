@@ -24,8 +24,7 @@ export const Mayor = {
 						},
 						'quest': {
 							text: _('Ask for a quest'),
-							nextScene: {1: 'quest'},
-							onChoose: Mayor.startSuppliesQuest()
+							nextScene: {1: 'quest'}
 						},
 						'leave': {
 							text: _('Leave'),
@@ -79,6 +78,7 @@ export const Mayor = {
 						'alrighty': {
 							text: _('Alrighty'),
 							nextScene: {1: 'main'},
+							onChoose: Mayor.startSuppliesQuest
 						}
 					}
 				}
@@ -86,9 +86,11 @@ export const Mayor = {
 		});
 	},
 	startSuppliesQuest: function () {
-		// 1 = started, 2 = next step, etc. until completed
-		$SM.set('quest.supplies', 1);
-		// TODO: init Outpost and Road to Outpost
-		Road.init();
+		if (!$SM.get('quest.supplies')) {
+			// 1 = started, 2 = next step, etc. until completed
+			$SM.set('quest.supplies', 1);
+			Road.init();
+		}
+		
 	}
 }

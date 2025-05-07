@@ -4,6 +4,8 @@ var source = require("vinyl-source-stream");
 var tsify = require("tsify");
 var ts = require("gulp-typescript");
 var tsProject = ts.createProject("tsconfig.json");
+var fancy_log = require("fancy-log");
+var watchify = require("watchify");
 gulp.task("copy-scripts", function () {
   return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest("dist"));
 });
@@ -19,24 +21,30 @@ gulp.task('copy-css', function() {
 gulp.task('copy-libs', function() {
     return gulp.src('./src/lib/*.js').pipe(gulp.dest('./dist/lib'));
 });
-gulp.task('browserify', function() {
-    return browserify({
+var watchedBrowserify = watchify(
+    browserify({
         basedir: ".",
         debug: true,
         entries: ["src/script/engine.ts"],
         cache: {},
         packageCache: {},
-      })
-        .plugin(tsify)
-        .bundle()
-        .pipe(source("bundle.js"))
-        .pipe(gulp.dest("dist"));
-});
+    }).plugin(tsify)
+);
+function bundle() {
+    return watchedBrowserify
+    .bundle()
+    .on("error", fancy_log)
+    .pipe(source("bundle.js"))
+    .pipe(gulp.dest("dist"))
+}
+
 gulp.task('default', gulp.series(
     // 'copy-scripts',
     'copy-index',
     // 'copy-favicon',
     // 'copy-css',
     // 'copy-libs',
-    'browserify'
+    bundle
 ));
+watchedBrowserify.on("update", bundle);
+watchedBrowserify.on("log", fancy_log);
