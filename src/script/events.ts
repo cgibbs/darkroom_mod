@@ -1,7 +1,7 @@
 /**
  * Module that handles the random event system
  */
-import { EventsRoadWander } from "./events/roadWander";
+import { EventsRoadWander } from "./events/roadwander";
 import { EventsRoom } from "./events/room";
 import { Engine } from "./engine";
 import { _ } from "../lib/translate";

@@ -48,3 +48,5 @@ DONE, AND IT WAS ANNOYING Saving and Loading doesn't keep functions on items, so
 DONE Implement super-likely events. Some quest areas and places where you randomly unlock other areas might be too dependent on randomness and lead to some players taking a long time to unlock them. Events can have "superLikely" conditions on them, and if those conditions are met, they'll automatically get chosen. SuperLikely conditionals should have a dedicated flag, so that they can only be triggered once. We can put those in $SM under "superlikely.blah". We'll also need to implement counters for number of adventures in a location, probably in $SM under "counter.blah".
 
 Fix weather animation stuff, it broke during the Typescriptification process.
+
+Deployment is broken by the new file structure, and gulp doesn't run correctly on Github's Workflow thing. 
