@@ -2,7 +2,7 @@ Use Notifications for mundane worldbuilding stuff. What's going on in the world 
 
 IMPORTANT: Anything that needs to persist on the character or in the inventory that isn't handled via $SM access will need to be put in the $SM at some point, preferably on any change to the character or its inventory. Write functions for changing stats, adding items, equipping gear, etc. and make sure those things all write to $SM at the end. When loading from $SM, make sure that it's the only source of truth and the load is fresh, so as not to introduce the possibility of duplicates.
 
-IN PROGRESS Make a second location, and a quest from the mayor to go there. This should be a good place to introduce a very basic encounter system through the event system. Just kick off the "choose random event for this area" stuff with a button click that says "Wander around" or whatever.
+DONE Make a second location, and a quest from the mayor to go there. This should be a good place to introduce a very basic encounter system through the event system. Just kick off the "choose random event for this area" stuff with a button click that says "Wander around" or whatever.
 
 DONE Make a really basic weather system using the Engine's setTimeout delay system. Just set up a delay time range, then call the setTimeout button with a function that picks from possible weather states and sets it accordingly. Can have minor stat impacts, but it would also be cool to have a minimal interface animation to represent the weather, like some dashed lines for rain or snowflakes falling or whatever. Could even change the background color a bit near the top of the screen to emphasize the change. Call "setWeather" in location's onArrival function using the availableWeather array that should exist on every location. If no availableWeather, default to sunny.
 
@@ -52,3 +52,7 @@ Fix weather animation stuff, it broke during the Typescriptification process.
 DONE, JUST USE `npm run deploy` INSTEAD Deployment is broken by the new file structure, and gulp doesn't run correctly on Github's Workflow thing. 
 
 Need to make the button images stuff much less janky. Make button size and image size work together more cleanly (currently button height is hardcoded to 170px if there's an image provided to the button). Make text more readable.
+
+Add description text for Locations!
+
+IN PROGRESS Add a Quest Log button and UI area!

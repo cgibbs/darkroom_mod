@@ -4,6 +4,7 @@ import { ItemList } from "./itemList";
 import { Events } from "../events";
 import { Notifications } from "../notifications";
 import { _ } from "../../lib/translate";
+import { QuestLog } from "./questLog";
 
 export const Character = {
 	inventory: {}, // dictionary using item name as key
@@ -73,6 +74,12 @@ export const Character = {
 			Character.equippedItems = $SM.get('character.equippedItems') as any;
 		}
 
+		if (!$SM.get('character.questStatus')) {
+            $SM.set('character.questStatus', Character.questStatus);
+        } else {
+			Character.questStatus = $SM.get('character.questStatus') as any;
+		}
+
         $('<div>').text('Character').attr('id', 'title').appendTo('div#character');
 
 		// TODO: replace this with derived stats
@@ -81,13 +88,20 @@ export const Character = {
         }
 
 		$('<div>').attr('id', 'buttons').css("margin-top", "20px").appendTo('div#character');
-		var b = 
-		//new 
-		Button.Button({
+		var inventoryButton = Button.Button({
 			id: "inventory",
 			text: "Inventory",
 			click: Character.openInventory
 		}).appendTo($('#buttons', 'div#character'));
+		
+		var questLogButton = Button.Button({
+			id: "questLog",
+			text: "Quest Log",
+			click: Character.openQuestLog
+		}).appendTo($('#buttons', 'div#character'));
+
+		// @ts-ignore
+		window.Character = this;
 	},
 	
 	options: {}, // Nothing for now
@@ -95,6 +109,7 @@ export const Character = {
 	elem: null,
 
 	inventoryDisplay: null as any,
+	questLogDisplay: null as any,
 
 	openInventory: function() {
 		// creating a handle for later access, such as closing inventory
@@ -217,6 +232,66 @@ export const Character = {
 
 		// TODO: write to $SM
 		$SM.set('perks', Character.perks)
+	},
+
+	openQuestLog: function() {
+		// creating a handle for later access, such as closing quest log
+		Character.questLogDisplay = $('<div>').attr('id', 'quest').addClass('eventPanel').css('opacity', '0');
+		var questLogDisplay = Character.questLogDisplay;
+		Character.questLogDisplay
+		// set up click and hover handlers for quests
+		.on("click", "#quest", function() {
+			console.log($(this));
+			Character.displayQuest($(this).data("name"));
+			Character.closeQuestLog();
+		}).on("mouseenter", "#quest", function() {
+			// description shouldn't be on a tooltip, obvs, but fix this later
+			var tooltip = $("<div id='tooltip' class='tooltip'>" + QuestLog[$(this).data("name")].logDescription + "</div>")
+			.attr('data-name', quest);
+			tooltip.appendTo($(this));
+		}).on("mouseleave", "#quest", function() {
+			$("#tooltip", "#" + $(this).data("name")).fadeOut().remove();
+		});
+		$('<div>').addClass('eventTitle').text('Quest Log').appendTo(questLogDisplay);
+		var questLogDesc = $('<div>').text("Click quest names to see more info.")
+			.css("margin-bottom", "20px")
+			.appendTo(questLogDisplay);
+		
+		for(var quest in Character.questStatus) {
+			var inventoryElem = $('<div>')
+			.attr('id', "#quest")
+			.attr('data-name', quest)
+			.text(QuestLog[quest].name)
+			.appendTo(questLogDisplay);
+		}
+
+		// TODO: make this CSS an actual class somewhere, I'm sure I'll need it again
+		$('<div>').attr('id', 'buttons').css("margin-top", "20px").appendTo(questLogDisplay);
+		var b = Button.Button({
+			id: "closeQuestLog",
+			text: "Close",
+			click: Character.closeQuestLog
+		}).appendTo($('#buttons', questLogDisplay));
+		$('div#wrapper').append(questLogDisplay);
+		questLogDisplay.animate({opacity: 1}, Events._PANEL_FADE, 'linear');
+	},
+
+	displayQuest: function(quest: string) {
+		Notifications.notify(null, "I'm a placeholder for displaying a quest!");
+	},
+
+	closeQuestLog: function() {
+		Character.questLogDisplay.empty();
+		Character.questLogDisplay.remove();
+	},
+
+	setQuestStatus: function(quest, phase) {
+		// might be a good idea to check for linear quest progression here?
+		if (typeof(QuestLog[quest]) !== "undefined") {
+			Character.questStatus[quest] = phase;
+
+			$SM.set('questStatus', Character.questStatus);
+		}
 	},
 
 	// apply equipment effects, which should all check against $SM state variables;

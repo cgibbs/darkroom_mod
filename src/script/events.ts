@@ -174,12 +174,10 @@ export const Events = {
 	},
 	
 	updateButtons: function() {
-		console.log("updating buttons");
 		var btns = Events.activeEvent()?.scenes[Events.activeScene].buttons;
 		for(var bId in btns) {
 			var b = btns[bId];
 			var btnEl = $('#'+bId, Events.eventPanel());
-			console.log(btnEl);
 			if(typeof b.available == 'function' && !b.available()) {
 				Button.setDisabled(btnEl, true);
 			}

@@ -3,6 +3,7 @@ import { $SM } from "../state_manager";
 import { _ } from "../../lib/translate";
 import { Liz } from "./liz";
 import { Road } from "../places/road";
+import { Character } from "../player/character";
 
 export const Mayor = {
     talkToMayor: function() {
@@ -89,11 +90,14 @@ export const Mayor = {
 		});
 	},
 	startSuppliesQuest: function () {
-		if (!$SM.get('quest.supplies')) {
-			// 1 = started, 2 = next step, etc. until completed
-			$SM.set('quest.supplies', 1);
+		// if (!$SM.get('quest.supplies')) {
+		// 	// 1 = started, 2 = next step, etc. until completed
+		// 	$SM.set('quest.supplies', 1);
+		// 	Road.init();
+		// }
+		if (typeof(Character.questStatus["mayorSupplies"]) == "undefined") {
+			Character.setQuestStatus("mayorSupplies", 1);
 			Road.init();
 		}
-		
 	}
 }
