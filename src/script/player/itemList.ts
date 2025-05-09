@@ -8,6 +8,8 @@ import { $SM } from "../state_manager";
 import { Notifications } from "../notifications";
 import { Item } from "./item";
 
+// Details for all in-game items; the Character inventory only holds item IDs
+// and amounts
 export const ItemList: {[id: string]: Item} = {
     "Liz.weirdBook": {
         name: 'Weird Book',

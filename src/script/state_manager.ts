@@ -169,7 +169,7 @@ var StateManager = {
 	},
 	
 	//return state, undefined or 0
-	get: function(stateName, requestZero?): string | undefined | Number | null {
+	get: function(stateName, requestZero?): string | undefined | Number | null | Boolean {
 		var whichState: undefined | null | Number | string = null;
 		var fullPath = $SM.buildPath(stateName);
 		

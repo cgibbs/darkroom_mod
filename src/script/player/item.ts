@@ -22,6 +22,38 @@ export interface Effect {
     apply: Function
 }
 
+// empty item for easy copy-pasting in future development
+var emptyItem = {
+    name: '',
+    text: _(''),
+    fullText: [
+        _(''),
+        _('')],
+    slot: '',
+    onEquip: function() { }, 
+    onUnequip: function() { },
+    effects: [ ],
+    statBonuses: {
+        'Speed': 0,
+		'Perception': 0,
+		'Resilience': 0,
+		'Ingenuity': 0,
+		'Toughness': 0
+    },
+    onUse: function() { },
+    destroyOnUse: function() { },
+    destroyable: false
+}
+
+// empty effect for easy copy-pasting in future development
+var emptyEffect = {
+    name: '',
+    text: _(''),
+    isVisible: function() { },
+    isActive: function(extraParams) { },
+    apply: function(extraParams) { }
+}
+
 // generic item parameters, for reference
 var item = {
     name: 'item name',

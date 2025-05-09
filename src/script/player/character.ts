@@ -7,6 +7,7 @@ import { _ } from "../../lib/translate";
 
 export const Character = {
 	inventory: {}, // dictionary using item name as key
+	questStatus: {}, // dictionary using quest name as key, and integer quest phase as value
 	equippedItems: {
 		// stealing the KoL style for now, we'll see if I need something
 		// that fits the game better as we go
@@ -159,7 +160,6 @@ export const Character = {
 			Character.inventory[item] = amount;
 		}
 
-		// TODO: write to $SM
 		$SM.set('inventory', Character.inventory);
 	},
 
@@ -170,7 +170,6 @@ export const Character = {
 			delete Character.inventory[item];
 		}
 
-		// TODO: write to $SM
 		$SM.set('inventory', Character.inventory);
 	},
 
