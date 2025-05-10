@@ -196,24 +196,6 @@ div#notifications div.notification {
 	margin-bottom: 10px;
 }
 
-/* div#notifyGradient {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	height: 100%;
-	width: 100%;
-	background-color: white;
-	background: -webkit-linear-gradient(
-		rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%
-	);
-	background: linear-gradient(
-		rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%
-	);
-	filter: alpha(
-		Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=500
-	);
-} */
-
 /* Character */
 
 div#character {
@@ -267,6 +249,11 @@ div.button div.cooldown {
 	z-index: -1;
 	height: 100%;
 	background-color: #DDDDDD;
+}
+
+div.locationButton {
+	float:left;
+	margin-right: 20px;
 }
 
 /* Up/Down buttons. They're complicated! */
