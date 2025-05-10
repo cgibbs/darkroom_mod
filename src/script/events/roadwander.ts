@@ -87,6 +87,70 @@ export const EventsRoadWander: Array<ADREvent> = [
             }
         }
     },
+    {
+        title: _('A Rare Opportunity'),
+        isAvailable: function() {
+            return Engine.activeModule == Road;
+        },
+        scenes: {
+            'start': {
+                text: [
+                    _('A carriage pulls up alongside you, and the voice of an elderly woman croaks out from within.'),
+                    _('"My, but you look tired from your journey. If it\'s the Outpost you seek, '
+                         + 'I\'m on my way there now; would you like to join me?"'),
+                    _('What do you do?')
+                ],
+                buttons: {
+                    'accept': {
+                        text: _('Accept her offer'),
+                        nextScene: {1: 'accept'}
+                    },
+                    'leave': {
+                        text: _('Politely Decline'),
+                        nextScene: {1: 'leave'}
+                    }
+                }
+            },
+            'accept': {
+                text: [
+                    _('You hop in the carriage with the old woman.'),
+                    _('She turns out to be pretty cool, and gives you one of those hard candies that ' 
+                        + 'every grandparent seems to have on the end table next to their sofa.'),
+                    _('Before long, you reach the Outpost. You hop out and thank the old woman for the ride.')
+                ],
+                buttons: {
+                    'okay': {
+                        text: _('What a nice old lady'),
+                        nextScene: 'end',
+                        onChoose: function() {
+                            if ($SM.get('outpost.open') === undefined) {
+                                Outpost.init();
+                                $SM.set('superlikely.outpostUnlock', 1);
+                                // Character.setQuestStatus("mayorSupplies", 1);
+                                Character.checkQuestStatus("mayorSupplies");
+                                Engine.travelTo(Outpost)
+                            }
+                            Character.addToInventory('oldLady.Candy');
+                        }
+                    }
+                }
+            },
+            'leave': {
+                text: [
+                    _('It\'s too early in the game to be trusting weird old people, man. You politely ' 
+                        + 'decline, and the woman chuckles softly as the carriage rolls off into the distance.'),
+                    _('That soft chuckle tells me everything I need to know about whether you made the '
+                        + 'right call. That had "turned into gingerbread" written all over it.')
+                ],
+                buttons: {
+                    'okay': {
+                        text: _('Yeah it did'),
+                        nextScene: 'end'
+                    }
+                }
+            }
+        }
+    },
     // Unlock Outpost
     {
         title: _('A Way Forward Makes Itself Known'),

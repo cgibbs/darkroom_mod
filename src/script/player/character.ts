@@ -347,6 +347,8 @@ export const Character = {
 	checkQuestStatus: function(quest) {
 		const currentPhase = QuestLog[quest].phases[Character.questStatus[quest]];
 
+		if (currentPhase === undefined) return;
+
 		var complete = true;
 		for (var i = 0; i < Object.keys(currentPhase.requirements).length; i++) {
 			if (!currentPhase.requirements[i].isComplete())

@@ -216,5 +216,17 @@ export const ItemList: {[id: string]: Item} = {
         },
         destroyOnUse: false,
         destroyable: false
+    },
+    "oldLady.Candy": {
+        name: 'a piece of hard candy',
+        pluralName: 'pieces of hard candy',
+        text: 'Given to you by a nice old woman in a carriage',
+        onUse: function() {
+            Notifications.notify(null, 'You pop the hard candy into your mouth. A few minutes ' 
+                + 'later, it\'s gone, leaving behind only a mild sense of guilt about not ' 
+                + 'calling your grandma more often.')
+        },
+        destroyOnUse: true,
+        destroyable: true
     }
 }
