@@ -1,6 +1,7 @@
 import { Events } from "../events"
 import { $SM } from "../state_manager"
 import { _ } from "../../lib/translate"
+import { Character } from "../player/character"
 
 export const Captain = {
 	talkToCaptain: function() {
@@ -32,13 +33,14 @@ export const Captain = {
                 },
                 'main': {
                     text: [
-                        _('The captain greets you warmly.'),
+                        _('The Captain greets you warmly.'),
                         _('"Ahh, yes, welcome back. What can I do for you?"')
                     ],
                     buttons: {
                         'askAboutSupplies': {
                             text: _('Ask About Supplies'),
                             nextScene: {1:'askAboutSupplies'},
+                            onChoose: Captain.handleSupplies,
                             available: () => !$SM.get('outpost.captain.askedAboutSupplies')
                         },
                         'askAboutCaptain': {
@@ -53,7 +55,7 @@ export const Captain = {
                 },
                 'captainRamble': {
                     text: [
-                        _('The captain\'s eyes gleam at the opportunity to run down his list of achievements.'),
+                        _('The Captain\'s eyes gleam at the opportunity to run down his list of achievements.'),
                         _('"Why, I\'ll have you know that you stand in the presence of none other than Finneas J. Fobsley, Captain of the Royal Army\'s Fifth Division, the finest Division in His Majesty\'s service."'),
                         _('He puffs out his chest, drawing attention to his many medals.'),
                         _('"I have campaigned on behalf of Our Lordship across many lands, including The Far West, the northern borders of Umbershire and Pelingal, New Bellisia, and each of the Five Isles of the Pirrhian Sea."'),
@@ -71,7 +73,7 @@ export const Captain = {
                 },
                 'mainContinued': {
                     text: [
-                        _('The captain shuffles his papers in a somewhat performative way.'),
+                        _('The Captain shuffles his papers in a somewhat performative way.'),
                         _('"Was there something else you needed?"')
                     ],
                     buttons: {
@@ -92,7 +94,10 @@ export const Captain = {
                 },
                 'askAboutSupplies': {
                     text: [
-                        _('I still need to write this, check back later. -C')
+                        _('The Captain\'s eyes gleam with a mixture of realization and guilt.'),
+                        _('"Ahh, yes, right, the supplies. I suppose the Mayor is still waiting for those. Have a look in that chest over there, it should have everything you need."'),
+                        _('He indicates to a chest at the back of the room. You open the lid, revealing the supplies within.'),
+                        _('You take the supplies.')
                     ],
                     buttons: {
                         'okay': {
@@ -103,5 +108,13 @@ export const Captain = {
                 }
             }
         })
+    },
+
+    handleSupplies: function() {
+        console.log('handling supplies');
+        $SM.set('outpost.captain.askedAboutSupplies', 1);
+        Character.addToInventory("Captain.supplies");
+        // Character.setQuestStatus("mayorSupplies", 2);
+        Character.checkQuestStatus("mayorSupplies");
     }
 }

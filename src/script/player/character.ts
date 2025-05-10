@@ -241,12 +241,9 @@ export const Character = {
 		Character.questLogDisplay
 		// set up click and hover handlers for quests
 		.on("click", "#quest", function() {
-			console.log("test");
-			console.log($(this));
 			Character.displayQuest($(this).data("name"));
 		}).on("mouseenter", "#quest", function() {
 			// description shouldn't be on a tooltip, obvs, but fix this later
-			console.log("moused over");
 			var tooltip = $("<div id='tooltip' class='tooltip'>" + QuestLog[$(this).data("name")].logDescription + "</div>")
 			.attr('data-name', quest);
 			tooltip.appendTo($(this));
@@ -259,11 +256,18 @@ export const Character = {
 			.appendTo(questLogDisplay);
 		
 		for(var quest in Character.questStatus) {
-			var inventoryElem = $('<div>')
+			var questElem = $('<div>')
 			.attr('id', "quest")
 			.attr('data-name', quest)
 			.text(QuestLog[quest].name)
 			.appendTo(questLogDisplay);
+			if (Character.questStatus[quest] == -1) {
+				questElem
+				// I want this to be not struck through, but that's too annoying to worry
+				// about right now
+				// .prepend("DONE ")
+				.wrap("<strike>");
+			}
 		}
 
 		// TODO: make this CSS an actual class somewhere, I'm sure I'll need it again
@@ -289,16 +293,27 @@ export const Character = {
 			.css("margin-bottom", "20px")
 			.appendTo(questLogDisplay);
 
-		for (var i = 0; i < (Character.questStatus[quest] as number); i++) {
+		if (Character.questStatus[quest] as number == -1) {
+			var phaseDesc = $('<div>').text("This quest is complete!")
+			.css("margin-bottom", "10px")
+			.appendTo(questLogDisplay);
+		}
+
+		for (var i = 0; i <= (Character.questStatus[quest] as number); i++) {
 			var phaseDesc = $('<div>').text(currentQuest.phases[i].description)
 			.css("margin-bottom", "10px")
 			.appendTo(questLogDisplay);
+			var complete = true;
 			for (var j = 0; j < Object.keys(currentQuest.phases[i].requirements).length; j++) {
 				var requirementsDesc = $('<div>').text(currentQuest.phases[i].requirements[j].renderRequirement())
 					.css("margin-bottom", "20px")
 					.css("margin-left", "20px")
 					.css('font-style', 'italic')
 					.appendTo(questLogDisplay);
+				if (!currentQuest.phases[i].requirements[j].isComplete()) complete = false;
+			}
+			if (complete) {
+				phaseDesc.wrap("<strike>");
 			}
 		}
 
@@ -335,6 +350,25 @@ export const Character = {
 
 			$SM.set('questStatus', Character.questStatus);
 		}
+	},
+
+	checkQuestStatus: function(quest) {
+		const currentPhase = QuestLog[quest].phases[Character.questStatus[quest]];
+
+		var complete = true;
+		for (var i = 0; i < Object.keys(currentPhase.requirements).length; i++) {
+			if (!currentPhase.requirements[i].isComplete())
+				complete = false;
+		}
+
+		// if there is a next phase, set questStatus to it
+		if (typeof(QuestLog[quest].phases[Character.questStatus[quest] + 1]) !== "undefined") {
+			Character.questStatus[quest] += 1;
+		} else { // else set it to complete
+			Character.questStatus[quest] = -1;
+		}
+
+		$SM.set('questStatus', Character.questStatus);
 	},
 
 	// apply equipment effects, which should all check against $SM state variables;

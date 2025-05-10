@@ -63,7 +63,28 @@ export const Mayor = {
 						'quest': {
 							text: _('Ask for a quest'),
 							nextScene: {1: 'quest'},
+							available: () =>
+								// not available if mayorSupplies is in-progress
+								(Character.questStatus["mayorSupplies"] == "undefined")
+								// re-add this condition later, we need to send them to a different
+								//   quest dialog if they already did the first quest
+								// || (Character.questStatus["mayorSupplies"] == -1)
 							// image: "assets/cards/joker.png"
+						},
+						'giveSupplies': {
+							text: _('Hand over the supplies'),
+							nextScene: {1: 'giveSupplies'},
+							available: () => 
+								(typeof($SM.get('village.mayor.haveGivenSupplies')) == "undefined") 
+								&& (Character.questStatus["mayorSupplies"] !== "undefined")
+								&& Character.inventory["Captain.supplies"],
+							visible: () =>
+								(Character.questStatus["mayorSupplies"] !== "undefined"),
+							onChoose: () => {
+								Character.removeFromInventory("Captain.supplies");
+								$SM.set('village.mayor.haveGivenSupplies', 1);
+								Character.checkQuestStatus("mayorSupplies");
+							}
 						},
 						'leave': {
 							text: _('Leave'),
@@ -85,6 +106,19 @@ export const Mayor = {
 							onChoose: Mayor.startSuppliesQuest
 						}
 					}
+				},
+				'giveSupplies': {
+					text: [
+						_('The mayor smiles, and the edges of his eyes crinkle.'),
+						_('"Thank you, brave adventurer! With these supplies, the village can once again thrive."'),
+						_('He takes them from you graciously, and promptly hands them off to some workers, who quickly erect a building that gives you a new button to click')
+					],
+					buttons: {
+						'impressive': {
+							text: _('Impressive!'),
+							nextScene: 'end'
+						}
+					}
 				}
 			}
 		});
@@ -96,7 +130,7 @@ export const Mayor = {
 		// 	Road.init();
 		// }
 		if (typeof(Character.questStatus["mayorSupplies"]) == "undefined") {
-			Character.setQuestStatus("mayorSupplies", 1);
+			Character.setQuestStatus("mayorSupplies", 0);
 			Road.init();
 		}
 	}

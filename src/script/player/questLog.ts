@@ -13,10 +13,10 @@ export const QuestLog: {[id: string]: Quest} = {
                     0: {
                         renderRequirement: function() {
                             if ($SM.get('road.open') 
-                                && typeof($SM.get('Road.counter')) !== "undefined"
-                                && $SM.get('Road.counter') as number < 1)
+                                && typeof($SM.get('Road.counter')) == "undefined")
                                 return "I should go check out the Road to the Outpost";
                             else if ($SM.get('road.open') 
+                                && typeof($SM.get('Road.counter')) !== "undefined"
                                 && typeof($SM.get('superlikely.outpostUnlock')) == "undefined")
                                 return "I should keep exploring the Road to the Outpost";
                             else if ($SM.get('road.open') 
@@ -38,23 +38,24 @@ export const QuestLog: {[id: string]: Quest} = {
                     0: {
                         renderRequirement: function() {
                             if ($SM.get('superlikely.outpostUnlock') as number > 0
-                                && typeof($SM.get('outpost.captain.haveMet') == "undefined"))
+                                && typeof($SM.get('outpost.captain.haveMet')) == "undefined")
                                 return "I should try talking to the Captain of the Outpost";
                             else if ($SM.get('superlikely.outpostUnlock') as number > 0
-                                && typeof($SM.get('outpost.captain.haveMet') !== "undefined")
-                                && $SM.get('outpost.captain.haveMet') as number > 0)
+                                && typeof($SM.get('outpost.captain.haveMet')) !== "undefined"
+                                && $SM.get('outpost.captain.haveMet') as number > 0
+                                && typeof(Character.inventory["Captain.supplies"]) == "undefined")
                                 return "I should ask the Captain about the missing supplies";
                             else if ($SM.get('superlikely.outpostUnlock') as number > 0
-                                && typeof($SM.get('outpost.captain.haveMet') !== "undefined")
+                                && typeof($SM.get('outpost.captain.haveMet')) !== "undefined"
                                 && $SM.get('outpost.captain.haveMet') as number > 0
-                                && typeof(Character.inventory['outpostSupplies']) !== "undefined")
+                                && typeof(Character.inventory["Captain.supplies"]) !== "undefined")
                                 return "I've gotten the supplies from the Captain";
                         },
                         isComplete: function() {
                             return ($SM.get('superlikely.outpostUnlock') as number > 0
                             && typeof($SM.get('outpost.captain.haveMet') !== "undefined")
                             && $SM.get('outpost.captain.haveMet') as number > 0
-                            && typeof(Character.inventory['outpostSupplies']) !== "undefined");
+                            && typeof(Character.inventory["Captain.supplies"]) !== "undefined");
                         }
                     }
                 }

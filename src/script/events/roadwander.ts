@@ -115,6 +115,8 @@ export const EventsRoadWander: Array<ADREvent> = [
                         onChoose: function() {
                             Outpost.init();
                             $SM.set('superlikely.outpostUnlock', 1);
+                            // Character.setQuestStatus("mayorSupplies", 1);
+                            Character.checkQuestStatus("mayorSupplies");
                         }
                     }
                 }

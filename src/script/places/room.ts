@@ -10,6 +10,7 @@ import { _ } from "../../lib/translate";
 import { Header } from "../header";
 import { Liz } from "../characters/liz";
 import { Mayor } from "../characters/mayor";
+import { Events } from "../events";
 
 export const Room = {
 	// times in (minutes * seconds * milliseconds)
@@ -48,7 +49,6 @@ export const Room = {
 		
 		Engine.updateSlider();
 
-		//new 
 		Button.Button({
 			id: 'talkButton',
 			text: _('Talk to the Mayor'),
@@ -57,7 +57,6 @@ export const Room = {
 			cost: {}
 		}).appendTo('div#roomPanel');
 
-		//new 
 		Button.Button({
 			id: 'lizButton',
 			text: _('Talk to Liz'),
@@ -65,6 +64,17 @@ export const Room = {
 			width: '80px',
 			cost: {}
 		}).appendTo('div#roomPanel');
+
+		Button.Button({
+			id: 'newBuildingButton',
+			text: _('Check out the new building'),
+			click: Room.tempBuildingMessage,
+			width: '80px',
+			cost: {}
+		}).appendTo('div#roomPanel');
+
+		var buildingButton = $('#newBuildingButton.button');
+		buildingButton.hide();
 
 		var lizButton = $('#lizButton.button');
 		lizButton.hide();
@@ -170,6 +180,8 @@ export const Room = {
 
 		var lizButton = $('#lizButton.button');
 		if($SM.get('village.lizActive')) lizButton.show();
+		var buildingButton = $('#newBuildingButton.button');
+		if($SM.get('village.mayor.haveGivenSupplies')) buildingButton.show();
 	},
 	
 	
@@ -179,5 +191,25 @@ export const Room = {
 		} else if(e.category == 'income'){
 		} else if(e.stateName.indexOf('game.buildings') === 0){
 		}
-	}
+	},
+
+	tempBuildingMessage: function() {
+		Events.startEvent({
+					title: _('A New Building'),
+					scenes: {
+						start: {
+							nextScene: 'main',
+							text: [
+								_('This is a new building. There should be stuff in it, but this is a placeholder for now.'),
+							],
+							buttons: {
+								'leave': {
+									text: _('Lame'),
+									nextScene: 'end'
+								}
+							}
+						}
+					}
+				});
+			}
 };

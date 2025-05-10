@@ -184,5 +184,30 @@ export const ItemList: {[id: string]: Item} = {
         },
         destroyOnUse: false,
         destroyable: false
+    },
+    "Captain.supplies": {
+        name: 'Supplies for the Mayor',
+        text: 'They\'re heavy, but not in a way that impacts gameplay',
+        onUse: function() {
+            Events.startEvent({
+                title: _("Supplies for the Mayor"),
+                scenes: {
+                    start: {
+                        text: [
+                            _("A big box of stuff for the village. Looks like raw materials, mostly."),
+                            _("I should really take this back to the Mayor.")
+                        ],
+                        buttons: {
+                            'okay': {
+                                text: _('Okay'),
+                                nextScene: 'end'
+                            }
+                        }
+                    }
+                }
+            })
+        },
+        destroyOnUse: false,
+        destroyable: false
     }
 }
