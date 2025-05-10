@@ -58,3 +58,5 @@ Add description text for Locations!
 DONE Add a Quest Log button and UI area!
 
 Quest Log could use a "Complete" section that's accessible by button. This will be more useful when there's more than one quest, and when that one quest can actually be completed, lol.
+
+DONE Add a notification when Quest Log or inventory is updated.

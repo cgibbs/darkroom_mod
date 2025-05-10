@@ -13,6 +13,7 @@ import { Item } from "./item";
 export const ItemList: {[id: string]: Item} = {
     "Liz.weirdBook": {
         name: 'Weird Book',
+        pluralName: 'Weird Books',
         text: _('A book you found at Liz\'s place. Supposedly has information about Chadtopia.'),
         onUse: function() { 
             Events.startEvent({
@@ -40,7 +41,8 @@ export const ItemList: {[id: string]: Item} = {
     },
 
     "Liz.boringBook": {
-        name: 'A Brief History of Chadtopia',
+        name: '"A Brief History of Chadtopia"',
+        pluralName: 'Multiple copies of "A Brief History of Chadtopia"',
         text: _('Man, this book is boring.'),
         onUse: function() {
             Events.startEvent({
@@ -62,7 +64,8 @@ export const ItemList: {[id: string]: Item} = {
         destroyable: false
     },
     "Stranger.smoothStone": {
-        name: 'A smooth black stone',
+        name: 'a smooth black stone',
+        pluralName: 'smooth black stones',
         text: _('It\'s weirdly eerie'),
         onUse: function() {
             if (!$SM.get('knowledge.Stranger.smoothStone')) {
@@ -88,7 +91,8 @@ export const ItemList: {[id: string]: Item} = {
         destroyable: false
     },
     "Stranger.wrappedKnife": {
-        name: 'A knife wrapped in cloth',
+        name: 'a knife wrapped in cloth',
+        pluralName: 'Knives wrapped in separate cloths',
         text: _('Man, I hope it\'s not all like, bloody on the blade and stuff.'),
         onUse: function() {
             Events.startEvent({
@@ -111,7 +115,8 @@ export const ItemList: {[id: string]: Item} = {
         destroyable: false
     },
     "Stranger.silverKnife": {
-        name: 'A silver knife',
+        name: 'a silver knife',
+        pluralName: 'silver knives',
         text: _('Highly ornamented'),
         onUse: function() {
             Events.startEvent({
@@ -136,7 +141,8 @@ export const ItemList: {[id: string]: Item} = {
         destroyable: false
     },
     "Stranger.clothBundle": {
-        name: 'A bundle of cloth',
+        name: 'a bundle of cloth',
+        pluralName: 'bundles of cloth',
         text: _('What lies within?'),
         onUse: function() {
             Events.startEvent({
@@ -162,6 +168,7 @@ export const ItemList: {[id: string]: Item} = {
     },
     "Stranger.coin": {
         name: 'A strange coin',
+        pluralName: 'strange coins',
         text: _('Both sides depict the same image'),
         onUse: function() {
             Events.startEvent({

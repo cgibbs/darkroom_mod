@@ -175,6 +175,7 @@ export const Character = {
 			Character.inventory[item] = amount;
 		}
 
+		Notifications.notify(null, "Added " + ItemList[item].name + " to inventory.")
 		$SM.set('inventory', Character.inventory);
 	},
 
@@ -185,6 +186,7 @@ export const Character = {
 			delete Character.inventory[item];
 		}
 
+		Notifications.notify(null, "Removed " + ItemList[item].name + " from inventory.")
 		$SM.set('inventory', Character.inventory);
 	},
 
@@ -193,8 +195,6 @@ export const Character = {
 			// use the effect in the inventory; just in case a name matches but the effect
 			// does not, assume the inventory item is the source of truth
 			ItemList[item].onUse();
-			// please don't make this unreadable nonsense in a future refactor, just
-			// let it be this way
 			if (typeof(ItemList[item].destroyOnUse) == "function" && ItemList[item].destroyOnUse()) {
 				Character.removeFromInventory(item);
 			} else if (ItemList[item].destroyOnUse) {
@@ -202,7 +202,6 @@ export const Character = {
 			}
 		}
 
-		// TODO: write to $SM
 		$SM.set('inventory', Character.inventory);
 	},
 
@@ -216,7 +215,6 @@ export const Character = {
 			Character.applyEquipmentEffects();
 		}
 
-		// TODO: write to $SM
 		$SM.set('equippedItems', Character.equippedItems);
 		$SM.set('inventory', Character.inventory);
 	},
@@ -230,7 +228,7 @@ export const Character = {
 			Character.perks[perk.name] = perk;
 		}
 
-		// TODO: write to $SM
+		
 		$SM.set('perks', Character.perks)
 	},
 
@@ -348,6 +346,7 @@ export const Character = {
 		if (typeof(QuestLog[quest]) !== "undefined") {
 			Character.questStatus[quest] = phase;
 
+			Notifications.notify(null, "Quest Log updated.");
 			$SM.set('questStatus', Character.questStatus);
 		}
 	},
@@ -368,6 +367,7 @@ export const Character = {
 			Character.questStatus[quest] = -1;
 		}
 
+		Notifications.notify(null, "Quest Log updated.");
 		$SM.set('questStatus', Character.questStatus);
 	},
 

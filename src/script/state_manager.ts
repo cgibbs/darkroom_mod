@@ -104,7 +104,7 @@ var StateManager = {
 
 		Engine.log(stateName + ' ' + value);
 		
-		if(!noEvent) {
+		if (typeof(noEvent) == "undefined" || noEvent == true) {
 			Engine.saveGame();
 			$SM.fireUpdate(stateName);
 		}		

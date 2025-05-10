@@ -2,6 +2,7 @@ import { _ } from "../../lib/translate";
 
 export interface Item {
     name: string,
+    pluralName?: string,
     text: string,
     fullText?: Array<string>,
     slot?: string,
