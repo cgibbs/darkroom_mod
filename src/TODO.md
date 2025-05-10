@@ -55,4 +55,6 @@ Need to make the button images stuff much less janky. Make button size and image
 
 Add description text for Locations!
 
-IN PROGRESS Add a Quest Log button and UI area!
+DONE Add a Quest Log button and UI area!
+
+Quest Log could use a "Complete" section that's accessible by button. This will be more useful when there's more than one quest, and when that one quest can actually be completed, lol.
