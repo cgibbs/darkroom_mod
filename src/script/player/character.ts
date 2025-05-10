@@ -241,11 +241,12 @@ export const Character = {
 		Character.questLogDisplay
 		// set up click and hover handlers for quests
 		.on("click", "#quest", function() {
+			console.log("test");
 			console.log($(this));
 			Character.displayQuest($(this).data("name"));
-			Character.closeQuestLog();
 		}).on("mouseenter", "#quest", function() {
 			// description shouldn't be on a tooltip, obvs, but fix this later
+			console.log("moused over");
 			var tooltip = $("<div id='tooltip' class='tooltip'>" + QuestLog[$(this).data("name")].logDescription + "</div>")
 			.attr('data-name', quest);
 			tooltip.appendTo($(this));
@@ -259,7 +260,7 @@ export const Character = {
 		
 		for(var quest in Character.questStatus) {
 			var inventoryElem = $('<div>')
-			.attr('id', "#quest")
+			.attr('id', "quest")
 			.attr('data-name', quest)
 			.text(QuestLog[quest].name)
 			.appendTo(questLogDisplay);
@@ -277,12 +278,54 @@ export const Character = {
 	},
 
 	displayQuest: function(quest: string) {
-		Notifications.notify(null, "I'm a placeholder for displaying a quest!");
+		const questLogDisplay = Character.questLogDisplay;
+		questLogDisplay.empty();
+		const currentQuest = QuestLog[quest];
+
+		$('<div>').attr('id', 'quest').addClass('eventPanel').css('opacity', '0');
+		$('<div>').addClass('eventTitle').text(currentQuest.name).appendTo(questLogDisplay);
+
+		var questLogDesc = $('<div>').text(currentQuest.logDescription)
+			.css("margin-bottom", "20px")
+			.appendTo(questLogDisplay);
+
+		for (var i = 0; i < (Character.questStatus[quest] as number); i++) {
+			var phaseDesc = $('<div>').text(currentQuest.phases[i].description)
+			.css("margin-bottom", "10px")
+			.appendTo(questLogDisplay);
+			for (var j = 0; j < Object.keys(currentQuest.phases[i].requirements).length; j++) {
+				var requirementsDesc = $('<div>').text(currentQuest.phases[i].requirements[j].renderRequirement())
+					.css("margin-bottom", "20px")
+					.css("margin-left", "20px")
+					.css('font-style', 'italic')
+					.appendTo(questLogDisplay);
+			}
+		}
+
+		// TODO: make this CSS an actual class somewhere, I'm sure I'll need it again
+		$('<div>').attr('id', 'buttons').css("margin-top", "20px").appendTo(questLogDisplay);
+
+		var b = Button.Button({
+			id: "backToQuestLog",
+			text: "Back to Quest Log",
+			click: Character.backToQuestLog
+		}).appendTo($('#buttons', questLogDisplay));
+
+		var b = Button.Button({
+			id: "closeQuestLog",
+			text: "Close",
+			click: Character.closeQuestLog
+		}).appendTo($('#buttons', questLogDisplay));
 	},
 
 	closeQuestLog: function() {
 		Character.questLogDisplay.empty();
 		Character.questLogDisplay.remove();
+	},
+
+	backToQuestLog: function() {
+		Character.closeQuestLog();
+		Character.openQuestLog();
 	},
 
 	setQuestStatus: function(quest, phase) {

@@ -7,10 +7,10 @@ export const QuestLog: {[id: string]: Quest} = {
         name: "Supplies for the Mayor",
         logDescription: "The mayor has asked you to get some supplies for him from the outpost.",
         phases: {
-            1: {
+            0: {
                 description: "Go check out the Road to the Outpost to see if you can find out more",
                 requirements: {
-                    1: {
+                    0: {
                         renderRequirement: function() {
                             if ($SM.get('road.open') 
                                 && typeof($SM.get('Road.counter')) !== "undefined"
@@ -32,10 +32,10 @@ export const QuestLog: {[id: string]: Quest} = {
                     },
                 }
             },
-            2: {
+            1: {
                 description: "Ask the Captain of the Outpost about the supplies",
                 requirements: {
-                    1: {
+                    0: {
                         renderRequirement: function() {
                             if ($SM.get('superlikely.outpostUnlock') as number > 0
                                 && typeof($SM.get('outpost.captain.haveMet') == "undefined"))
@@ -59,10 +59,10 @@ export const QuestLog: {[id: string]: Quest} = {
                     }
                 }
             },
-            3: {
+            2: {
                 description: "Return the supplies to the Mayor",
                 requirements: {
-                    1: {
+                    0: {
                         renderRequirement: function() {
                             if (typeof($SM.get('village.mayor.haveGivenSupplies')) == "undefined")
                                 return  "I should hand these supplies over to the Mayor";
