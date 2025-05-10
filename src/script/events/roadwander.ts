@@ -94,12 +94,14 @@ export const EventsRoadWander: Array<ADREvent> = [
             return (
                 (Engine.activeModule == Road)
                 && ($SM.get('Road.counter') as number > 6) // can't happen TOO early
-                && (typeof($SM.get('superlikely.outpostUnlock')) == "undefined"
+                && ($SM.get('superlikely.outpostUnlock') == undefined
                     || $SM.get('superlikely.outpostUnlock') as number < 1) // can't happen twice
             );
         },
         isSuperLikely: function() {
-            return ($SM.get('superlikely.outpostUnlock') as number < 1) && ($SM.get('Road.counter') as number > 10);
+            return ((( $SM.get('superlikely.outpostUnlock') === undefined)
+                        || $SM.get('superlikely.outpostUnlock') as number < 1)) 
+                    && ($SM.get('Road.counter') as number > 10);
         },
         scenes: {
             'start': {

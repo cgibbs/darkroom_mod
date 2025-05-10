@@ -12,7 +12,7 @@ import { Liz } from "../characters/liz";
 import { Mayor } from "../characters/mayor";
 import { Events } from "../events";
 
-export const Room = {
+export const Village = {
 	// times in (minutes * seconds * milliseconds)
 	_FIRE_COOL_DELAY: 5 * 60 * 1000, // time after a stoke before the fire cools
 	_ROOM_WARM_DELAY: 30 * 1000, // time between room temperature updates
@@ -23,8 +23,13 @@ export const Room = {
 	buttons:{},
 	
 	changed: false,
+
+	description: [
+		_("Nestled in the woods, this village is scarcely more than a hamlet, despite you thinking those two words are synonyms. They're not, go google 'hamlet' right now if you don't believe me."),
+		_("The village is quiet at the moment; there aren't enough hands for anyone to remain idle for long.")
+	],
 	
-	name: _("Room"),
+	name: _("Village"),
 	init: function(options?) {
 		this.options = $.extend(
 			this.options,
@@ -38,12 +43,12 @@ export const Room = {
 			this._NEED_WOOD_DELAY = 5000;
 		}
 		
-		// Create the room tab
-		this.tab = Header.addLocation(_("A Chill Village"), "room", Room);
+		// Create the Village tab
+		this.tab = Header.addLocation(_("A Chill Village"), "village", Village);
 		
-		// Create the Room panel
+		// Create the Village panel
 		this.panel = $('<div>')
-			.attr('id', "roomPanel")
+			.attr('id', "villagePanel")
 			.addClass('location')
 			.appendTo('div#locationSlider');
 		
@@ -55,7 +60,7 @@ export const Room = {
 			click: Mayor.talkToMayor,
 			width: '80px',
 			cost: {}
-		}).appendTo('div#roomPanel');
+		}).appendTo('div#villagePanel');
 
 		Button.Button({
 			id: 'lizButton',
@@ -63,15 +68,15 @@ export const Room = {
 			click: Liz.talkToLiz,
 			width: '80px',
 			cost: {}
-		}).appendTo('div#roomPanel');
+		}).appendTo('div#villagePanel');
 
 		Button.Button({
 			id: 'newBuildingButton',
 			text: _('Check out the new building'),
-			click: Room.tempBuildingMessage,
+			click: Village.tempBuildingMessage,
 			width: '80px',
 			cost: {}
-		}).appendTo('div#roomPanel');
+		}).appendTo('div#villagePanel');
 
 		var buildingButton = $('#newBuildingButton.button');
 		buildingButton.hide();
@@ -80,13 +85,13 @@ export const Room = {
 		lizButton.hide();
 		
 		// Create the stores container
-		$('<div>').attr('id', 'storesContainer').appendTo('div#roomPanel');
+		$('<div>').attr('id', 'storesContainer').appendTo('div#villagePanel');
 		
 		//subscribe to stateUpdates
 		// @ts-ignore
-		$.Dispatch('stateUpdate').subscribe(Room.handleStateUpdates);
+		$.Dispatch('stateUpdate').subscribe(Village.handleStateUpdates);
 		
-		Room.updateButton();
+		Village.updateButton();
 	},
 	
 	options: {}, // Nothing for now
@@ -98,19 +103,19 @@ export const Room = {
 	},
 	
 	onArrival: function(transition_diff) {
-		Room.setTitle();
+		Village.setTitle();
 		if($SM.get('game.builder.level') == 3) {
 			$SM.add('game.builder.level', 1);
 			$SM.setIncome('builder', {
 				delay: 10,
 				stores: {'wood' : 2 }
 			});
-			Notifications.notify(Room, _("the stranger is standing by the fire. she says she can help. says she builds things."));
+			Notifications.notify(Village, _("the stranger is standing by the fire. she says she can help. says she builds things."));
 		}
 
 		Engine.moveStoresView(null, transition_diff);
 
-		Weather.initiateWeather(Room.availableWeather, 'room');
+		Weather.initiateWeather(Village.availableWeather, 'village');
 	},
 	
 	TempEnum: {
@@ -150,13 +155,13 @@ export const Room = {
 		if(Engine.activeModule == this) {
 			document.title = title;
 		}
-		$('div#location_room').text(title);
+		$('div#location_village').text(title);
 	},
 	
 	updateButton: function() {
 		var light = $('#lightButton.button');
 		var stoke = $('#stokeButton.button');
-		if($SM.get('game.fire.value') == Room.FireEnum.Dead.value && stoke.css('display') != 'none') {
+		if($SM.get('game.fire.value') == Village.FireEnum.Dead.value && stoke.css('display') != 'none') {
 			stoke.hide();
 			light.show();
 			if(stoke.hasClass('disabled')) {
@@ -187,7 +192,7 @@ export const Room = {
 	
 	handleStateUpdates: function(e){
 		if(e.category == 'stores'){
-			// Room.updateBuildButtons();
+			// Village.updateBuildButtons();
 		} else if(e.category == 'income'){
 		} else if(e.stateName.indexOf('game.buildings') === 0){
 		}

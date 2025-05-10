@@ -4,7 +4,7 @@ import { _ } from "../lib/translate";
 import { $SM } from "./state_manager";
 import { Notifications } from "./notifications";
 import { Events } from "./events";
-import { Room } from "./places/room";
+import { Village } from "./places/village";
 import { Character } from "./player/character";
 import { Weather } from "./weather";
 import { Road } from "./places/road";
@@ -181,18 +181,6 @@ export const Engine = window.Engine = {
 			.text(_('save.'))
 			.click(Engine.exportImport)
 			.appendTo(menu);
-		
-		$('<span>')
-			.addClass('menuBtn')
-			.text(_('app store.'))
-			.click(function() { window.open('https://itunes.apple.com/us/app/a-dark-room/id736683061'); })
-			.appendTo(menu);
-
-		$('<span>')
-			.addClass('menuBtn')
-			.text(_('github.'))
-			.click(function() { window.open('https://github.com/Continuities/adarkroom'); })
-			.appendTo(menu);
 	
 		// subscribe to stateUpdates
 		$.Dispatch('stateUpdate').subscribe(Engine.handleStateUpdates);
@@ -200,7 +188,7 @@ export const Engine = window.Engine = {
 		$SM.init();
 		Notifications.init();
 		Events.init();
-		Room.init();
+		Village.init();
 		Character.init();
 		Weather.init();
 		if($SM.get('road.open')) {
@@ -211,7 +199,7 @@ export const Engine = window.Engine = {
 		}
 
 		Engine.saveLanguage();
-		Engine.travelTo(Room);
+		Engine.travelTo(Village);
 
 	},
 	
@@ -505,19 +493,19 @@ export const Engine = window.Engine = {
 
 			module.onArrival(diff);
 
-			if(Engine.activeModule == Room
+			if(Engine.activeModule == Village
 				//  || Engine.activeModule == Path
 				) {
 				// Don't fade out the weapons if we're switching to a module
 				// where we're going to keep showing them anyway.
-				if (module != Room 
+				if (module != Village 
 					// && module != Path
 				) {
 					$('div#weapons').animate({opacity: 0}, 300);
 				}
 			}
 
-			if(module == Room
+			if(module == Village
 				//  || module == Path
 				) {
 				$('div#weapons').animate({opacity: 1}, 300);

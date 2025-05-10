@@ -113,7 +113,7 @@ const dk2Quest: Quest = {
             requirements: {
                 1: {
                     renderRequirement: function() {
-                        if (typeof($SM.get('arcade.highestScore')) == "undefined")
+                        if ($SM.get('arcade.highestScore') === undefined)
                             return "I need to play the arcade cabinet in the mall";
                         else if ($SM.get('arcade.highestScore') as number < 2300)
                             return "Highest score: " + $SM.get('arcade.highestScore') + "/2300";

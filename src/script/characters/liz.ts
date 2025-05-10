@@ -1,7 +1,7 @@
 import { Events } from "../events";
 import { $SM } from "../state_manager";
 import { _ } from "../../lib/translate";
-import { Room } from "../places/room";
+import { Village } from "../places/village";
 import { Character } from "../player/character";
 
 export const Liz = {
@@ -9,7 +9,7 @@ export const Liz = {
 		$SM.set('village.lizActive', 1);
 		$SM.set('village.liz.canFindBook', 0);
 		$SM.set('village.liz.hasBook', 1);
-		Room.updateButton();
+		Village.updateButton();
 	},
 
 	talkToLiz: function() {

@@ -60,3 +60,5 @@ DONE Add a Quest Log button and UI area!
 Quest Log could use a "Complete" section that's accessible by button. This will be more useful when there's more than one quest, and when that one quest can actually be completed, lol.
 
 DONE Add a notification when Quest Log or inventory is updated.
+
+Implement a shorthand function for state-based descriptive text, and use it on the Village's description based on whether Liz is known, whether the first quest is completed, etc. Then add it to the Mayor's quest text, for when he inevitably gives you another quest.

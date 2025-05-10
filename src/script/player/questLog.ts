@@ -13,20 +13,20 @@ export const QuestLog: {[id: string]: Quest} = {
                     0: {
                         renderRequirement: function() {
                             if ($SM.get('road.open') 
-                                && typeof($SM.get('Road.counter')) == "undefined")
+                                && $SM.get('Road.counter') === undefined)
                                 return "I should go check out the Road to the Outpost";
                             else if ($SM.get('road.open') 
-                                && typeof($SM.get('Road.counter')) !== "undefined"
-                                && typeof($SM.get('superlikely.outpostUnlock')) == "undefined")
+                                && $SM.get('Road.counter') !== undefined
+                                && $SM.get('superlikely.outpostUnlock') === undefined)
                                 return "I should keep exploring the Road to the Outpost";
                             else if ($SM.get('road.open') 
-                                && typeof($SM.get('superlikely.outpostUnlock')) !== "undefined"
+                                && $SM.get('superlikely.outpostUnlock') !== undefined
                                 && $SM.get('superlikely.outpostUnlock') as number > 0)
                                 return "I've found the way to the Outpost";
                         },
                         isComplete: function() {
                             return ($SM.get('road.open') 
-                            && typeof($SM.get('superlikely.outpostUnlock')) !== "undefined"
+                            && $SM.get('superlikely.outpostUnlock') !== undefined
                             && $SM.get('superlikely.outpostUnlock') as number > 0);
                         }
                     },
@@ -38,24 +38,24 @@ export const QuestLog: {[id: string]: Quest} = {
                     0: {
                         renderRequirement: function() {
                             if ($SM.get('superlikely.outpostUnlock') as number > 0
-                                && typeof($SM.get('outpost.captain.haveMet')) == "undefined")
+                                && $SM.get('outpost.captain.haveMet') === undefined)
                                 return "I should try talking to the Captain of the Outpost";
                             else if ($SM.get('superlikely.outpostUnlock') as number > 0
-                                && typeof($SM.get('outpost.captain.haveMet')) !== "undefined"
+                                && $SM.get('outpost.captain.haveMet') !== undefined
                                 && $SM.get('outpost.captain.haveMet') as number > 0
-                                && typeof(Character.inventory["Captain.supplies"]) == "undefined")
+                                && Character.inventory["Captain.supplies"] === undefined)
                                 return "I should ask the Captain about the missing supplies";
                             else if ($SM.get('superlikely.outpostUnlock') as number > 0
-                                && typeof($SM.get('outpost.captain.haveMet')) !== "undefined"
+                                && $SM.get('outpost.captain.haveMet') !== undefined
                                 && $SM.get('outpost.captain.haveMet') as number > 0
-                                && typeof(Character.inventory["Captain.supplies"]) !== "undefined")
+                                && Character.inventory["Captain.supplies"] !== undefined)
                                 return "I've gotten the supplies from the Captain";
                         },
                         isComplete: function() {
                             return ($SM.get('superlikely.outpostUnlock') as number > 0
-                            && typeof($SM.get('outpost.captain.haveMet') !== "undefined")
+                            && $SM.get('outpost.captain.haveMet') !== undefined
                             && $SM.get('outpost.captain.haveMet') as number > 0
-                            && typeof(Character.inventory["Captain.supplies"]) !== "undefined");
+                            && Character.inventory["Captain.supplies"] !== undefined);
                         }
                     }
                 }
@@ -65,14 +65,14 @@ export const QuestLog: {[id: string]: Quest} = {
                 requirements: {
                     0: {
                         renderRequirement: function() {
-                            if (typeof($SM.get('village.mayor.haveGivenSupplies')) == "undefined")
+                            if ($SM.get('village.mayor.haveGivenSupplies') === undefined)
                                 return  "I should hand these supplies over to the Mayor";
-                            else if (typeof($SM.get('village.mayor.haveGivenSupplies')) == "undefined"
+                            else if ($SM.get('village.mayor.haveGivenSupplies') === undefined
                                 && $SM.get('village.mayor.haveGivenSupplies') as number > 0)
                                 return "I've handed over the supplies to the Mayor";
                         },
                         isComplete: function() {
-                            return (typeof($SM.get('village.mayor.haveGivenSupplies')) == "undefined"
+                            return ($SM.get('village.mayor.haveGivenSupplies') === undefined
                             && $SM.get('village.mayor.haveGivenSupplies') as number > 0);
                         }
                     }

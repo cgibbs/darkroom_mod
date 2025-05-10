@@ -2,7 +2,7 @@
  * Module that handles the random event system
  */
 import { EventsRoadWander } from "./events/roadwander";
-import { EventsRoom } from "./events/room";
+import { EventsVillage } from "./events/village";
 import { Engine } from "./engine";
 import { _ } from "../lib/translate";
 import { $SM } from "./state_manager";
@@ -62,11 +62,11 @@ export const Events = {
 		
 		// Build the Event Pool
 		Events.EventPool = [].concat(
-			EventsRoom as any,
+			EventsVillage as any,
 			EventsRoadWander as any
 		);
 
-		this.Locations["Room"] = EventsRoom;
+		this.Locations["Village"] = EventsVillage;
 		this.Locations["RoadWander"] = EventsRoadWander;
 		
 		Events.eventStack = [];

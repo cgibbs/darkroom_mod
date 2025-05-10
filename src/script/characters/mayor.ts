@@ -4,6 +4,7 @@ import { _ } from "../../lib/translate";
 import { Liz } from "./liz";
 import { Road } from "../places/road";
 import { Character } from "../player/character";
+import { Village } from "../places/village";
 
 export const Mayor = {
     talkToMayor: function() {
@@ -65,7 +66,7 @@ export const Mayor = {
 							nextScene: {1: 'quest'},
 							available: () =>
 								// not available if mayorSupplies is in-progress
-								(Character.questStatus["mayorSupplies"] == "undefined")
+								(Character.questStatus["mayorSupplies"] === undefined)
 								// re-add this condition later, we need to send them to a different
 								//   quest dialog if they already did the first quest
 								// || (Character.questStatus["mayorSupplies"] == -1)
@@ -75,15 +76,16 @@ export const Mayor = {
 							text: _('Hand over the supplies'),
 							nextScene: {1: 'giveSupplies'},
 							available: () => 
-								(typeof($SM.get('village.mayor.haveGivenSupplies')) == "undefined") 
-								&& (Character.questStatus["mayorSupplies"] !== "undefined")
+								($SM.get('village.mayor.haveGivenSupplies') === undefined) 
+								&& (Character.questStatus["mayorSupplies"] !== undefined)
 								&& Character.inventory["Captain.supplies"],
 							visible: () =>
-								(Character.questStatus["mayorSupplies"] !== "undefined"),
+								(Character.questStatus["mayorSupplies"] !== undefined),
 							onChoose: () => {
 								Character.removeFromInventory("Captain.supplies");
 								$SM.set('village.mayor.haveGivenSupplies', 1);
 								Character.checkQuestStatus("mayorSupplies");
+								Village.updateButton();
 							}
 						},
 						'leave': {
@@ -129,7 +131,7 @@ export const Mayor = {
 		// 	$SM.set('quest.supplies', 1);
 		// 	Road.init();
 		// }
-		if (typeof(Character.questStatus["mayorSupplies"]) == "undefined") {
+		if (Character.questStatus["mayorSupplies"] === undefined) {
 			Character.setQuestStatus("mayorSupplies", 0);
 			Road.init();
 		}

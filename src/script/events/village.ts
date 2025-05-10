@@ -1,17 +1,17 @@
 /**
- * Events that can occur when the Room module is active
+ * Events that can occur when the Village module is active
  **/
 import { Engine } from "../engine";
 import { $SM } from "../state_manager";
-import { Room } from '../places/room';
+import { Village } from '../places/village';
 import { _ } from "../../lib/translate";
 import { ADREvent } from "../events";
 
-export const EventsRoom: Array<ADREvent> = [
+export const EventsVillage: Array<ADREvent> = [
 	{ /* The Nomad  --  Merchant */
 		title: _('The Nomad'),
 		isAvailable: function() {
-			return Engine.activeModule == Room && $SM.get('stores.fur', true) as number > 0;
+			return Engine.activeModule == Village && $SM.get('stores.fur', true) as number > 0;
 		},
 		scenes: {
 			'start': {
@@ -49,7 +49,7 @@ export const EventsRoom: Array<ADREvent> = [
 	{ /* Noises Outside  --  gain wood/fur */
 		title: _('Noises'),
 		isAvailable: function() {
-			return Engine.activeModule == Room && $SM.get('stores.wood');
+			return Engine.activeModule == Village && $SM.get('stores.wood');
 		},
 		scenes: {
 			'start': {
@@ -100,7 +100,7 @@ export const EventsRoom: Array<ADREvent> = [
 	{ /* The Beggar  --  trade fur for better good */
 		title: _('The Beggar'),
 		isAvailable: function() {
-			return Engine.activeModule == Room && $SM.get('stores.fur');
+			return Engine.activeModule == Village && $SM.get('stores.fur');
 		},
 		scenes: {
 			start: {
@@ -171,7 +171,7 @@ export const EventsRoom: Array<ADREvent> = [
 	{ /* The Scout  --  Map Merchant */
 		title: _('The Scout'),
 		isAvailable: function() {
-			return Engine.activeModule == Room && $SM.get('features.location.world');
+			return Engine.activeModule == Village && $SM.get('features.location.world');
 		},
 		scenes: {
 			'start': {
@@ -210,7 +210,7 @@ export const EventsRoom: Array<ADREvent> = [
 	{ /* The Wandering Master */
 		title: _('The Master'),
 		isAvailable: function() {
-			return Engine.activeModule == Room && $SM.get('features.location.world');
+			return Engine.activeModule == Village && $SM.get('features.location.world');
 		},
 		scenes: {
 			'start': {

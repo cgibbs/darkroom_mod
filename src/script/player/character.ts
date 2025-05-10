@@ -206,7 +206,7 @@ export const Character = {
 	},
 
 	equipItem: function(item) {
-		if (ItemList[item].slot && typeof(Character.equippedItems[ItemList[item].slot]) !== "undefined") {
+		if (ItemList[item].slot && Character.equippedItems[ItemList[item].slot] !== undefined) {
 			Character.addToInventory(Character.equippedItems[ItemList[item].slot]);
 			Character.equippedItems[ItemList[item].slot] = item;
 			if (ItemList[item].onEquip) {
@@ -240,13 +240,6 @@ export const Character = {
 		// set up click and hover handlers for quests
 		.on("click", "#quest", function() {
 			Character.displayQuest($(this).data("name"));
-		}).on("mouseenter", "#quest", function() {
-			// description shouldn't be on a tooltip, obvs, but fix this later
-			var tooltip = $("<div id='tooltip' class='tooltip'>" + QuestLog[$(this).data("name")].logDescription + "</div>")
-			.attr('data-name', quest);
-			tooltip.appendTo($(this));
-		}).on("mouseleave", "#quest", function() {
-			$("#tooltip", "#" + $(this).data("name")).fadeOut().remove();
 		});
 		$('<div>').addClass('eventTitle').text('Quest Log').appendTo(questLogDisplay);
 		var questLogDesc = $('<div>').text("Click quest names to see more info.")
@@ -343,7 +336,7 @@ export const Character = {
 
 	setQuestStatus: function(quest, phase) {
 		// might be a good idea to check for linear quest progression here?
-		if (typeof(QuestLog[quest]) !== "undefined") {
+		if (QuestLog[quest] !== undefined) {
 			Character.questStatus[quest] = phase;
 
 			Notifications.notify(null, "Quest Log updated.");
@@ -361,7 +354,7 @@ export const Character = {
 		}
 
 		// if there is a next phase, set questStatus to it
-		if (typeof(QuestLog[quest].phases[Character.questStatus[quest] + 1]) !== "undefined") {
+		if (QuestLog[quest].phases[Character.questStatus[quest] + 1] !== undefined) {
 			Character.questStatus[quest] += 1;
 		} else { // else set it to complete
 			Character.questStatus[quest] = -1;

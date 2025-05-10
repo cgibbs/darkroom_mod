@@ -19,7 +19,9 @@ export const Captain = {
                     buttons: {
                         'askAboutSupplies': {
                             text: _('Ask About Supplies'),
-                            nextScene: {1: 'askAboutSupplies'}
+                            nextScene: {1:'askAboutSupplies'},
+                            onChoose: Captain.handleSupplies,
+                            available: () => !$SM.get('outpost.captain.askedAboutSupplies')
                         },
                         'askAboutCaptain': {
                             text: _('Ask About Captain'),
@@ -80,6 +82,7 @@ export const Captain = {
                         'askAboutSupplies': {
                             text: _('Ask About Supplies'),
                             nextScene: {1:'askAboutSupplies'},
+                            onChoose: Captain.handleSupplies,
                             available: () => !$SM.get('outpost.captain.askedAboutSupplies')
                         },
                         'askAboutCaptain': {
@@ -101,7 +104,7 @@ export const Captain = {
                     ],
                     buttons: {
                         'okay': {
-                            text: _('Aite'),
+                            text: _('Good Stuff'),
                             nextScene: 'end'
                         }
                     }
@@ -114,7 +117,6 @@ export const Captain = {
         console.log('handling supplies');
         $SM.set('outpost.captain.askedAboutSupplies', 1);
         Character.addToInventory("Captain.supplies");
-        // Character.setQuestStatus("mayorSupplies", 2);
         Character.checkQuestStatus("mayorSupplies");
     }
 }
