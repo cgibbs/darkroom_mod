@@ -28,7 +28,7 @@ export const ItemList: {[id: string]: Item} = {
                         buttons: {
                             'okay': {
                                 text: _('Something cooler than reading, probably'),
-                                onChoose: Character.addToInventory("Liz.boringBook"),
+                                onChoose: () => Character.addToInventory("Liz.boringBook"),
                                 nextScene: 'end'
                             }
                         }
@@ -103,7 +103,7 @@ export const ItemList: {[id: string]: Item} = {
                         buttons: {
                             'okay': {
                                 text: _('Hell yeah, Adolf Loos style'),
-                                onChoose: Character.addToInventory("Stranger.silverKnife"),
+                                onChoose: () => Character.addToInventory("Stranger.silverKnife"),
                                 nextScene: 'end'
                             }
                         }

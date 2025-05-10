@@ -2,7 +2,6 @@
  * Module that handles the random event system
  */
 import { EventsRoadWander } from "./events/roadwander";
-import { EventsVillage } from "./events/village";
 import { Engine } from "./engine";
 import { _ } from "../lib/translate";
 import { $SM } from "./state_manager";
@@ -15,15 +14,19 @@ export interface ADREvent {
 	isSuperLikely?: Function,
 	scenes: {
 		// type this out better using Index Signatures
+		[id: string]: Scene
 	},
 	eventPanel?: any
 }
 
 export interface Scene {
-	seenFlag: Function,
-	nextScene: string,
-	onLoad: Function,
+	seenFlag?: Function,
+	nextScene?: string,
+	onLoad?: Function,
 	text: Array<string>,
+	reward?: any,
+	notification?: string,
+	blink?: boolean,
 	buttons: {
 		[id: string]: EventButton
 	}
@@ -34,7 +37,12 @@ export interface EventButton {
 	nextScene: {
 		[id: number]: string
 	},
-	onChoose: Function
+	available?: Function,
+	visible?: Function,
+	reward?: any,
+	cost?: any,
+	notification?: string,
+	onChoose?: Function
 }
 
 export const Events = {
@@ -62,11 +70,9 @@ export const Events = {
 		
 		// Build the Event Pool
 		Events.EventPool = [].concat(
-			EventsVillage as any,
 			EventsRoadWander as any
 		);
 
-		this.Locations["Village"] = EventsVillage;
 		this.Locations["RoadWander"] = EventsRoadWander;
 		
 		Events.eventStack = [];
