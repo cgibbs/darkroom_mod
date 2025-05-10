@@ -7,6 +7,13 @@ import { Weather } from "../weather";
 import { Events } from "../events";
 
 export const Road = {
+	description: [
+		_("You're on a dusty road between the Village and the Outpost. The road cuts through " 
+			+ "tall grass, brush, and trees, limiting visibility and ensuring that you'll have " 
+			+ "to deal with some nonsense."),
+		_("The hair on the back of your neck prickles slightly in anticipation.")
+	],
+
     init: function(options?) {
         this.options = $.extend(
 			this.options,
@@ -22,16 +29,23 @@ export const Road = {
         .addClass('location')
         .appendTo('div#locationSlider');
 
+		var desc = $('<div>').attr('id', 'description').appendTo(this.panel);
+
+		for(var i in this.description) {
+			$('<div>').text(this.description[i]).appendTo(desc);
+		}
+
         Engine.updateSlider();
 
-        //new 
 		Button.Button({
 			id: 'wanderButton',
 			text: _('Wander Around'),
 			click: Road.wanderEvent,
 			width: '80px',
 			cost: {} // TODO: make there be a cost to doing stuff?
-		}).appendTo('div#roadPanel');
+		})
+		.addClass('locationButton')
+		.appendTo('div#roadPanel');
 
         Road.updateButton();
 

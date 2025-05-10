@@ -25,7 +25,9 @@ export const Village = {
 	changed: false,
 
 	description: [
-		_("Nestled in the woods, this village is scarcely more than a hamlet, despite you thinking those two words are synonyms. They're not, go google 'hamlet' right now if you don't believe me."),
+		_("Nestled in the woods, this village is scarcely more than a hamlet, " 
+			+ "despite you thinking those two words are synonyms. They're not, " 
+			+ "go google 'hamlet' right now if you don't believe me."),
 		_("The village is quiet at the moment; there aren't enough hands for anyone to remain idle for long.")
 	],
 	
@@ -51,6 +53,12 @@ export const Village = {
 			.attr('id', "villagePanel")
 			.addClass('location')
 			.appendTo('div#locationSlider');
+
+		var desc = $('<div>').attr('id', 'description').appendTo(this.panel);
+
+		for(var i in this.description) {
+			$('<div>').text(this.description[i]).appendTo(desc);
+		}
 		
 		Engine.updateSlider();
 
@@ -60,7 +68,9 @@ export const Village = {
 			click: Mayor.talkToMayor,
 			width: '80px',
 			cost: {}
-		}).appendTo('div#villagePanel');
+		})
+		.addClass('locationButton')
+		.appendTo('div#villagePanel');
 
 		Button.Button({
 			id: 'lizButton',
@@ -68,7 +78,9 @@ export const Village = {
 			click: Liz.talkToLiz,
 			width: '80px',
 			cost: {}
-		}).appendTo('div#villagePanel');
+		})
+		.addClass('locationButton')
+		.appendTo('div#villagePanel');
 
 		Button.Button({
 			id: 'newBuildingButton',
@@ -76,7 +88,9 @@ export const Village = {
 			click: Village.tempBuildingMessage,
 			width: '80px',
 			cost: {}
-		}).appendTo('div#villagePanel');
+		})
+		.addClass('locationButton')
+		.appendTo('div#villagePanel');
 
 		var buildingButton = $('#newBuildingButton.button');
 		buildingButton.hide();

@@ -7,6 +7,13 @@ import { Header } from '../header';
 import { _ } from '../../lib/translate';
 
 export const Outpost = {
+	description: [
+		_("You're in a small but bustling military outpost. Various members " 
+			+ "of the rank-and-file go about their business, paying you little mind."),
+		_("One tent stands out from the rest; the finely-embroidered details and " + 
+			"golden icon above the entrance mark it as the commanding officer's quarters.")
+	],
+
     init: function(options?) {
         this.options = $.extend(
 			this.options,
@@ -22,6 +29,13 @@ export const Outpost = {
         .addClass('location')
         .appendTo('div#locationSlider');
 
+		// Create the description text
+		var desc = $('<div>').attr('id', 'description').appendTo(this.panel);
+
+		for(var i in this.description) {
+			$('<div>').text(this.description[i]).appendTo(desc);
+		}
+
         Engine.updateSlider();
 
         // new 
@@ -30,7 +44,9 @@ export const Outpost = {
 			text: _('Speak with The Captain'),
 			click: Captain.talkToCaptain,
 			width: '80px'
-		}).appendTo('div#outpostPanel');
+		})
+		.addClass('locationButton')
+		.appendTo('div#outpostPanel');
 
         Outpost.updateButton();
 

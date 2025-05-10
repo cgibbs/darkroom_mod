@@ -53,12 +53,16 @@ DONE, JUST USE `npm run deploy` INSTEAD Deployment is broken by the new file str
 
 Need to make the button images stuff much less janky. Make button size and image size work together more cleanly (currently button height is hardcoded to 170px if there's an image provided to the button). Make text more readable.
 
-Add description text for Locations!
+DONE Add description text for Locations!
 
 DONE Add a Quest Log button and UI area!
 
-Quest Log could use a "Complete" section that's accessible by button. This will be more useful when there's more than one quest, and when that one quest can actually be completed, lol.
+KINDA DELAYED THE NECESSITY OF THIS Quest Log could use a "Complete" section that's accessible by button. This will be more useful when there's more than one quest, and when that one quest can actually be completed, lol.
 
 DONE Add a notification when Quest Log or inventory is updated.
 
+Refactor Locations to have less repeated code around initializing and rendering them, maybe.
+
 Implement a shorthand function for state-based descriptive text, and use it on the Village's description based on whether Liz is known, whether the first quest is completed, etc. Then add it to the Mayor's quest text, for when he inevitably gives you another quest.
+
+Add more RoadWander events, having only the one makes it seem broken.
