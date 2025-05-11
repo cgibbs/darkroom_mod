@@ -300,13 +300,13 @@ export const Village = {
 
 							$SM.set('diceGame.hisRoll', diceVal);
 
-							if ($SM.get('diceGame.high') && diceVal < 5) {
+							if (($SM.get('diceGame.high') !== undefined) && diceVal < 5) {
 								returnText.push(_('The stranger grimaces.'));
-							} else if ($SM.get('diceGame.high') && diceVal < 8) {
+							} else if (($SM.get('diceGame.high') !== undefined) && diceVal > 8) {
 								returnText.push(_('The stranger grins wickedly.'));
-							} else if ($SM.get('diceGame.low')  && diceVal < 8) {
+							} else if (($SM.get('diceGame.low') !== undefined) && diceVal > 8) {
 								returnText.push(_('The stranger grimaces.'));
-							} else if ($SM.get('diceGame.low') && diceVal < 5) {
+							} else if (($SM.get('diceGame.low') !== undefined) && diceVal < 5) {
 								returnText.push(_('The stranger grins wickedly.'));
 							}
 
