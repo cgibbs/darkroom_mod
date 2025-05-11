@@ -5,6 +5,7 @@ import { Events } from "../events";
 import { Notifications } from "../notifications";
 import { _ } from "../../lib/translate";
 import { QuestLog } from "./questLog";
+import { PerkList } from "./perkList";
 
 export const Character = {
 	inventory: {}, // dictionary using item name as key
@@ -32,6 +33,7 @@ export const Character = {
 
 	// perks given by items, character choices, divine provenance, etc.
 	perks: { },
+	perkArea: null,
 	
 	init: function(options?) {
 		this.options = $.extend(
@@ -80,7 +82,10 @@ export const Character = {
 			Character.questStatus = $SM.get('character.questStatus') as any;
 		}
 
-        $('<div>').text('Character').attr('id', 'title').appendTo('div#character');
+        $('<div>').text('Character')
+		.css('text-decoration', 'underline')
+		.attr('id', 'title')
+		.appendTo('div#character');
 
 		// TODO: replace this with derived stats
         for(var stat in $SM.get('character.rawstats') as any) {
@@ -99,6 +104,14 @@ export const Character = {
 			text: "Quest Log",
 			click: Character.openQuestLog
 		}).appendTo($('#buttons', 'div#character'));
+
+		this.perkArea = $('<div>').attr({
+			id: 'perks',
+			className: 'perks'
+			}).appendTo('div#character');
+
+		// TODO: add Perks list below here
+		this.updatePerks();
 
 		// @ts-ignore
 		window.Character = this;
@@ -220,16 +233,61 @@ export const Character = {
 	},
 
 	grantPerk: function(perk) {
-		if (Character.perks[perk.name]) {
+		if (Character.perks[perk] !== undefined) {
 			if(perk.timeLeft > 0) {
-				Character.perks[perk.name] += perk.timeLeft;
+				Character.perks[perk] += perk.timeLeft;
 			}
 		} else {
-			Character.perks[perk.name] = perk;
+			Character.perks[perk] = perk;
 		}
 
+		this.updatePerks();
+
+		Notifications.notify('null', "Acquired effect: " + PerkList[perk].name);
 		
-		$SM.set('perks', Character.perks)
+		$SM.set('perks', Character.perks);
+	},
+
+	removePerk: function(perk) {
+		if (Character.perks[perk.name] !== undefined) {
+			delete Character.perks[perk.name];
+		}
+
+		this.updatePerks();
+
+		Notifications.notify('null', "Lost effect: " + PerkList[perk].name);
+
+		$SM.set('perks', Character.perks);
+	},
+
+	updatePerks: function() {
+		if (Object.keys(this.perks).length > 0) {
+			$('<div>').text('Perks')
+			.css('text-decoration', 'underline')
+			.css('margin-top', '10px')
+			.attr('id', 'title')
+			.appendTo('div#perks');
+			// set up click and hover handlers for perks
+		this.perkArea
+		.on("click", "#perk", function() {
+			// handle this when we have perk descriptions and stuff
+		}).on("mouseenter", "#perk", function() {
+			var tooltip = $("<div id='tooltip' class='tooltip'>" + PerkList[$(this).data("name")].text + "</div>")
+			.attr('data-name', perk);
+			tooltip.appendTo($(this));
+		}).on("mouseleave", "#perk", function() {
+			$("#tooltip", "#" + $(this).data("name")).fadeOut().remove();
+		});
+
+			for(var perk in Character.perks) {
+				// add mouseover and click stuff
+				var perkElem = $('<div>')
+				.attr('id', 'perk')
+				.attr('data-name', perk)
+				.text(PerkList[perk].name)
+				.appendTo('div#perks');
+			}
+		}
 	},
 
 	openQuestLog: function() {

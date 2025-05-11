@@ -87,8 +87,9 @@ export const EventsRoadWander: Array<ADREvent> = [
             }
         }
     },
+    // Old lady in carriage, shortcut to Outpost
     {
-        title: _('A Rare Opportunity'),
+        title: _('The Stomping of Hooves and Creaking of Wood'),
         isAvailable: function() {
             return Engine.activeModule == Road;
         },
@@ -146,6 +147,63 @@ export const EventsRoadWander: Array<ADREvent> = [
                     'okay': {
                         text: _('Yeah it did'),
                         nextScene: 'end'
+                    }
+                }
+            }
+        }
+    },
+    // Organ trauma
+    {
+        title: _('This Guy Seems Friendly'),
+        isAvailable: function() {
+            return Engine.activeModule == Road;
+        },
+        scenes: {
+            'start': {
+                text: [
+                    _('A man walks up to you with a big grin on his face, and before you can greet him he swiftly socks you in the stomach.'),
+                    _('He walks off whistling while you gasp for breath in the dirt.'),
+                    _('... Man, what a dick.')
+                ],
+                buttons: {
+                    'okay': {
+                        text: _('Fuck me, I guess'),
+                        nextScene: 'end',
+                        onChoose: () => {
+                            Character.grantPerk('tummyPain');
+                            $SM.set('Road.gotPunched', 1);
+                        }
+                    }
+                }
+            }
+        }
+    },
+    // An apology for organ trauma
+    {
+        title: _('This Fucking Guy Again'),
+        isAvailable: function() {
+            return (Engine.activeModule == Road
+                && ($SM.get('Road.gotPunched') !== undefined));
+        },
+        scenes: {
+            'start': {
+                text: [
+                    _('A man walks up to you with a big grin on his face, and before you can greet him he swiftly... apologizes.'),
+                    _('"Hey, I\'m really sorry about punching you in the stomach before. I thought you were someone else. I HATE that guy."'),
+                    _('You\'re not sure this is a good enough reason to not kick this guy\'s ass. Seeing the look on your face, he hastily continues.'),
+                    _('"Anyway, as a token of my apology, please accept this healing tonic, as well as a coupon for a secret item from the store in the village."'),
+                    _('You somewhat awkwardly accept both of these items, though you don\'t think there\'s a store in the vi-'),
+                    _('"Oh, and I\'m the owner of the store in the village. I opened it back up after punching you. You know, to celebrate."'),
+                    _('The man walks off, still grinning.')
+                ],
+                buttons: {
+                    'okay': {
+                        text: _('... Alright'),
+                        nextScene: 'end',
+                        onChoose: () => {
+                            // give healing tonic
+                            // give coupon
+                        }
                     }
                 }
             }
