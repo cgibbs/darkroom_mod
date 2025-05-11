@@ -200,6 +200,10 @@ export const Village = {
 					],
 					dice: 2,
 					buttons:  {
+						roll: {
+							text: _('Roll \'em again'),
+							nextScene: {1: 'start'}
+						},
 						leave: {
 							text: _('Lame'),
 							nextScene: 'end'

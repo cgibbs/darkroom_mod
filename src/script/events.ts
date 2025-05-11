@@ -143,7 +143,7 @@ export const Events = {
 		if (scene.dice !== undefined) {
 			for(var j = 0; j < scene.dice; j++) {
 				const dieVal = this.getRandomInt(6) + 1;
-				const tiltVal = this.getRandomInt(45);
+				const tiltVal = this.getRandomInt(90) - 45;
 				const marginVal = (this.getRandomInt(4) + 2) * 5;
 				desc.append(
 				$('<img>',{id:'die' + dieVal.toString() ,src:'assets/die/die' + dieVal.toString() + '.png'})
