@@ -165,11 +165,11 @@ export const Village = {
 	
 	updateButton: function() {
 		var lizButton = $('#lizButton.button');
-		if($SM.get('village.lizActive')) lizButton.show();
+		if($SM.get('village.lizActive') !== undefined) lizButton.show();
 		var buildingButton = $('#newBuildingButton.button');
-		if($SM.get('village.mayor.haveGivenSupplies')) buildingButton.show();
+		if($SM.get('village.mayor.haveGivenSupplies') !== undefined) buildingButton.show();
 		var storeButton = $('#storeButton.button');
-		if($SM.get('Road.gotApologized')) storeButton.show();
+		if($SM.get('Road.gotApologized') !== undefined) storeButton.show();
 	},
 	
 	
