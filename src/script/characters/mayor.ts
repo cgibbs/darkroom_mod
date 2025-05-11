@@ -98,7 +98,7 @@ export const Mayor = {
 				'quest': {
 					text: [
 						_('The mayor thinks for a moment.'),
-						_('"You know, it\'s been a while since our last shipment of supplies arrived from the outpost. Mind looking into that for us?"'),
+						_('"You know, it\'s been a while since our last shipment of supplies arrived from the Outpost. Mind looking into that for us?"'),
 						_('"You can ask about it at the outpost, or just wander around on the road and see if you find any clues. Either way, it\'s time to hit the road, adventurer!"')
 					],
 					buttons: {

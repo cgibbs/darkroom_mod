@@ -12,7 +12,7 @@ import { Outpost } from "./places/outpost";
 
 export const Engine = window.Engine = {
 	
-	SITE_URL: encodeURIComponent("http://adarkroom.doublespeakgames.com"),
+	SITE_URL: encodeURIComponent("https://cgibbs.github.io/darkroom_mod/index.html"),
 	VERSION: 1.3,
 	MAX_STORE: 99999999999999,
 	SAVE_DISPLAY: 30 * 1000,
@@ -20,66 +20,6 @@ export const Engine = window.Engine = {
 	
 	//object event types
 	topics: {},
-		
-	Perks: {
-		'boxer': {
-			name: _('boxer'),
-			desc: _('punches do more damage'),
-			/// TRANSLATORS : means with more force.
-			notify: _('learned to throw punches with purpose')
-		},
-		'martial artist': {
-			name: _('martial artist'),
-			desc: _('punches do even more damage.'),
-			notify: _('learned to fight quite effectively without weapons')
-		},
-		'unarmed master': {
-			/// TRANSLATORS : master of unarmed combat
-			name: _('unarmed master'),
-			desc: _('punch twice as fast, and with even more force'),
-			notify: _('learned to strike faster without weapons')
-		},
-		'barbarian': {
-			name: _('barbarian'),
-			desc: _('melee weapons deal more damage'),
-			notify: _('learned to swing weapons with force')
-		},
-		'slow metabolism': {
-			name: _('slow metabolism'),
-			desc: _('go twice as far without eating'),
-			notify: _('learned how to ignore the hunger')
-		},
-		'desert rat': {
-			name: _('desert rat'),
-			desc: _('go twice as far without drinking'),
-			notify: _('learned to love the dry air')
-		},
-		'evasive': {
-			name: _('evasive'),
-			desc: _('dodge attacks more effectively'),
-			notify: _("learned to be where they're not")
-		},
-		'precise': {
-			name: _('precise'),
-			desc: _('land blows more often'),
-			notify: _('learned to predict their movement')
-		},
-		'scout': {
-			name: _('scout'),
-			desc: _('see farther'),
-			notify: _('learned to look ahead')
-		},
-		'stealthy': {
-			name: _('stealthy'),
-			desc: _('better avoid conflict in the wild'),
-			notify: _('learned how not to be seen')
-		},
-		'gastronome': {
-			name: _('gastronome'),
-			desc: _('restore more health when eating'),
-			notify: _('learned to make the most of food')
-		}
-	},
 	
 	options: {
 		state: null,
@@ -191,10 +131,10 @@ export const Engine = window.Engine = {
 		Village.init();
 		Character.init();
 		Weather.init();
-		if($SM.get('road.open')) {
+		if($SM.get('Road.open')) {
 			Road.init();
 		}
-		if($SM.get('outpost.open')) {
+		if($SM.get('Outpost.open')) {
 			Outpost.init();
 		}
 
@@ -235,7 +175,6 @@ export const Engine = window.Engine = {
 			Engine.log(e);
 			window.State = {};
 			$SM.set('version', Engine.VERSION);
-			Engine.event('progress', 'new game');
 		}
 	},
 	
@@ -341,12 +280,6 @@ export const Engine = window.Engine = {
 		var decodedSave = Base64.decode(string64);
 		localStorage.gameState = decodedSave;
 		location.reload();
-	},
-
-	event: function(cat, act) {
-		if(typeof ga === 'function') {
-			ga('send', 'event', cat, act);
-		}
 	},
 
 	confirmDelete: function() {
@@ -516,35 +449,6 @@ export const Engine = window.Engine = {
 		}
 	},
 
-	/* Move the stores panel beneath top_container (or to top: 0px if top_container
-		* either hasn't been filled in or is null) using transition_diff to sync with
-		* the animation in Engine.travelTo().
-		*/
-	moveStoresView: function(top_container, transition_diff) {
-		var stores = $('#storesContainer');
-
-		// If we don't have a storesContainer yet, leave.
-		if(typeof(stores) === 'undefined') return;
-
-		if(typeof(transition_diff) === 'undefined') transition_diff = 1;
-
-		if(top_container === null) {
-			stores.animate({top: '0px'}, {queue: false, duration: 300 * transition_diff});
-		}
-		else if(!top_container.length) {
-			stores.animate({top: '0px'}, {queue: false, duration: 300 * transition_diff});
-		}
-		else {
-			stores.animate({
-					top: top_container.height() + 26 + 'px'
-				},
-				{
-					queue: false, 
-					duration: 300 * transition_diff
-			});
-		}
-	},
-
 	log: function(msg) {
 		if(this._log) {
 			console.log(msg);
@@ -559,34 +463,6 @@ export const Engine = window.Engine = {
 	updateOuterSlider: function() {
 		var slider = $('#outerSlider');
 		slider.width((slider.children().length * 700) + 'px');
-	},
-
-	getIncomeMsg: function(num, delay) {
-		return _("{0} per {1}s", (num > 0 ? "+" : "") + num, delay);
-	},
-
-	swipeLeft: function(e) {
-		if(Engine.activeModule.swipeLeft) {
-			Engine.activeModule.swipeLeft(e);
-		}
-	},
-
-	swipeRight: function(e) {
-		if(Engine.activeModule.swipeRight) {
-			Engine.activeModule.swipeRight(e);
-		}
-	},
-
-	swipeUp: function(e) {
-		if(Engine.activeModule.swipeUp) {
-			Engine.activeModule.swipeUp(e);
-		}
-	},
-
-	swipeDown: function(e) {
-		if(Engine.activeModule.swipeDown) {
-			Engine.activeModule.swipeDown(e);
-		}
 	},
 
 	disableSelection: function() {

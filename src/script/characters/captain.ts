@@ -9,9 +9,9 @@ export const Captain = {
 			title: _('The Captain\'s Tent'),
 			scenes: {
 				start: {
-                    seenFlag: () => $SM.get('outpost.captain.haveMet'),
+                    seenFlag: () => $SM.get('Outpost.captain.haveMet'),
 					nextScene: 'main',
-					onLoad: () => $SM.set('outpost.captain.haveMet', 1),
+					onLoad: () => $SM.set('Outpost.captain.haveMet', 1),
 					text: [
                         _('You enter the fanciest-looking tent in the Outpost. A large man with a toothbrush mustache and a severe frown looks up from his desk.'),
                         _('"Sir, you have entered the tent of Captain Finneas. What business do you have here?"')
@@ -21,7 +21,7 @@ export const Captain = {
                             text: _('Ask About Supplies'),
                             nextScene: {1:'askAboutSupplies'},
                             onChoose: Captain.handleSupplies,
-                            available: () => !$SM.get('outpost.captain.askedAboutSupplies')
+                            available: () => !$SM.get('Outpost.captain.askedAboutSupplies')
                         },
                         'askAboutCaptain': {
                             text: _('Ask About Captain'),
@@ -43,7 +43,7 @@ export const Captain = {
                             text: _('Ask About Supplies'),
                             nextScene: {1:'askAboutSupplies'},
                             onChoose: Captain.handleSupplies,
-                            available: () => !$SM.get('outpost.captain.askedAboutSupplies')
+                            available: () => !$SM.get('Outpost.captain.askedAboutSupplies')
                         },
                         'askAboutCaptain': {
                             text: _('Ask About Captain'),
@@ -83,7 +83,7 @@ export const Captain = {
                             text: _('Ask About Supplies'),
                             nextScene: {1:'askAboutSupplies'},
                             onChoose: Captain.handleSupplies,
-                            available: () => !$SM.get('outpost.captain.askedAboutSupplies')
+                            available: () => !$SM.get('Outpost.captain.askedAboutSupplies')
                         },
                         'askAboutCaptain': {
                             text: _('Ask About Captain'),
@@ -114,7 +114,7 @@ export const Captain = {
     },
 
     handleSupplies: function() {
-        $SM.set('outpost.captain.askedAboutSupplies', 1);
+        $SM.set('Outpost.captain.askedAboutSupplies', 1);
         Character.addToInventory("Captain.supplies");
         Character.checkQuestStatus("mayorSupplies");
     }

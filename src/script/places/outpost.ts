@@ -9,7 +9,7 @@ import { _tb } from '../../lib/textBuilder';
 
 export const Outpost = {
 	description: [
-		_("You're in a small but bustling military outpost. Various members " 
+		_("You're in a small but bustling military Outpost. Various members " 
 			+ "of the rank-and-file go about their business, paying you little mind."),
 		_("One tent stands out from the rest; the finely-embroidered details and " + 
 			"golden icon above the entrance mark it as the commanding officer's quarters.")
@@ -48,7 +48,7 @@ export const Outpost = {
         Outpost.updateButton();
 
         // setting this separately so that quest status can't accidentally break it later
-        $SM.set('outpost.open', 1); 
+        $SM.set('Outpost.open', 1); 
     },
 
 	updateDescription: function() {
@@ -74,8 +74,6 @@ export const Outpost = {
     onArrival: function(transition_diff) {
         Outpost.setTitle();
 
-		Engine.moveStoresView(null, transition_diff);
-
         Weather.initiateWeather(Outpost.availableWeather, 'outpost');
 
 		this.updateDescription();
@@ -91,11 +89,5 @@ export const Outpost = {
 
     updateButton: function() {
 		// conditionals for updating buttons
-	},
-
-    // don't need this yet (or maybe ever)
-	// wanderEvent: function() {
-	// 	Events.triggerLocationEvent('OutpostWander');
-	// 	$SM.add('Outpost.counter', 1);
-	// }
+	}
 }

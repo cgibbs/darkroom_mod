@@ -44,7 +44,7 @@ export const Road = {
         Road.updateButton();
 
         // setting this separately so that quest status can't accidentally break it later
-        $SM.set('road.open', 1); 
+        $SM.set('Road.open', 1); 
     },
 
 	updateDescription: function() {
@@ -69,8 +69,6 @@ export const Road = {
 
     onArrival: function(transition_diff) {
         Road.setTitle();
-
-		Engine.moveStoresView(null, transition_diff);
 
         Weather.initiateWeather(Road.availableWeather, 'road');
 

@@ -124,7 +124,7 @@ export const EventsRoadWander: Array<ADREvent> = [
                         text: _('What a nice old lady'),
                         nextScene: 'end',
                         onChoose: function() {
-                            if ($SM.get('outpost.open') === undefined) {
+                            if ($SM.get('Outpost.open') === undefined) {
                                 Outpost.init();
                                 $SM.set('superlikely.outpostUnlock', 1);
                                 // Character.setQuestStatus("mayorSupplies", 1);

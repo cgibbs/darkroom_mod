@@ -49,11 +49,6 @@ export const Events = {
 		
 	_EVENT_TIME_RANGE: [3, 6], // range, in minutes
 	_PANEL_FADE: 200,
-	_FIGHT_SPEED: 100,
-	_EAT_COOLDOWN: 5,
-	_MEDS_COOLDOWN: 7,
-	_LEAVE_COOLDOWN: 1,
-	STUN_DURATION: 4000,
 	BLINK_INTERVAL: false,
 
 	EventPool: <any>[],
@@ -316,7 +311,6 @@ export const Events = {
 
 	startEvent: function(event: ADREvent, options?) {
 		if(event) {
-			Engine.event('game event', 'event');
 			Events.eventStack.unshift(event);
 			event.eventPanel = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
 			if(options != null && options.width != null) {

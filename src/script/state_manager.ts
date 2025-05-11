@@ -242,45 +242,6 @@ var StateManager = {
 	/******************************************************************
 	 * Start of specific state functions
 	 ******************************************************************/
-	//PERKS
-	addPerk: function(name) {
-		$SM.set('character.perks["'+name+'"]', true);
-		Notifications.notify(null, Engine.Perks[name].notify);
-	},
-	
-	hasPerk: function(name) {
-		return $SM.get('character.perks["'+name+'"]');
-	},
-	
-	//INCOME
-	setIncome: function(source, options) {
-		var existing = $SM.get('income["'+source+'"]');
-		if(typeof existing != 'undefined') {
-			options.timeLeft = (existing as any)?.timeLeft;
-		}
-		$SM.set('income["'+source+'"]', options);
-	},
-	
-	getIncome: function(source) {
-		var existing = $SM.get('income["'+source+'"]');
-		if(typeof existing != 'undefined') {
-			return existing;
-		}
-		return {};
-	},	
-	
-	//Misc
-	num: function(name, craftable) {
-		switch(craftable.type) {
-		case 'good':
-		case 'tool':
-		case 'weapon':
-		case 'upgrade':
-			return $SM.get('stores["'+name+'"]', true);
-		case 'building':
-			return $SM.get('game.buildings["'+name+'"]', true);
-		}
-	},
 	
 	handleStateUpdates: function(e){
 		

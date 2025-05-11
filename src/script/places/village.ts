@@ -4,7 +4,6 @@
 import { Engine } from "../engine";
 import { $SM } from "../state_manager";
 import { Button } from "../Button";
-import { Notifications } from "../notifications";
 import { Weather } from "../weather";
 import { _ } from "../../lib/translate";
 import { Header } from "../header";
@@ -14,13 +13,7 @@ import { Events } from "../events";
 import { _tb } from "../../lib/textBuilder";
 
 export const Village = {
-	// times in (minutes * seconds * milliseconds)
-	_FIRE_COOL_DELAY: 5 * 60 * 1000, // time after a stoke before the fire cools
-	_ROOM_WARM_DELAY: 30 * 1000, // time between room temperature updates
-	_BUILDER_STATE_DELAY: 0.5 * 60 * 1000, // time between builder state updates
-	_STOKE_COOLDOWN: 10, // cooldown to stoke the fire
-	_NEED_WOOD_DELAY: 15 * 1000, // from when the stranger shows up, to when you need wood
-	
+
 	buttons:{},
 	
 	changed: false,
@@ -145,51 +138,10 @@ export const Village = {
 	
 	onArrival: function(transition_diff) {
 		Village.setTitle();
-		if($SM.get('game.builder.level') == 3) {
-			$SM.add('game.builder.level', 1);
-			$SM.setIncome('builder', {
-				delay: 10,
-				stores: {'wood' : 2 }
-			});
-			Notifications.notify(Village, _("the stranger is standing by the fire. she says she can help. says she builds things."));
-		}
 
 		this.updateDescription();
-		Engine.moveStoresView(null, transition_diff);
 
 		Weather.initiateWeather(Village.availableWeather, 'village');
-	},
-	
-	TempEnum: {
-		fromInt: function(value) {
-			for(var k in this) {
-				if(typeof this[k].value != 'undefined' && this[k].value == value) {
-					return this[k];
-				}
-			}
-			return null;
-		},
-		Freezing: { value: 0, text: _('freezing') },
-		Cold: { value: 1, text: _('cold') },
-		Mild: { value: 2, text: _('mild') },
-		Warm: { value: 3, text: _('warm') },
-		Hot: { value: 4, text: _('hot') }
-	},
-	
-	FireEnum: {
-		fromInt: function(value) {
-			for(var k in this) {
-				if(typeof this[k].value != 'undefined' && this[k].value == value) {
-					return this[k];
-				}
-			}
-			return null;
-		},
-		Dead: { value: 0, text: _('dead') },
-		Smoldering: { value: 1, text: _('smoldering') },
-		Flickering: { value: 2, text: _('flickering') },
-		Burning: { value: 3, text: _('burning') },
-		Roaring: { value: 4, text: _('roaring') }
 	},
 	
 	setTitle: function() {
@@ -201,30 +153,6 @@ export const Village = {
 	},
 	
 	updateButton: function() {
-		var light = $('#lightButton.button');
-		var stoke = $('#stokeButton.button');
-		if($SM.get('game.fire.value') == Village.FireEnum.Dead.value && stoke.css('display') != 'none') {
-			stoke.hide();
-			light.show();
-			if(stoke.hasClass('disabled')) {
-				Button.cooldown(light);
-			}
-		} else if(light.css('display') != 'none') {
-			stoke.show();
-			light.hide();
-			if(light.hasClass('disabled')) {
-				Button.cooldown(stoke);
-			}
-		}
-		
-		if(!$SM.get('stores.wood')) {
-			light.addClass('free');
-			stoke.addClass('free');
-		} else {
-			light.removeClass('free');
-			stoke.removeClass('free');
-		}
-
 		var lizButton = $('#lizButton.button');
 		if($SM.get('village.lizActive')) lizButton.show();
 		var buildingButton = $('#newBuildingButton.button');

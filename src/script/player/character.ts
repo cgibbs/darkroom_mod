@@ -414,13 +414,15 @@ export const Character = {
 				complete = false;
 		}
 
-		// if there is a next phase, set questStatus to it
-		if (QuestLog[quest].phases[Character.questStatus[quest] + 1] !== undefined) {
-			Character.questStatus[quest] += 1;
-		} else { // else set it to complete
-			Character.questStatus[quest] = -1;
+		if (complete) {
+			// if there is a next phase, set questStatus to it
+			if (QuestLog[quest].phases[Character.questStatus[quest] + 1] !== undefined) {
+				Character.questStatus[quest] += 1;
+			} else { // else set it to complete
+				Character.questStatus[quest] = -1;
+			}
 		}
-
+		
 		Notifications.notify(null, "Quest Log updated.");
 		$SM.set('questStatus', Character.questStatus);
 	},
