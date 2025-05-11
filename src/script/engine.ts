@@ -45,9 +45,9 @@ export const Engine = window.Engine = {
 		}
 		
 		// Check for mobile
-		if(Engine.isMobile()) {
-			window.location = 'mobileWarning.html';
-		}
+		// if(Engine.isMobile()) {
+		// 	window.location = 'mobileWarning.html';
+		// }
 
 		Engine.disableSelection();
 		
@@ -55,6 +55,10 @@ export const Engine = window.Engine = {
 			window.State = this.options.state;
 		} else {
 			Engine.loadGame();
+		}
+
+		if(Engine.isMobile()) {
+			$('<div>').text('WARNING: this might look bad on mobile. Just a heads-up.').appendTo('#main');
 		}
 		
 		$('<div>').attr('id', 'locationSlider').appendTo('#main');
@@ -131,10 +135,10 @@ export const Engine = window.Engine = {
 		Village.init();
 		Character.init();
 		Weather.init();
-		if($SM.get('Road.open')) {
+		if($SM.get('Road.open') !== undefined) {
 			Road.init();
 		}
-		if($SM.get('Outpost.open')) {
+		if($SM.get('Outpost.open') !== undefined) {
 			Outpost.init();
 		}
 
