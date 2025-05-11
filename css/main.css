@@ -185,9 +185,9 @@ div.row_val {
 
 div#notifications {
 	position: absolute;
-	top: 400px;
+	top: 500px;
 	left: 0px;
-	height: 500px;
+	height: 400px;
 	width: 200px;
 	overflow: hidden;
 }
@@ -355,7 +355,7 @@ div.locationButton {
 }
 
 div.button div.tooltip {
-	width: 100px;
+	width: 200px;
 }
 
 /* Tooltip */
