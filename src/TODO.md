@@ -14,7 +14,7 @@ The ::before element on the Stores area not being animateable via JQuery makes t
 
 DONE Create script for Road to Outpost, and init it in the Mayor's quest acceptance thing.
 
-Create script for Outpost, and init it in the wander events for Road to Outpost after a certain number of turns spent wandering. Need to add a "times adventured" counter to $SM and increment it each time the player clicks the Wander Around button.
+DONE Create script for Outpost, and init it in the wander events for Road to Outpost after a certain number of turns spent wandering. Need to add a "times adventured" counter to $SM and increment it each time the player clicks the Wander Around button.
 
 Eventually there will be too many tabs to manage cleanly. I think tabs should be grouped under like, Locales of some description. We'd need to do a load step sorta like how the Engine checks for init conditions for the locations, but do it based on a Locale, so like, the village, the outpost, etc. are all in "The Northern Shore", but if you want to go further, you'll need to do something to change Locales, and then that'll load a whole new set of tabs and stuff. We could also bring weather out to the Locale level, instead of the Location level, and then only initiate new weather for Locations that need it for specific purposes.
 
@@ -63,6 +63,6 @@ DONE Add a notification when Quest Log or inventory is updated.
 
 Refactor Locations to have less repeated code around initializing and rendering them, maybe.
 
-Implement a shorthand function for state-based descriptive text, and use it on the Village's description based on whether Liz is known, whether the first quest is completed, etc. Then add it to the Mayor's quest text, for when he inevitably gives you another quest.
+DONE Implement a shorthand function for state-based descriptive text, and use it on the Village's description based on whether Liz is known, whether the first quest is completed, etc. Then add it to the Mayor's quest text, for when he inevitably gives you another quest.
 
-Add more RoadWander events, having only the one makes it seem broken.
+DONE-ISH Add more RoadWander events, having only the one makes it seem broken.
