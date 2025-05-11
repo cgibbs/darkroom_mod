@@ -11,6 +11,7 @@ import { Liz } from "../characters/liz";
 import { Mayor } from "../characters/mayor";
 import { Events } from "../events";
 import { _tb } from "../../lib/textBuilder";
+import { Character } from "../player/character";
 
 export const Village = {
 
@@ -86,6 +87,16 @@ export const Village = {
 			id: 'storeButton',
 			text: _('Go to the Store'),
 			click: Village.openStore,
+			width: '80px',
+			cost: {}
+		})
+		.addClass('locationButton')
+		.appendTo('div#villagePanel');
+
+		Button.Button({
+			id: 'diceButton',
+			text: _('Play a Game'),
+			click: Village.playDiceGame,
 			width: '80px',
 			cost: {}
 		})
@@ -191,7 +202,7 @@ export const Village = {
 
 	openStore: function() {
 		Events.startEvent({
-			title: _('A New Building'),
+			title: _('The Store'),
 			scenes: {
 				start: {
 					text: [
@@ -230,5 +241,144 @@ export const Village = {
 				}
 			}
 		});
+	},
+
+	playDiceGame: function() {
+		Events.startEvent({
+			title: _('A Game of Chance'),
+			scenes: {
+				start: {
+					text: [
+						_('You walk into a shady alley, and a man in a wide-brimmed hat gestures to you with dice in his hand.'),
+						_('"Hey, buddy, wanna play a game? There\'s a prize if you win!"'),
+						_('What do you do?')
+					],
+					buttons: {
+						'play': {
+							text: _('I like prizes'),
+							nextScene: {1: 'gameStart'}
+						},
+						'leave': {
+							text: _('No thanks'),
+							nextScene: 'end'
+						}
+					}
+				},
+				'gameStart': {
+					text: [
+						_('The man reveals a toothy grin and begins to explain the rules.'),
+						_('"It\'s very simple, you just choose whether you want to try to roll '
+							 + 'higher or lower than me, and then I roll, and then you roll. ' 
+							 + 'If you call it right, you win."'),
+						_('"So, what\'ll it be?')
+					],
+					buttons: {
+						'high': {
+							text: _('High'),
+							nextScene: {1: 'heRolls'},
+							onChoose: () => $SM.set('diceGame.high', 1)
+						},
+						'low': {
+							text: _('Low'),
+							nextScene: {1: 'heRolls'},
+							onChoose: () => $SM.set('diceGame.low', 1)
+						}
+					}
+				},
+				'heRolls': {
+					text: [
+						_('The mans hat tips low as he drops the dice to the ground.'),
+					],
+					dice: {
+						amount: 2,
+						handler: (vals) => {
+							const returnText = [];
+							let diceVal = 0;
+							for (var i in vals) {
+								diceVal += vals[i]
+							}
+
+							$SM.set('diceGame.hisRoll', diceVal);
+
+							if ($SM.get('diceGame.high') && diceVal < 5) {
+								returnText.push(_('The stranger grimaces.'));
+							} else if ($SM.get('diceGame.high') && diceVal < 8) {
+								returnText.push(_('The stranger grins wickedly.'));
+							} else if ($SM.get('diceGame.low')  && diceVal < 8) {
+								returnText.push(_('The stranger grimaces.'));
+							} else if ($SM.get('diceGame.low') && diceVal < 5) {
+								returnText.push(_('The stranger grins wickedly.'));
+							}
+
+							returnText.push(_('He picks up the dice and holds them out to you.'))
+							returnText.push(_('"Your roll."'))
+							return returnText;
+						}
+					},
+					buttons: {
+						'okay': {
+							text: _('Roll \'em'),
+							nextScene: {1: 'youRoll'}
+						}
+					}
+				},
+				'youRoll': {
+					text: [
+						_('You briefly jostle the dice, then let them fall where they may.')
+					],
+					dice: {
+						amount: 2,
+						handler: (vals) => {
+							const returnText = [];
+
+							let diceVal = 0;
+							for (var i in vals) {
+								diceVal += vals[i]
+							}
+
+							if ($SM.get('diceGame.high') && diceVal < ($SM.get('diceGame.hisRoll') as number)) {
+								returnText.push('Your feel a rush of disappointment.');
+							} else if ($SM.get('diceGame.high') && diceVal > ($SM.get('diceGame.hisRoll') as number)) {
+								returnText.push('Your feel a rush of excitement.');
+								$SM.set('diceGame.win', 1);
+							} else if ($SM.get('diceGame.low') && diceVal > ($SM.get('diceGame.hisRoll') as number)) {
+								returnText.push('Your feel a rush of disappointment.');
+							} else if ($SM.get('diceGame.low') && diceVal < ($SM.get('diceGame.hisRoll') as number)) {
+								returnText.push('Your feel a rush of excitement.');
+								$SM.set('diceGame.win', 1);
+							}
+
+							return returnText;
+						}
+					},
+					buttons: {
+						'results': {
+							text: () => ($SM.get('diceGame.win') !== undefined) ? _('Oh, nice') : _('Aww, shoot'),
+							nextScene: {1: 'results'}
+						}
+					}
+				},
+				'results': {
+					text: () => ($SM.get('diceGame.win') !== undefined) ? [
+						_('The gambler curses under his breath, then hands you something and quickly walks away.')
+					]: [_('The gambler\'s face splits into a wide grin before disappearing beneath the brim.'),
+						_('"Better luck next time stranger."'),
+						_('He sinks back into the shadows of the alley, and his words reverberate off of the parallel walls long after you lose sight of him.')
+					],
+					onLoad: () => {
+						if ($SM.get('diceGame.win') !== undefined) {
+							Character.addToInventory('gambler.Prize');
+						}
+					},
+					buttons: {
+						'okay': {
+							text: _('That was fun, I guess'),
+							nextScene: 'end',
+							onChoose: () => $SM.remove('diceGame')
+						}
+					}
+				}
+			}
+		})
 	}
-};
+}

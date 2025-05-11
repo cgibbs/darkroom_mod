@@ -228,5 +228,14 @@ export const ItemList: {[id: string]: Item} = {
         },
         destroyOnUse: true,
         destroyable: true
+    },
+    "gambler.Prize": {
+        name: 'true name of the gambler',
+        text: 'You won this in a dice game',
+        onUse: function() {
+            Notifications.notify(null, 'This item has great value, but not here and now.')
+        },
+        destroyOnUse: false,
+        destroyable: false
     }
 }

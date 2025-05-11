@@ -23,7 +23,7 @@ export interface Scene {
 	seenFlag?: Function,
 	nextScene?: string,
 	onLoad?: Function,
-	text: Array<string>,
+	text: Array<string> | Function,
 	reward?: any,
 	notification?: string,
 	blink?: boolean,
@@ -39,7 +39,7 @@ export interface Scene {
 }
 
 export interface EventButton {
-	text: string,
+	text: string | Function,
 	nextScene: {
 		[id: number]: string
 	},
@@ -141,8 +141,14 @@ export const Events = {
 	startStory: function(scene) {
 		// Write the text
 		var desc = $('#description', Events.eventPanel());
-		for(var i in scene.text) {
-			$('<div>').text(scene.text[i]).appendTo(desc);
+		var textBlock = [];
+		if (typeof(scene.text) == 'function') {
+			textBlock = scene.text();
+		} else {
+			textBlock = scene.text;
+		}
+		for(var i in textBlock) {
+			$('<div>').text(textBlock[i]).appendTo(desc);
 		}
 
 		// this dice stuff could maybe be extracted to its own function,
@@ -153,7 +159,7 @@ export const Events = {
 			for(var j = 0; j < scene.dice.amount; j++) {
 				var dieVal = this.getRandomInt(6) + 1;
 				diceVals.push(dieVal);
-				if (scene.dice.dieFaces[dieVal] !== undefined) {
+				if (scene.dice.dieFaces && scene.dice.dieFaces[dieVal] !== undefined) {
 					dieVal = scene.dice.dieFaces[dieVal];
 				}
 				const tiltVal = this.getRandomInt(90) - 45;
@@ -172,11 +178,11 @@ export const Events = {
 					.css('margin-bottom', '20px')
 				);
 			}
-		}
 
-		const textVals: Array<string> = scene.dice.handler(diceVals);
-		for (const text in textVals) {
-			$('<div>').text(textVals[text]).appendTo(desc);
+			const textVals: Array<string> = scene.dice.handler(diceVals);
+			for (const text in textVals) {
+				$('<div>').text(textVals[text]).appendTo(desc);
+			}
 		}
 		
 		if(scene.textarea != null) {
@@ -195,16 +201,20 @@ export const Events = {
 		var btns = $('#buttons', Events.eventPanel());
 		for(var id in scene.buttons) {
 			var info = scene.buttons[id];
-				var b = 
-				//new 
-				Button.Button({
-					id: id,
-					text: info.text,
-					cost: info.cost,
-					click: Events.buttonClick,
-					cooldown: info.cooldown,
-					image: info.image
-				}).appendTo(btns);
+			var text = '';
+			if (typeof(info.text) == 'function') {
+				text = info.text();
+			} else {
+				text = info.text;
+			}
+			var b = Button.Button({
+				id: id,
+				text: text,
+				cost: info.cost,
+				click: Events.buttonClick,
+				cooldown: info.cooldown,
+				image: info.image
+			}).appendTo(btns);
 			if(typeof info.available == 'function' && !info.available()) {
 				Button.setDisabled(b, true);
 			}
