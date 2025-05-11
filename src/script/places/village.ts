@@ -195,8 +195,10 @@ export const Village = {
 			scenes: {
 				start: {
 					text: [
-						_("This is the store. There's nothing here yet, though.")
+						_("This is the store. There's nothing here yet, though."),
+						_("You find a dusty pair of dice in the corner and throw them, just to see what happens.")
 					],
+					dice: 2,
 					buttons:  {
 						leave: {
 							text: _('Lame'),

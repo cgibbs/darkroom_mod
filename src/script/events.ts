@@ -27,6 +27,7 @@ export interface Scene {
 	reward?: any,
 	notification?: string,
 	blink?: boolean,
+	dice?: number,
 	buttons: {
 		[id: string]: EventButton
 	}
@@ -126,12 +127,38 @@ export const Events = {
 			$(this).remove();
 		});
 	},
+
+	// for dice stuff
+	getRandomInt:function (max) {
+  		return Math.floor(Math.random() * max);
+	},
 	
 	startStory: function(scene) {
 		// Write the text
 		var desc = $('#description', Events.eventPanel());
 		for(var i in scene.text) {
 			$('<div>').text(scene.text[i]).appendTo(desc);
+		}
+
+		if (scene.dice !== undefined) {
+			for(var j = 0; j < scene.dice; j++) {
+				const dieVal = this.getRandomInt(6) + 1;
+				const tiltVal = this.getRandomInt(45);
+				const marginVal = (this.getRandomInt(4) + 2) * 5;
+				desc.append(
+				$('<img>',{id:'die' + dieVal.toString() ,src:'assets/die/die' + dieVal.toString() + '.png'})
+				.css('width', '5%')
+				.css('height', 'auto')
+				.css({
+					"-webkit-transform": "rotate(" + tiltVal.toString() + "deg)",
+					"-moz-transform": "rotate(" + tiltVal.toString() + "deg)",
+					"transform": "rotate(" + tiltVal.toString() + "deg)"
+					}
+				)
+				.css('margin-right', marginVal.toString() + 'px')
+				.css('margin-bottom', '20px')
+			);
+			}
 		}
 		
 		if(scene.textarea != null) {
