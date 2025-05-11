@@ -5,6 +5,7 @@ import { Button } from '../Button';
 import { Captain } from '../characters/captain';
 import { Header } from '../header';
 import { _ } from '../../lib/translate';
+import { _tb } from '../../lib/textBuilder';
 
 export const Outpost = {
 	description: [
@@ -29,12 +30,8 @@ export const Outpost = {
         .addClass('location')
         .appendTo('div#locationSlider');
 
-		// Create the description text
-		var desc = $('<div>').attr('id', 'description').appendTo(this.panel);
-
-		for(var i in this.description) {
-			$('<div>').text(this.description[i]).appendTo(desc);
-		}
+		this.descriptionPanel = $('<div>').attr('id', 'description').appendTo(this.panel);
+		this.updateDescription();
 
         Engine.updateSlider();
 
@@ -54,6 +51,20 @@ export const Outpost = {
         $SM.set('outpost.open', 1); 
     },
 
+	updateDescription: function() {
+		this.descriptionPanel.empty();
+		this.description = _tb([
+			_("You're on a dusty road between the Village and the Outpost. The road cuts through " 
+				+ "tall grass, brush, and trees, limiting visibility and ensuring that you'll have " 
+				+ "to deal with some nonsense."),
+			_("The hair on the back of your neck prickles slightly in anticipation.")
+		]);
+
+		for(var i in this.description) {
+			$('<div>').text(this.description[i]).appendTo(this.descriptionPanel);
+		}
+	},
+
     availableWeather: {
 		'sunny': 0.4,
 		'cloudy': 0.3,
@@ -66,6 +77,8 @@ export const Outpost = {
 		Engine.moveStoresView(null, transition_diff);
 
         Weather.initiateWeather(Outpost.availableWeather, 'outpost');
+
+		this.updateDescription();
     },
 
     setTitle: function() {

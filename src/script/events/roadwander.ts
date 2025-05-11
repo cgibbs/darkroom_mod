@@ -156,7 +156,8 @@ export const EventsRoadWander: Array<ADREvent> = [
     {
         title: _('This Guy Seems Friendly'),
         isAvailable: function() {
-            return Engine.activeModule == Road;
+            return (Engine.activeModule === Road
+                && $SM.get('Road.gotPunched') === undefined);
         },
         scenes: {
             'start': {
@@ -182,7 +183,7 @@ export const EventsRoadWander: Array<ADREvent> = [
     {
         title: _('This Fucking Guy Again'),
         isAvailable: function() {
-            return (Engine.activeModule == Road
+            return (Engine.activeModule === Road
                 && ($SM.get('Road.gotPunched') !== undefined));
         },
         scenes: {
@@ -203,6 +204,8 @@ export const EventsRoadWander: Array<ADREvent> = [
                         onChoose: () => {
                             // give healing tonic
                             // give coupon
+                            // unlock store button
+                            $SM.set('Road.gotApologized', 1);
                         }
                     }
                 }
@@ -214,7 +217,7 @@ export const EventsRoadWander: Array<ADREvent> = [
         title: _('A Way Forward Makes Itself Known'),
         isAvailable: function() {
             return (
-                (Engine.activeModule == Road)
+                (Engine.activeModule === Road)
                 && ($SM.get('Road.counter') as number > 3) // can't happen TOO early
                 && ($SM.get('superlikely.outpostUnlock') == undefined
                     || $SM.get('superlikely.outpostUnlock') as number < 1) // can't happen twice

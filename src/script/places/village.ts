@@ -11,6 +11,7 @@ import { Header } from "../header";
 import { Liz } from "../characters/liz";
 import { Mayor } from "../characters/mayor";
 import { Events } from "../events";
+import { _tb } from "../../lib/textBuilder";
 
 export const Village = {
 	// times in (minutes * seconds * milliseconds)
@@ -24,12 +25,8 @@ export const Village = {
 	
 	changed: false,
 
-	description: [
-		_("Nestled in the woods, this village is scarcely more than a hamlet, " 
-			+ "despite you thinking those two words are synonyms. They're not, " 
-			+ "go google 'hamlet' right now if you don't believe me."),
-		_("The village is quiet at the moment; there aren't enough hands for anyone to remain idle for long.")
-	],
+	description: [],
+	descriptionPanel: null,
 	
 	name: _("Village"),
 	init: function(options?) {
@@ -54,12 +51,9 @@ export const Village = {
 			.addClass('location')
 			.appendTo('div#locationSlider');
 
-		var desc = $('<div>').attr('id', 'description').appendTo(this.panel);
+		this.descriptionPanel = $('<div>').attr('id', 'description').appendTo(this.panel);
+		this.updateDescription();
 
-		for(var i in this.description) {
-			$('<div>').text(this.description[i]).appendTo(desc);
-		}
-		
 		Engine.updateSlider();
 
 		Button.Button({
@@ -95,6 +89,19 @@ export const Village = {
 		var buildingButton = $('#newBuildingButton.button');
 		buildingButton.hide();
 
+		Button.Button({
+			id: 'storeButton',
+			text: _('Go to the Store'),
+			click: Village.openStore,
+			width: '80px',
+			cost: {}
+		})
+		.addClass('locationButton')
+		.appendTo('div#villagePanel');
+
+		var storeButton = $('#storeButton.button');
+		storeButton.hide();
+
 		var lizButton = $('#lizButton.button');
 		lizButton.hide();
 		
@@ -106,6 +113,26 @@ export const Village = {
 		$.Dispatch('stateUpdate').subscribe(Village.handleStateUpdates);
 		
 		Village.updateButton();
+	},
+
+	updateDescription: function() {
+		this.descriptionPanel.empty();
+		this.description = _tb([
+			_("Nestled in the woods, this village is scarcely more than a hamlet, " 
+				+ "despite you thinking those two words are synonyms. They're not, " 
+				+ "go google 'hamlet' right now if you don't believe me."),
+			_("The village is quiet at the moment; there aren't enough hands for anyone to remain idle for long."),
+			{
+				text: _("A storefront, staffed entirely by a single grinning jackass, stands proudly in the main square."),
+				isVisible: () => {
+					return $SM.get('Road.gotApologized') !== undefined;
+				}
+			}
+		]);
+
+		for(var i in this.description) {
+			$('<div>').text(this.description[i]).appendTo(this.descriptionPanel);
+		}
 	},
 	
 	options: {}, // Nothing for now
@@ -127,6 +154,7 @@ export const Village = {
 			Notifications.notify(Village, _("the stranger is standing by the fire. she says she can help. says she builds things."));
 		}
 
+		this.updateDescription();
 		Engine.moveStoresView(null, transition_diff);
 
 		Weather.initiateWeather(Village.availableWeather, 'village');
@@ -201,6 +229,8 @@ export const Village = {
 		if($SM.get('village.lizActive')) lizButton.show();
 		var buildingButton = $('#newBuildingButton.button');
 		if($SM.get('village.mayor.haveGivenSupplies')) buildingButton.show();
+		var storeButton = $('#storeButton.button');
+		if($SM.get('Road.gotApologized')) storeButton.show();
 	},
 	
 	
@@ -214,21 +244,39 @@ export const Village = {
 
 	tempBuildingMessage: function() {
 		Events.startEvent({
-					title: _('A New Building'),
-					scenes: {
-						start: {
-							nextScene: 'main',
-							text: [
-								_('This is a new building. There should be stuff in it, but this is a placeholder for now.'),
-							],
-							buttons: {
-								'leave': {
-									text: _('Lame'),
-									nextScene: 'end'
-								}
-							}
+			title: _('A New Building'),
+			scenes: {
+				start: {
+					text: [
+						_('This is a new building. There should be stuff in it, but this is a placeholder for now.'),
+					],
+					buttons: {
+						'leave': {
+							text: _('Lame'),
+							nextScene: 'end'
 						}
 					}
-				});
+				}
 			}
+		});
+	},
+
+	openStore: function() {
+		Events.startEvent({
+			title: _('A New Building'),
+			scenes: {
+				start: {
+					text: [
+						_("This is the store. There's nothing here yet, though.")
+					],
+					buttons:  {
+						leave: {
+							text: _('Lame'),
+							nextScene: 'end'
+						}
+					}
+				}
+			}
+		});
+	}
 };

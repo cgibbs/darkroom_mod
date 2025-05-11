@@ -261,6 +261,7 @@ export const Character = {
 	},
 
 	updatePerks: function() {
+		this.perkArea.empty();
 		if (Object.keys(this.perks).length > 0) {
 			$('<div>').text('Perks')
 			.css('text-decoration', 'underline')

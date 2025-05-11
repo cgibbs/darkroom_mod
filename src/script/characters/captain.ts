@@ -114,7 +114,6 @@ export const Captain = {
     },
 
     handleSupplies: function() {
-        console.log('handling supplies');
         $SM.set('outpost.captain.askedAboutSupplies', 1);
         Character.addToInventory("Captain.supplies");
         Character.checkQuestStatus("mayorSupplies");
