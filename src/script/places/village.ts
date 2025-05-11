@@ -200,6 +200,9 @@ export const Village = {
 					],
 					dice: {
 						amount: 2,
+						dieFaces: {
+							1: 'skull'
+						},
 						handler: (vals) => {
 							const returnText = [];
 							if ((vals[0] == vals[1]) && vals[0] == 1) {

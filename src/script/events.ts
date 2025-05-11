@@ -29,6 +29,7 @@ export interface Scene {
 	blink?: boolean,
 	dice?: {
 		amount: number,
+		dieFaces?: { [id: number]: string }
 		// do game engine stuff, then return text description
 		handler: (vals) => Array<string>
 	},
@@ -150,8 +151,11 @@ export const Events = {
 		const diceVals = [];
 		if (scene.dice !== undefined) {
 			for(var j = 0; j < scene.dice.amount; j++) {
-				const dieVal = this.getRandomInt(6) + 1;
+				var dieVal = this.getRandomInt(6) + 1;
 				diceVals.push(dieVal);
+				if (scene.dice.dieFaces[dieVal] !== undefined) {
+					dieVal = scene.dice.dieFaces[dieVal];
+				}
 				const tiltVal = this.getRandomInt(90) - 45;
 				const marginVal = (this.getRandomInt(4) + 2) * 5;
 				desc.append(

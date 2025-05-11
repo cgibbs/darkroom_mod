@@ -66,3 +66,14 @@ Refactor Locations to have less repeated code around initializing and rendering 
 DONE Implement a shorthand function for state-based descriptive text, and use it on the Village's description based on whether Liz is known, whether the first quest is completed, etc. Then add it to the Mayor's quest text, for when he inevitably gives you another quest.
 
 DONE-ISH Add more RoadWander events, having only the one makes it seem broken.
+
+DONE To bring in the image die faces, add something to the dice object that maps numbers to icons. For example, if you want a result of 1 to be the skull and 6 to be the heart,
+do like so:
+dice: {
+    amount: 2,
+    handler: () => { },
+    dieFaces: {
+        1: 'skull',
+        6: 'heart'
+    }
+}
