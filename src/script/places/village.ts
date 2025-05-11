@@ -198,7 +198,22 @@ export const Village = {
 						_("This is the store. There's nothing here yet, though."),
 						_("You find a dusty pair of dice in the corner and throw them, just to see what happens.")
 					],
-					dice: 2,
+					dice: {
+						amount: 2,
+						handler: (vals) => {
+							const returnText = [];
+							if ((vals[0] == vals[1]) && vals[0] == 1) {
+								returnText.push("Snake eyes! I feel a mild sense of dread.");
+							} else if (vals[0] == vals[1]) {
+								returnText.push("Wow, doubles. That seems lucky.");
+							} else if ((vals[0] + vals[1]) == 7) {
+								returnText.push("Oh, nice. Do I win something?");
+							} else {
+								returnText.push("I rolled a " + (vals[0] + vals[1]).toString() + ". That doesn't seem especially noteworthy.");
+							}
+							return returnText;
+						}
+					},
 					buttons:  {
 						roll: {
 							text: _('Roll \'em again'),

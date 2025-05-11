@@ -27,7 +27,11 @@ export interface Scene {
 	reward?: any,
 	notification?: string,
 	blink?: boolean,
-	dice?: number,
+	dice?: {
+		amount: number,
+		// do game engine stuff, then return text description
+		handler: (vals) => Array<string>
+	},
 	buttons: {
 		[id: string]: EventButton
 	}
@@ -140,25 +144,35 @@ export const Events = {
 			$('<div>').text(scene.text[i]).appendTo(desc);
 		}
 
+		// this dice stuff could maybe be extracted to its own function,
+		// but also we might just make it way more generic so you can
+		// throw ANYTHING in the Event description dynamically
+		const diceVals = [];
 		if (scene.dice !== undefined) {
-			for(var j = 0; j < scene.dice; j++) {
+			for(var j = 0; j < scene.dice.amount; j++) {
 				const dieVal = this.getRandomInt(6) + 1;
+				diceVals.push(dieVal);
 				const tiltVal = this.getRandomInt(90) - 45;
 				const marginVal = (this.getRandomInt(4) + 2) * 5;
 				desc.append(
-				$('<img>',{id:'die' + dieVal.toString() ,src:'assets/die/die' + dieVal.toString() + '.png'})
-				.css('width', '5%')
-				.css('height', 'auto')
-				.css({
-					"-webkit-transform": "rotate(" + tiltVal.toString() + "deg)",
-					"-moz-transform": "rotate(" + tiltVal.toString() + "deg)",
-					"transform": "rotate(" + tiltVal.toString() + "deg)"
-					}
-				)
-				.css('margin-right', marginVal.toString() + 'px')
-				.css('margin-bottom', '20px')
-			);
+					$('<img>',{id:'die' + dieVal.toString() ,src:'assets/die/die' + dieVal.toString() + '.png'})
+					.css('width', '5%')
+					.css('height', 'auto')
+					.css({
+						"-webkit-transform": "rotate(" + tiltVal.toString() + "deg)",
+						"-moz-transform": "rotate(" + tiltVal.toString() + "deg)",
+						"transform": "rotate(" + tiltVal.toString() + "deg)"
+						}
+					)
+					.css('margin-right', marginVal.toString() + 'px')
+					.css('margin-bottom', '20px')
+				);
 			}
+		}
+
+		const textVals: Array<string> = scene.dice.handler(diceVals);
+		for (const text in textVals) {
+			$('<div>').text(textVals[text]).appendTo(desc);
 		}
 		
 		if(scene.textarea != null) {
