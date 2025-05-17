@@ -34,6 +34,14 @@ export const Character = {
 	// perks given by items, character choices, divine provenance, etc.
 	perks: { },
 	perkArea: null,
+
+	// keywords for Morrowind dialogue trees
+	keywordList: [
+		'balmora',
+		'quests',
+		'rumors',
+		'job'
+	],
 	
 	init: function(options?) {
 		this.options = $.extend(
@@ -232,6 +240,14 @@ export const Character = {
 		$SM.set('inventory', Character.inventory);
 	},
 
+	addKeyword: function(keyword) {
+		if (Character.keywordList.filter(s => s === keyword).length == 0) {
+			Character.keywordList.push(keyword);
+		}
+
+		$SM.set('keywordList', Character.keywordList);
+	},
+
 	grantPerk: function(perk) {
 		if (Character.perks[perk] !== undefined) {
 			if(perk.timeLeft > 0) {
@@ -403,6 +419,7 @@ export const Character = {
 		}
 	},
 
+	// incur a status check for the specified quest and move to the next phase if qualified
 	checkQuestStatus: function(quest) {
 		const currentPhase = QuestLog[quest].phases[Character.questStatus[quest]];
 

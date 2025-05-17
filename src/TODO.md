@@ -68,3 +68,7 @@ DONE Implement a shorthand function for state-based descriptive text, and use it
 DONE-ISH Add more RoadWander events, having only the one makes it seem broken.
 
 DONE To bring in the image die faces, add something to the dice object that maps numbers to icons.
+
+Perks that are conditionals for random spooky stuff should just have names like "A weird feeling" or "A tingling sensation" so as not to give away what's happening behind the scenes. Maybe leave the name field on those empty, and have a generator that handles empty names and gives a random vague title like that.
+
+Add a prototype of the Morrowind dialogue system. This might not make it into the final concept, but it feels like it could be tweaked to fit, or maybe I'd learn something useful from it.

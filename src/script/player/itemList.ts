@@ -21,7 +21,7 @@ export const ItemList: {[id: string]: Item} = {
                 scenes: {
                     start: {
                         text: [
-                            _('This book is pretty boring, but you manage to learn a bit more in spite of your poor attention span.'),
+                            _('This book is pretty boring, but you manage to learn a bit more in spite of your short attention span.'),
                             _('For example, you learn that "Chadtopia" doesn\'t have a capital \'T\'. That\'s pretty cool, huh?'),
                             _('... What were you doing again?')
                         ],
